@@ -1,0 +1,35 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    List Customer
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'customers/styles/forms.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block right_content %}
+{% for object in results %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ object }}
+    </div>
+    {% include 'customers/components/customer.html' with object=object %}
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'customers/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

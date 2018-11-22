@@ -1,0 +1,44 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+Basket
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'basket/styles/basket.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section_header">
+    {{ basket.0.user }}
+</div>
+
+<div id="basket_js">
+</div>
+{% endblock %}
+
+{% block js_bottom %}
+<script src="{% static 'basket/js/basket_scripts.js' %}"></script>
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'basket/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

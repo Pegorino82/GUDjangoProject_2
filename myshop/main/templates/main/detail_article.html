@@ -1,0 +1,36 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+Detail Article
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'main/styles/forms.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+
+{% include 'main/components/article.html' with content=object object=object.author %}
+
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

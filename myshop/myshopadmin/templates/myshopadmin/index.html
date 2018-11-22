@@ -1,0 +1,28 @@
+{% extends 'myshopadmin/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+Admin
+{% endblock %}
+
+
+{% block style_css %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block right_content %}
+
+{% for app, value in results.items %}
+{% for model in value %}
+    <div>
+        <a class="menu_item" href="{% url 'myshopadminapp:list' app=app model=model %}">{{app}} {{ model }}</a>
+    </div>
+{% endfor %}
+<hr>
+{% endfor %}
+
+
+{% endblock %}

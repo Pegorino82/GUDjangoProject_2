@@ -1,0 +1,132 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>
+       {% block page_title %}
+       {% endblock %}
+    </title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'myshopadmin/packages/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    {% block bootstrap_css %}
+    {% endblock %}
+
+    <link href="{% static 'myshopadmin/styles/style.css' %}" rel="stylesheet">
+
+    {% block style_css %}
+    {% endblock %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+
+            <nav class="navbar navbar-default navbar_xs visible-xs">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand logo_xs" href="/index/">My<span>Shop</span></a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+
+                            <li><a class="menu_item" href="{% url 'articlesapp:list' %}">Main</a></li>
+                            <li><a class="menu_item" href="{% url 'customersapp:customer' %}">Customer</a></li>
+                            <li><a class="menu_item" href="{% url 'productsapp:catalog' %}">Catalog</a></li>
+                            {% block small_menu_items %}
+
+                            {% endblock %}
+                            <li><a class="menu_item" href="{% url 'contactsapp:contacts' %}">Contacts</a></li>
+
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+
+            <a href="{% url 'articlesapp:list' %}" class="logo hidden-xs"></a>
+
+            <div class="name-avatar">
+                <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
+                <span>{{ user.username }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container content">
+        <div class="row">
+            <div class="col-md-4 col-sm-3 left_content">
+                <div class="menu hidden-xs">
+                    <div class="menu_title">
+                        Models
+                    </div>
+                    <ul>
+                        <li><a class="menu_item" href="{% url 'myshopadminapp:index' %}">To models</a></li>
+                        {% block large_menu_items %}
+
+                        {% endblock %}
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="col-md-8 col-sm-9 right_content">
+                {% block right_content %}
+                {% endblock %}
+
+            </div>
+        </div>
+
+        <div class="row">
+
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div class="container">
+
+        </div>
+    </div>
+
+    <div class="footer_bottom">
+        <div class="container footer_bottom_width">
+            <div class="copyright">
+                <span>&copy;</span>2018 EvgenyShkrybin. All rights reserved
+                <span class="hidden-xs">-</span>
+                <br class="visible-xs">
+                Designed by GBLessons
+            </div>
+
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    {% block bootstrap_js %}
+    {% endblock %}
+
+</body>
+</html>

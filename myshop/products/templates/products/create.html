@@ -1,0 +1,78 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+   Create
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'products/styles/forms.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+<ul class="submenu">
+    {% for category in categories %}
+    <li><a href="{% url 'categoriesapp:category' category=category.name %}">{{category.name}}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+<ul class="submenu">
+    {% for category in categories %}
+    <li><a href="{% url 'categoriesapp:category' category=category.name %}">{{category.name}}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        create
+        {{ model.name }}
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for err in form.not_field_errors %}
+            <span>
+                {{ err }}
+            </span>
+        {% endfor %}
+
+        <div class="main-page-auth">
+            {% for field in form %}
+            <div class="input-group">
+                <div class="input-group main-page">
+                    <label class="input-group-addon form-model-label" for="{{ field.name }}">
+                        {{ field.label }}
+                    </label>
+                        {{ field }}
+                </div>
+                {% for err in field.errors %}
+                <span>
+                    {{ err }}
+                </span>
+            {% endfor %}
+            </div>
+            {% endfor %}
+             <div class="input-group">
+                    <input name="logup" type="submit" value="SUBMIT">
+                </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

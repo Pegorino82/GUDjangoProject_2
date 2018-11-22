@@ -1,0 +1,17 @@
+{% load static %}
+
+
+<div class="product_card">
+    <img class="product_img" src="{{ prd.avatar.url }}" alt="">
+    <div class="name_price">
+        <div class="product_name">
+            {{ prd.username|title }}
+        </div>
+        <div class="product_name">
+            {{ prd.first_name|title }}
+        </div>
+        <div class="product_name">
+            {{ prd.last_name_name|title }}
+        </div>
+    </div>
+</div>

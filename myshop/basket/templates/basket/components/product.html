@@ -1,0 +1,28 @@
+{% load static %}
+
+
+<img class="product-small-photo" src="{{ product.image.img.url }} " alt="{{ product }}">
+
+<div class="product-info">
+    <div>
+        <span class="name">
+            {{ product.name }}
+        </span>
+    </div>
+</div>
+
+<div class="product-info">
+    <div>
+        <span class="price">
+            {{ product.now_price }}
+        </span>
+    </div>
+</div>
+
+<div>
+    <a class="add_one" href="{% url 'basketapp:add_product' pk=product.id %}">+</a>
+</div>
+
+<div>
+    <a class="remove_one" href="{% url 'basketapp:remove_product' pk=product.id %}">-</a>
+</div>

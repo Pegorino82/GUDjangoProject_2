@@ -1,0 +1,21 @@
+{% load staticfiles %}
+
+<ul class="django-pagination">
+    {% if results.has_previous %}
+    <li class="django-pagination__control">
+        <a class="link_button" href="?page={{results.previous_page_number}}"><< Prev</a>
+    </li>
+    {% endif %}
+
+    <li class="django-pagination__control">
+        <div class="link_button" style="font-size: 18px">
+            {{ results.number }} / {{ results.paginator.num_pages }}
+        </div>
+    </li>
+
+    {% if results.has_next %}
+    <li class="django-pagination__control">
+        <a class="link_button" href="?page={{results.next_page_number}}">Next >></a>
+    </li>
+    {% endif %}
+</ul>

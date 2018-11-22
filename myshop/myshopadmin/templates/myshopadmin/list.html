@@ -1,0 +1,33 @@
+{% extends 'myshopadmin/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+Admin/List
+{% endblock %}
+
+
+{% block style_css %}
+{% endblock %}
+
+{% block large_menu_items %}
+
+{% endblock %}
+
+{% block right_content %}
+
+    <div>
+        <a class="menu_item" href="{% url 'myshopadminapp:create' app=app model=model %}">+Add {{model}} </a>
+    </div>
+    <div class="row products_table">
+        {% for item in results%}
+            <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
+                <a href="{% url 'myshopadminapp:detail' app=app model=model pk=item.pk %}">
+                {% include included_template with prd=item %}
+                </a>
+
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

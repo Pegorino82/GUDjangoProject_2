@@ -1,0 +1,41 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    List Author
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'main/styles/forms.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+
+    {% for author in results %}
+        <div class="main_section">
+            <div class="main_section_header">
+                {{ author }}
+            </div>
+             {% include 'main/components/author.html' with object=author %}
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

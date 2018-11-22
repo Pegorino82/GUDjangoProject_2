@@ -1,0 +1,40 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    SignIn
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        To finish registration chek your email
+    </div>
+    <div class="main-page-auth">
+        activation key sent to {{ email }}
+    </div>
+</div>
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'authapp/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

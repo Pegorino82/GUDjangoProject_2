@@ -1,0 +1,67 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    Contacts
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        Feedback
+    </div>
+    <form method="post" action="/contacts/">
+        {% csrf_token %}
+        <div class="input-group">
+            <span class="input-group-addon" id="sizing-addon1">Name</span>
+            <input name="username" type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon" id="sizing-addon2">E-mail</span>
+            <input name="email" type="email" class="form-control" placeholder="username@example.com" aria-describedby="sizing-addon2">
+        </div>
+        <div class="input-group">
+            <input name="text" type="text" class="form-control" aria-label="...">
+            <div class="input-group-btn">
+                <input name="sendbtn" type="submit" class="btn btn-default" value="Send">
+            </div>
+        </div>
+    </form>
+</div>
+
+{{ usr_name }}<br>
+{{ email }}<br>
+{{ text }}<br>
+
+<div class="main_section">
+    <div class="main_section_header">
+        Map
+    </div>
+    <div id="map">
+        <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A38c8d55fc2f7589e75cf30c6001522de99a215e0c7c4679d5438f118ebf919dc&amp;width=100%&amp;height=374&amp;lang=ru_RU&amp;scroll=true"></script>
+    </div>
+</div>
+{% endblock %}
+
+{% block bootstrap_js %}
+    <script src="{% static 'contacts/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

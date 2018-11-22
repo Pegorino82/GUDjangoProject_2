@@ -1,0 +1,29 @@
+{% extends 'myshopadmin/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+Admin/Create
+{% endblock %}
+
+{% block style_css %}
+{% endblock %}
+
+{% block right_content %}
+
+<div class="row products_table">
+    <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
+        {% include included_template with prd=object %}
+        {{ product }}
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
+        <div>
+            <a class="menu_item" href="{% url 'myshopadminapp:update' app=app model=model pk=pk %}">Update</a>
+        </div>
+        <div>
+            <a class="menu_item" href="{% url 'myshopadminapp:delete' app=app model=model pk=pk %}">Delete</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

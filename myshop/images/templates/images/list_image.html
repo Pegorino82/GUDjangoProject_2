@@ -1,0 +1,43 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    List Image
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'images/styles/images.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section_header">
+    Images
+</div>
+<div class="row products_table">
+    {% for image in results %}
+     <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
+         {% include 'images/components/image.html' with image=image %}
+     </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'images/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

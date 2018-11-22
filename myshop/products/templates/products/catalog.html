@@ -1,0 +1,68 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    Catalog
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'products/styles/paginator.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+<script src="{% static 'products/js/categories.js' %}"></script>
+{% endblock %}
+
+{% block small_menu_items %}
+<ul class="submenu">
+</ul>
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+<ul class="submenu" id="js">
+</ul>
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+{% include 'products/components/pagination.html' with results=categories %}
+{% for category in categories %}
+    <div class="category_products">
+        <a href="{% url 'categoriesapp:category' category=category.name %}">
+            <div class="products_header">
+            {{ category.name }}
+            </div>
+        </a>
+        <div class="row products_table">
+            {% for product in limit_products %}
+                {% if product.category == category %}
+                 <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
+                    <a href="{% url 'productsapp:product' category=product.category pk=product.id %}">
+                        {% include 'products/components/product.html' with prd=product %}
+                    </a>
+                 </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+
+{% include 'products/components/pagination.html' with results=categories %}
+
+<script>
+    axios.get('http://127.0.0.1:8000/api/categories/list/')
+        .then(renderCategories);
+</script>
+
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,56 @@
+<!--login/logout form-->
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    Customer
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'customers/styles/customer.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        Wellcome, {{ user }}!
+    </div>
+    {% if not user.is_authenticated %}
+    <div class="input-group">
+        <a class="link_button" href="{% url 'authapp:login_view' %}">Войти</a>
+    </div>
+    <div class="input-group">
+        <a class="link_button" href="{% url 'authapp:logup_view' %}">Зарегистрироваться</a>
+    </div>
+    {% else %}
+    <div class="input-group">
+        <a class="link_button" href="{% url 'authapp:logout_view' %}">Выйти</a>
+    </div>
+    {% endif %}
+    {% if user.is_staff or user.is_superuser %}
+    <div class="input-group">
+        <a class="link_button" href="{% url 'customersapp:list_customer' %}">Пользователи</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'customers/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

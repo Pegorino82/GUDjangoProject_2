@@ -1,0 +1,56 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    Create Image
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'images/styles/images.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section_header">
+    Add Image
+</div>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for err in form.not_field_errors %}
+    <span>
+        {{ err }}
+    </span>
+    {% endfor %}
+    {% for field in form %}
+    <label class="form-model-label" for="{{ field.name }}">
+        {{ field.label }}
+    </label>
+        {{ field }}
+        {% for err in field.errors %}
+        <span>
+            {{ err }}
+        </span>
+        {% endfor %}
+    {% endfor %}
+    <input type="submit" value="create" name="create">
+</form>
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'images/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

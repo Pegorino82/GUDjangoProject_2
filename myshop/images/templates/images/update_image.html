@@ -1,0 +1,61 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    Update Image
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'images/styles/images.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section_header">
+    {{ form.name.value }}
+</div>
+    <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
+     {% include 'images/components/image.html' with image=object %}
+    </div>
+<div class="col-md-8 col-sm-6 col-xs-12">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for err in form.not_field_errors %}
+        <span>
+            {{ err }}
+        </span>
+        {% endfor %}
+        {% for field in form %}
+        <label class="form-model-label" for="{{ field.name }}">
+            {{ field.label }}
+        </label>
+            {{ field }}
+            {% for err in field.errors %}
+            <span>
+                {{ err }}
+            </span>
+            {% endfor %}
+        {% endfor %}
+        <input type="submit" value="update" name="update">
+    </form>
+</div>
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'images/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

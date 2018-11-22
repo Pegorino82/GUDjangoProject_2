@@ -1,0 +1,22 @@
+{% load static %}
+
+
+ <div class="product_card">
+
+    <img class="product_img" src="{{ prd.author.photo.url }}" alt="">
+
+    <!--<div class="name_price">-->
+        <div class="product_name">
+            {{ prd.author|title }}
+        </div>
+        <div class="product_name">
+            {{ prd.chapter }}
+        </div>
+        <div class="">
+            {{ prd.content }}
+        </div>
+        <div class="">
+            created: {{ prd.created }}
+        </div>
+    <!--</div>-->
+ </div>

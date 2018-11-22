@@ -1,0 +1,68 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+    Customer
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        You are here, {{ user }}
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="main-page-auth">
+            <div class="input-group">
+                {% if not user.is_authenticated %}
+                <div class="input-group main-page">
+                    <span class="input-group-addon" id="sizing-addon1">Login</span>
+                    <input name="username" type="text" class="form-control" placeholder="Login/email" aria-describedby="sizing-addon2">
+                </div>
+                <div class="input-group main-page">
+                    <span class="input-group-addon" id="sizing-addon2">Password</span>
+                    <input name="password" type="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
+                </div>
+                <div class="input-group main-page">
+                    <span class="input-group-addon">Avatar</span>
+                    <input name="avatar" type="file" accept="image/*">
+                </div>
+                <div class="input-group">
+                    <input name="login" type="submit" value="Войти">
+                    <input name="logup" type="submit" value="Зарегистрироваться">
+                </div>
+                {% else %}
+                <div class="input-group">
+                    <input name="exit" type="submit" value="Выйти">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+</div>
+    {{ user_name }}
+    {{ warn }}
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'customers/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}
