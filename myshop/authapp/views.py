@@ -114,7 +114,7 @@ def logup_view(request):
                 print('*' * 100)
                 print(err)
                 print('*' * 100)
-                return render(request, template_name, {'form': form, 'error': err.args})
+                return render(request, template_name, {'form': form})
 
     return render(request, template_name, {'form': form})
 
