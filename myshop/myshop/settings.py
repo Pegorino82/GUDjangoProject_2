@@ -86,6 +86,7 @@ EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
 EMAIL_USE_SSL = False
 
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 

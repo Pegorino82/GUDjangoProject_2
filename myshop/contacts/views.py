@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.core.mail import send_mail
+from django.conf import settings
 
 
 # Create your views here.
@@ -14,7 +15,7 @@ def contacts(request):
         send_mail(
             'Django',
             text,
-            from_email='info@myshop.ru',
+            from_email=settings.EMAIL_HOST_USER,
             recipient_list=[email],
         )
         # context.update({

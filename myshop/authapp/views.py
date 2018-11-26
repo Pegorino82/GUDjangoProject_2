@@ -104,7 +104,7 @@ def logup_view(request):
                     'Django',
                     f'for finish registration go: '
                     f'{settings.DOMAIN_NAME}/auth/verify/?email={email}&activation_key={user.activation_key}',
-                    from_email='signin@myshop.ru',
+                    from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[email],
                 )
                 log_auth_action(user, action='logup')
