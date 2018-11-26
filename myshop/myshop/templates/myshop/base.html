@@ -100,6 +100,9 @@
             {% if user.is_staff %}
             <a class="adminbutton" href="{% url 'myshopadminapp:index' %}">AdminSite</a>
             {% endif %}
+            <a class="basket" href="{% url 'basketapp:basket' %}">
+                В корзине<br> {{basket|length}} товаров<br>{{basket_total|default:''}} {{basket_currency|default_if_none:''}}
+            </a>
         </div>
     </div>
 

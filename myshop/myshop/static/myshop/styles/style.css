@@ -280,6 +280,18 @@
     bottom: -640px;
 }
 
+.basket {
+    font-family: "Raleway Black", sans-serif;
+    font-size: 14px;
+    color: #000000;
+    position: absolute;
+    top: 605px;
+    right: 50px;
+    display: block;
+    width: 90px;
+    height: 30px;
+}
+
 .content {
     background-color: #f8f8f8;
 }
