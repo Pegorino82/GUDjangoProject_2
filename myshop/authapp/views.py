@@ -112,7 +112,7 @@ def logup_view(request):
                 return render(request, success_url, {'email': email})
             except Exception as err:
                 print('*' * 100)
-                print(err)
+                print('logup view->>', err)
                 print('*' * 100)
                 return render(request, template_name, {'form': form})
 
@@ -147,6 +147,6 @@ def verify(request):
             return redirect(success_url)
     except Exception as err:
         print('*' * 100)
-        print(err)
+        print('verify view->>', err)
         print('*' * 100)
         return redirect(success_url)
