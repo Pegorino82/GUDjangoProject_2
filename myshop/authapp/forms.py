@@ -33,7 +33,7 @@ class CustomerModelForm(forms.ModelForm):
     def save(self):
         new_user = super().save(commit=False)
 
-        psw = new_user.password
+        psw = self.cleaned_data.get('password')
         new_user.set_password(psw)
 
         new_user.is_active = False
