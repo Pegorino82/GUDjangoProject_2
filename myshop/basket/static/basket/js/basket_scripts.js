@@ -41,6 +41,51 @@ function updateRequest(updateApiUrl, params) {
     HttpReq.send(null);
 }
 
+//**************************************
+
+const Basket = ({basket_total, basket_len, basket_currency}) =>
+    (
+        `
+        В корзине<br>
+        ${basket_len} товаров<br>
+        ${basket_total} ${basket_currency}
+       `
+    )
+
+
+function renderBasketWidget(listApiUrl) {
+    let basketItems = getJson(listApiUrl).results;
+    console.log(basketItems);
+
+    let basket_total = 0;
+    let basket_len = 0;
+    let basket_currency = null;
+
+    basketItems.forEach(function (item) {
+        let product = getJson(productApiUrl + item.product_id + '/').results;
+        basket_total += item.quantity * product.now_price;
+        basket_len += 1;
+        basket_currency = product.currency;
+    });
+
+    console.log(basket_total, basket_len, basket_currency);
+
+    basketHtml = document.getElementsByClassName('basket__control')[0];
+    basketLinkHtml = document.getElementsByClassName('basket')[0];
+    basketLinkHtml.style.display = 'block';
+    basketHtml.innerHTML = '';
+    basketHtml.innerHTML = Basket(
+        {
+            basket_total: basket_total,
+            basket_len: basket_len,
+            basket_currency: basket_currency,
+        }
+    )
+};
+
+renderBasketWidget(listApiUrl)
+//**************************************
+
 function renderBasketItem(detailApiUrl, id) {
     let currentBasketItem = getJson(detailApiUrl + id).results;
     let productId = currentBasketItem.product_id;
@@ -74,10 +119,12 @@ function renderBasket(apiUrl) {
         product['totalPrice'] = item.quantity * product.now_price;
         getBasket.push(product);
     });
+    console.log('basket-->', getBasket)
     let basketItems = getBasket.map(showBasket).join('');
     let basketHtml = document.getElementById('basket_js');
     basketHtml.innerHTML = '';
     basketHtml.innerHTML += basketItems;
+    renderBasketWidget(apiUrl)
 
 }
 
@@ -96,6 +143,7 @@ function addOne(id) {
     updateRequest(updateApiUrl, params);
     // renderBasketItem(detailApiUrl, id);
     renderBasket(listApiUrl);
+    renderBasketWidget(listApiUrl);
 }
 
 function removeOne(id) {
@@ -111,4 +159,6 @@ function removeOne(id) {
     updateRequest(updateApiUrl, params);
     // renderBasketItem(detailApiUrl, id);
     renderBasket(listApiUrl);
-}
+    renderBasketWidget(listApiUrl);
+};
+
