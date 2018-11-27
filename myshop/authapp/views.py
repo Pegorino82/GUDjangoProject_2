@@ -41,7 +41,7 @@ def login_view(request):
         user = authenticate(username=usr_name, password=psw)
         if user and user.is_active:
             log_auth_action(user, action='login')
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             if 'next' in request.POST.keys():  # TODO
                 return redirect(request.POST['next'])  # TODO
             else:  # TODO
@@ -137,7 +137,7 @@ def verify(request):
             user.is_active = True
             user.save()
             log_auth_action(user, 'logup')
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             log_auth_action(user, action='login')
             return redirect(success_url)
         else:

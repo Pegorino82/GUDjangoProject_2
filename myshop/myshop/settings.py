@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,8 +43,23 @@ INSTALLED_APPS = [
     'customers',
     'myshopadmin',
     'basket',
-    'authapp'
+    'authapp',
+    'social_django',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+# загружаем секреты из файла
+with open('./googleAuthSecret.json', 'r') as f:
+    GOOGLE_PLUS = json.load(f)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_PLUS['client_id']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_PLUS['client_secret']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -86,7 +102,6 @@ EMAIL_PORT = '25'
 EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
 EMAIL_USE_SSL = False
-
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

@@ -37,5 +37,6 @@ urlpatterns = [
     path('images/', include('images.urls')),
     path('basket/', include('basket.urls')),
     path('auth/', include('authapp.urls')),
+    path('auth/oauth2/', include('social_django.urls')),
     path('api/', include(router)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

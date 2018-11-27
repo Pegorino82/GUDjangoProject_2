@@ -83,6 +83,11 @@
             <!--</div>-->
         <!--</div>-->
     </form>
+    <button class="input-group">
+    <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'customersapp:customer' %}">
+     Google+ sign in
+    </a>
+</button>
 </div>
 {% endblock %}
 
