@@ -8,7 +8,7 @@ def basket(request):
 
     if request.user.is_authenticated:
         basket = Basket.objects.filter(user=request.user)
-        basket_total = sum([p.product.now_price for p in basket]) if basket else basket_total
+        basket_total = sum([p.product.now_price * p.quantity for p in basket]) if basket else basket_total
         basket_currency = basket[0].product.currency if basket else basket_currency
 
     return {
