@@ -5,15 +5,15 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.contrib.auth import authenticate, login, logout, get_user
 from django.db.utils import IntegrityError
+from django.db import transaction
 
 from customers.models import Customer
-from customers.forms import CustomerModelForm
+from customers.forms import CustomerModelForm, CustomerProfileModelForm
 
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff, login_url='authapp:login_view')
 @login_required(login_url='customersapp:customer')
 def create_customer(request):
-
     template_name = 'customers/create_customer.html'
     success_url = reverse_lazy('customersapp:list_customer')
     form = CustomerModelForm(request.POST, request.FILES)
@@ -24,7 +24,7 @@ def create_customer(request):
     return render(request, template_name, {'form': form})
 
 
-
+# для редактирования пользователя со стороны админа
 @user_passes_test(lambda user: user.is_superuser or user.is_staff, login_url='authapp:login_view')
 @login_required(login_url='customersapp:customer')
 def update_customer(request, **kwargs):
@@ -63,7 +63,6 @@ def list_customer(request):
     return render(request, template_name, {'results': results})
 
 
-
 @user_passes_test(lambda user: user.is_superuser or user.is_staff, login_url='authapp:login_view')
 @login_required(login_url='customersapp:customer')
 def delete_customer(request, **kwargs):
@@ -80,3 +79,24 @@ def delete_customer(request, **kwargs):
 def login_view(request):
     notification = {}
     return render(request, 'customers/customer.html', notification)
+
+
+# Редактирование профиля пользователя
+@transaction.atomic
+@login_required(login_url='customersapp:customer')
+def edit_profile(request, **kwargs):
+    template_name = 'customers/edit_profile.html'
+    success_url = reverse_lazy('customersapp:customer')
+    pk = kwargs.get('pk')
+    obj = Customer.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        edit_form = CustomerModelForm(request.POST, request.FILES, instance=obj)
+        profile_form = CustomerProfileModelForm(request.POST, instance=request.user.customerprofile)
+        if edit_form.is_valid and profile_form.is_valid:
+            edit_form.save()
+            return redirect(success_url)
+    else:
+        edit_form = CustomerModelForm(instance=obj)
+        profile_form = CustomerProfileModelForm(instance=request.user.customerprofile)
+    return render(request, template_name, {'edit_form': edit_form, 'profile_form': profile_form})

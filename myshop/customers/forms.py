@@ -1,5 +1,5 @@
 from django import forms
-from customers.models import Customer
+from customers.models import Customer, CustomerProfile
 
 
 class CustomerModelForm(forms.ModelForm):
@@ -38,3 +38,13 @@ class CustomerModelForm(forms.ModelForm):
                 }
             ),
         }
+
+class CustomerProfileModelForm(forms.ModelForm):
+    class Meta:
+        model = CustomerProfile
+        fields = ['age', 'aboutMe', 'gender']
+
+    def __init__(self, *args, **kwargs):
+        super(CustomerProfileModelForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
