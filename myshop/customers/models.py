@@ -28,12 +28,13 @@ class Customer(AbstractUser):
     )
     birth_date = models.DateField(
         null=True,
-        blank=True
+        blank=True,
     )
 
     activation_key = models.CharField(
         max_length=128,
-        blank=True
+        blank=True,
+        null=True,
     )
 
     activation_key_expired = models.DateTimeField(
@@ -57,14 +58,31 @@ class Customer(AbstractUser):
 
 
 class CustomerProfile(models.Model):
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDER = ((MALE, 'male'), (FEMALE, 'female'))
+
     customer = models.OneToOneField(
         Customer,
         on_delete=models.CASCADE,
-        null=True
+        null=True,
     )
 
     age = models.PositiveIntegerField(
-        null=True
+        null=True,
+        blank=True,
+    )
+
+    aboutMe = models.TextField(
+        max_length=512,
+        blank=True,
+    )
+
+    gender = models.CharField(
+        max_length=6,
+        choices=GENDER,
+        blank=True,
+        default='NotSet',
     )
 
     @receiver(post_save, sender=Customer)
