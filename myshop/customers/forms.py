@@ -3,19 +3,9 @@ from customers.models import Customer, CustomerProfile
 
 
 class CustomerModelForm(forms.ModelForm):
-    # birth_date = forms.DateField(
-    #     input_formats=['%Y-%m-%d'],
-    #     widget=forms.DateTimeInput(
-    #         attrs={
-    #             'type': 'date',
-    #             'class': 'form-model-date'
-    #         }
-    #     )
-    # )
-
     class Meta:
         model = Customer
-        fields = ['username', 'password', 'birth_date', '_avatar']
+        fields = ['username', 'password', 'birth_date', 'email', '_avatar']
         widgets = {
             'username': forms.widgets.TextInput(
                 attrs={
@@ -30,7 +20,12 @@ class CustomerModelForm(forms.ModelForm):
                     'value': ''
                 }
             ),
-            # TODO сделать автозаполнение данными из модели
+            'email': forms.widgets.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'value': ''
+                }
+            ),
             'birth_date': forms.widgets.DateInput(
                 attrs={
                     'class': 'form-control',
@@ -38,6 +33,7 @@ class CustomerModelForm(forms.ModelForm):
                 }
             ),
         }
+
 
 class CustomerProfileModelForm(forms.ModelForm):
     class Meta:
