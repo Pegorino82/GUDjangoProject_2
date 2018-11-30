@@ -44,7 +44,7 @@
             {% for product in limit_products %}
                 {% if product.category == category %}
                  <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
-                    <a href="{% url 'productsapp:product' category=product.category pk=product.id %}">
+                    <a href="{% url 'productsapp:detail' pk=product.id %}">
                         {% include 'products/components/product.html' with prd=product %}
                     </a>
                  </div>
