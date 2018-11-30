@@ -29,8 +29,6 @@ def log_auth_action(user, action='logup'):
 
 
 def login_view(request):
-    # TODO проверить, есть ли зарегистрированный пользователь
-    # TODO если есть, то сначала сделать отметку в бд о его выходе
     success_url = reverse_lazy('customersapp:customer')
     next = request.GET.get('next') if 'next' in request.GET.keys() else ''  # TODO
     notification = {'next': next}  # TODO
@@ -102,7 +100,7 @@ def logup_view(request):
                 email = user.email
                 send_mail(
                     'Django',
-                    f'for finish registration go: '
+                    f'{user}, for finish registration go: '
                     f'{settings.DOMAIN_NAME}/auth/verify/?email={email}&activation_key={user.activation_key}',
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[email],
