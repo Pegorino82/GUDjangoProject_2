@@ -5,15 +5,11 @@ from django.core.exceptions import ValidationError
 from customers.models import Customer
 
 
-class CustomerModelForm(forms.ModelForm):
-    birth_date = forms.DateField(
-        input_formats=['%Y-%m-%d'],
-        widget=forms.DateTimeInput(
-            attrs={
-                'type': 'date',
-                'class': 'form-model-date'
-            }
-        )
+class CustomerAuthModelForm(forms.ModelForm):
+
+    email = forms.EmailField(
+        max_length=258,
+        required=True
     )
 
     confirm_password = forms.CharField(
@@ -60,11 +56,12 @@ class CustomerModelForm(forms.ModelForm):
                     'value': ''
                 }
             ),
-            # TODO сделать автозаполнение данными из модели
+
             'birth_date': forms.widgets.DateInput(
                 attrs={
                     'class': 'form-control',
-                    'style': 'width: 200px;'
+                    'style': 'width: 200px;',
+                    'placeholder': 'YYYY-MM-DD'
                 }
             ),
         }
