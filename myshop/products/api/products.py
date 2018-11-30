@@ -126,7 +126,9 @@ def rest_product_update(request, **kwargs):
 def rest_product_delete(request, **kwargs):
     pk = kwargs.get('pk')
     obj = get_object_or_404(Product, id=pk)
-    obj.delete()
+    # obj.delete()
+    obj.is_active = False
+    obj.save()
 
     return JsonResponse(
         {
