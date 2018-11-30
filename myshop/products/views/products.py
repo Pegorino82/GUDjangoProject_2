@@ -1,14 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-
 from customers.mixins import AdminGroupRequired
 from products.models import Product, Category
 from products.forms import ProductModelForm
+
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def catalog(request):
@@ -33,10 +34,11 @@ def product(request, category, pk):
         'categories': Category.objects.all()
     }
 
-    return render(request,
-                  'products/product.html',
-                  result
-                  )
+    return render(
+        request,
+        'products/product.html',
+        result
+    )
 
 
 class ModelCreateProduct(LoginRequiredMixin, AdminGroupRequired, CreateView):
@@ -84,8 +86,7 @@ class ModelUpdateProduct(LoginRequiredMixin, AdminGroupRequired, UpdateView):
     redirect_url = reverse_lazy('productsapp:list')
 
 
-class ModelDeleteProduct(LoginRequiredMixin, UserPassesTestMixin, AdminGroupRequired,  DeleteView):
-    # model = Product
+class ModelDeleteProduct(LoginRequiredMixin, UserPassesTestMixin, AdminGroupRequired, DeleteView):
     queryset = Product.objects.filter(is_active=True)
     template_name = 'products/delete.html'
     success_url = reverse_lazy('productsapp:list')
@@ -93,16 +94,19 @@ class ModelDeleteProduct(LoginRequiredMixin, UserPassesTestMixin, AdminGroupRequ
     redirect_url = reverse_lazy('productsapp:list')
 
     def test_func(self):
+        # функция для UserPassesTestMixin
         return self.request.user.is_staff
 
-    def post(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
-        self.obj = self.queryset.get(pk=pk)
-        self.obj.is_active = False
-        self.obj.save()
+        try:
+            self.object = self.queryset.get(pk=pk)
+            self.object.is_active = False
+            self.object.save()
+        except Exception as err:
+            print('exception%' * 20)
+            print(err)
+            print('exception%' * 20)
+            pass
 
-        return super(ModelDeleteProduct, self).post(request, *args, **kwargs)
-
-    # def get(self, request, *args, **kwargs):
-    #
-    #     return super(ModelDeleteProduct, self).post(request)
+        return redirect(self.success_url)
