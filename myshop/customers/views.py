@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout, get_user
 from django.db.utils import IntegrityError
 from django.db import transaction
 
-from customers.models import Customer
+from customers.models import Customer, CustomerProfile
 from customers.forms import CustomerModelForm, CustomerProfileModelForm
 
 
@@ -88,15 +88,19 @@ def edit_profile(request, **kwargs):
     template_name = 'customers/edit_profile.html'
     success_url = reverse_lazy('customersapp:customer')
     pk = kwargs.get('pk')
-    obj = Customer.objects.get(pk=pk)
 
     if request.method == 'POST':
-        edit_form = CustomerModelForm(request.POST, request.FILES, instance=obj)
+        edit_form = CustomerModelForm(request.POST, request.FILES, instance=request.user)
         profile_form = CustomerProfileModelForm(request.POST, instance=request.user.customerprofile)
         if edit_form.is_valid and profile_form.is_valid:
             edit_form.save()
+            profile_form.save()
             return redirect(success_url)
     else:
-        edit_form = CustomerModelForm(instance=obj)
+        edit_form = CustomerModelForm(instance=request.user)
         profile_form = CustomerProfileModelForm(instance=request.user.customerprofile)
-    return render(request, template_name, {'edit_form': edit_form, 'profile_form': profile_form})
+    return render(request, template_name, {
+        'edit_form': edit_form,
+        'profile_form': profile_form,
+        'age': request.user.customerprofile.age
+    })
