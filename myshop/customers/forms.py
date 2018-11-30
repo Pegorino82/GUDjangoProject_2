@@ -3,15 +3,15 @@ from customers.models import Customer, CustomerProfile
 
 
 class CustomerModelForm(forms.ModelForm):
-    birth_date = forms.DateField(
-        input_formats=['%Y-%m-%d'],
-        widget=forms.DateTimeInput(
-            attrs={
-                'type': 'date',
-                'class': 'form-model-date'
-            }
-        )
-    )
+    # birth_date = forms.DateField(
+    #     input_formats=['%Y-%m-%d'],
+    #     widget=forms.DateTimeInput(
+    #         attrs={
+    #             'type': 'date',
+    #             'class': 'form-model-date'
+    #         }
+    #     )
+    # )
 
     class Meta:
         model = Customer
@@ -42,7 +42,7 @@ class CustomerModelForm(forms.ModelForm):
 class CustomerProfileModelForm(forms.ModelForm):
     class Meta:
         model = CustomerProfile
-        fields = ['age', 'aboutMe', 'gender']
+        fields = ['aboutMe', 'gender']
 
     def __init__(self, *args, **kwargs):
         super(CustomerProfileModelForm, self).__init__(*args, **kwargs)
