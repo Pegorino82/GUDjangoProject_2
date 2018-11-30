@@ -7,7 +7,7 @@ import datetime
 
 from authapp.models import AuthApp
 from customers.models import Customer
-from authapp.forms import CustomerModelForm
+from authapp.forms import CustomerAuthModelForm
 
 
 def log_auth_action(user, action='logup'):
@@ -54,36 +54,6 @@ def login_view(request):
     return render(request, 'authapp/login.html', notification)
 
 
-# def logup_view(request):
-#     '''
-#     регистрация пользователя с последующим входом в систему
-#     без отправки и проверки кода активации
-#     :param request:
-#     :return:
-#     '''
-#     success_url = reverse_lazy('customersapp:customer')
-#     template_name = 'authapp/logup.html'
-#     form = CustomerModelForm(request.POST, request.FILES)
-#     if request.method == 'POST':
-#         if form.is_valid:
-#             try:
-#                 form.save()
-#                 user = authenticate(
-#                     username=request.POST.get('username'),
-#                     password=request.POST.get('password')
-#                 )
-#                 log_auth_action(user, action='logup')
-#                 login_view(request)
-#                 return redirect(success_url)
-#             except Exception as err:
-#                 print('*'*100)
-#                 print(err)
-#                 print('*'*100)
-#                 return render(request, template_name, {'form': form, 'error': 'Choose another username!'})
-#
-#     return render(request, template_name, {'form': form})
-
-
 def logup_view(request):
     '''
     регистрация пользователя с отправкой кода активации
@@ -92,7 +62,7 @@ def logup_view(request):
     '''
     success_url = 'authapp/activation_key_sent.html'
     template_name = 'authapp/logup.html'
-    form = CustomerModelForm(request.POST, request.FILES)
+    form = CustomerAuthModelForm(request.POST, request.FILES)
     if request.method == 'POST':
         if form.is_valid:
             try:
@@ -105,8 +75,8 @@ def logup_view(request):
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[email],
                 )
-                log_auth_action(user, action='logup')
-                login_view(request)
+                # log_auth_action(user, action='logup')
+                # login_view(request)
                 return render(request, success_url, {'email': email})
             except Exception as err:
                 print('*' * 100)
@@ -129,6 +99,11 @@ def verify(request):
     success_url = reverse_lazy('customersapp:customer')
     email = request.GET.get('email')
     activation_key = request.GET.get('activation_key')
+
+    if request.user.is_authenticated:
+        log_auth_action(request.user, action='logout')
+        logout(request)
+
     try:
         user = Customer.objects.get(email=email, is_active=False)
         if user.activation_key == activation_key:
