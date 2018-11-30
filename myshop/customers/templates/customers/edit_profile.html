@@ -60,6 +60,17 @@
             </div>
             {% endfor %}
 
+            <br>
+            <div class="input-group">
+                <div class="input-group main-page">
+                    <label class="input-group-addon form-model-label">
+                        Age
+                    </label>
+                        {{ age|default_if_none:'Not set' }}
+                </div>
+            </div>
+            <br>
+
             {% for field in profile_form %}
             <div class="input-group">
                 <div class="input-group main-page">
