@@ -15,6 +15,7 @@ app_name = 'productsapp'
 urlpatterns = [
     path('catalog/', catalog, name='catalog'),
     path('product/<str:category>/<int:pk>/', product, name='product'),
+
     path('create/', ModelCreateProduct.as_view(), name='create'),
     path('list/', ModelListProduct.as_view(), name='list'),
     path('detail/<int:pk>/', ModelDetailProduct.as_view(), name='detail'),
