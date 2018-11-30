@@ -4,14 +4,23 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 from basket.models import Basket
 from products.models import Product
+
+
+class ModelBasketList(LoginRequiredMixin, ListView):
+    model = Basket
+    template_name = 'basket/basket.html'
+    succes_url = 'basketapp:list'
+    login_url = 'authapp:login_view'
 
 
 @login_required(login_url='/auth/login/')
 def basket(request):
     template_name = 'basket/basket.html'
-    # basket = Basket.objects.filter(user=request.user)
     return render(request, template_name, {'basket': basket})
 
 
@@ -19,7 +28,6 @@ def basket(request):
 def add_product(request, **kwargs):
     pk = kwargs.get('pk')
     prod = Product.objects.get(pk=pk)
-
     old_basket = Basket.objects.filter(product=prod, user=request.user)
     if old_basket:
         old_basket[0].quantity += 1
