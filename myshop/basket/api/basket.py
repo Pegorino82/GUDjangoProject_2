@@ -14,7 +14,6 @@ def rest_basket_list(request):
         data = [obj.__dict__ for obj in obj_list]
         for i in data:
             i.pop('_state')
-        data = list()
 
         return JsonResponse(
             {
