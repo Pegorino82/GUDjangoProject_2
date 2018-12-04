@@ -19,24 +19,34 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-router = [
+from rest_framework.routers import DefaultRouter
+
+from products.api.products import ProductViewSet
+
+router = DefaultRouter()
+router.register('products', ProductViewSet)
+
+default_router = [
     path('categories/', include('products.endpoints.categories')),
     path('products/', include('products.endpoints.products')),
     path('basket/', include('basket.endpoints.basket')),
 ]
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('myshopadmin/', include('myshopadmin.urls')),
-    path('authors/', include('main.urls.authors')),
-    path('articles/', include('main.urls.articles')),
-    path('contacts/', include('contacts.urls')),
-    path('products/', include('products.urls.products')),
-    path('categories/', include('products.urls.categories')),
-    path('customer/', include('customers.urls')),
-    path('images/', include('images.urls')),
-    path('basket/', include('basket.urls')),
-    path('auth/', include('authapp.urls')),
-    path('auth/oauth2/', include('social_django.urls')),
-    path('api/', include(router)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path('admin/', admin.site.urls),
+                  path('myshopadmin/', include('myshopadmin.urls')),
+                  path('authors/', include('main.urls.authors')),
+                  path('articles/', include('main.urls.articles')),
+                  path('contacts/', include('contacts.urls')),
+                  path('products/', include('products.urls.products')),
+                  path('categories/', include('products.urls.categories')),
+                  path('customer/', include('customers.urls')),
+                  path('images/', include('images.urls')),
+                  path('basket/', include('basket.urls')),
+                  path('auth/', include('authapp.urls')),
+                  path('auth/oauth2/', include('social_django.urls')),
+                  path('api/', include(default_router)),
+                  path('framework_api/', include(router.urls)),
+                  # логин и выход из REST
+                  path('framework_api_auth/', include('rest_framework.urls', namespace='rest_framework')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
