@@ -3,9 +3,16 @@ from django.shortcuts import reverse, render, redirect, get_object_or_404, get_l
 from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator
 
+from rest_framework.viewsets import ModelViewSet
+
+from products.serializers import ProductSerializer
 from products.models import Product, ProductMarker, Category
 from images.models import Image
 
+
+class ProductViewSet(ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 # ?name=Api_product&short_text=short_text&long_text=long_text&now_price=1000&old_price=5000&product_marker=1&category=32&image=3
 
