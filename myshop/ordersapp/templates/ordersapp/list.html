@@ -1,0 +1,71 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% load utility %}
+
+{% block page_title %}
+List
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'ordersapp/styles/order.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+<script src="{% static 'products/js/categories.js' %}"></script>
+{% endblock %}
+
+{% block small_menu_items %}
+<!--<ul class="submenu">-->
+<!--</ul>-->
+{% endblock %}
+
+{% block large_menu_items %}
+<!--<ul class="submenu" id="js">-->
+<!--</ul>-->
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ user }} / orders<!-- получить заказ для заголовка -->
+    </div>
+</div>
+
+
+<div class="row products_table">
+    <ul>
+    {% for order in object_list %}
+        <li>
+            <div class="product-line">
+                <div class="product-info name">
+                    {{ order }}
+                </div>
+                <div class="product-info name">
+                    {{ order.get_status_display }}
+                </div>
+            </div>
+            <ul>
+            {% for item in order.items.all %}
+                <li>
+                    <div class="product-info name">
+                        <a href="{% url 'productsapp:detail' pk=item.product.id %}">{{ item }}</a>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+
+{% block js_bottom %}
+{% endblock %}
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}
