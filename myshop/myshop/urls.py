@@ -44,6 +44,7 @@ urlpatterns = [
                   path('images/', include('images.urls')),
                   path('basket/', include('basket.urls')),
                   path('auth/', include('authapp.urls')),
+                  path('orders/', include('ordersapp.urls')),
                   path('auth/oauth2/', include('social_django.urls')),
                   path('api/', include(default_router)),
                   path('framework_api/', include(router.urls)),

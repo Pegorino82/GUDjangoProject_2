@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'myshopadmin',
     'basket',
     'authapp',
+    'ordersapp',
     'social_django',
     'rest_framework',
 ]
