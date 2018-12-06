@@ -28,11 +28,13 @@ Basket
 
 {% block right_content %}
 <div class="main_section_header">
-    {{ basket.0.user }}
+    {{ basket }}
 </div>
 
 <div id="basket_js">
 </div>
+
+<a class="gonowbutton" href="{% url 'ordersapp:create' %}">Create order</a>
 {% endblock %}
 
 {% block js_bottom %}
