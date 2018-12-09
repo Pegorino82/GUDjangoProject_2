@@ -1,0 +1,58 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+Delete Order
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'ordersapp/styles/order.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+<ul class="submenu">
+</ul>
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+<ul class="submenu">
+</ul>
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ user }} / delete order: {{ order.id }}
+    </div>
+
+    {{ order }}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for err in form.not_field_errors %}
+        <span>
+            {{ err }}
+        </span>
+        {% endfor %}
+        <div class="input-group">
+            <input type="submit" value="SUBMIT">
+        </div>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block bootstrap_js %}
+<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+{% endblock %}

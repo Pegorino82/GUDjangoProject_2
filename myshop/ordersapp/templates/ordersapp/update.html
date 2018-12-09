@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-Create
+Update Order
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -32,7 +32,7 @@ Create
 {% block right_content %}
 <div class="main_section">
     <div class="main_section_header">
-        create order
+        {{ user }} / update order: {{ order.id }}
     </div>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
