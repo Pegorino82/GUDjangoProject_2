@@ -5,7 +5,7 @@
 {% load utility %}
 
 {% block page_title %}
-List Order
+Detail Order
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -30,35 +30,30 @@ List Order
 {% block right_content %}
 <div class="main_section">
     <div class="main_section_header">
-        {{ user }} / orders list<!-- получить заказ для заголовка -->
+        {{ user }} / detail order: {{ order.id }}
     </div>
 </div>
 
 
 <div class="row products_table">
+    <div class="product-line">
+        <div class="product-info name">
+            {{ order }}
+        </div>
+        <div class="product-info name">
+            {{ order.get_status_display }}
+        </div>
+    </div>
     <ul>
-    {% for order in object_list %}
+        {% for item in order.items.all %}
         <li>
-            <div class="product-line">
-                <div class="product-info name">
-                    <a href="{% url 'ordersapp:detail' pk=order.id %}">{{ order }}</a>
-                </div>
-                <div class="product-info name">
-                    {{ order.get_status_display }}
-                </div>
+            <div class="product-info name">
+                <a href="{% url 'productsapp:detail' pk=item.product.id %}">{{ item }}</a>
+            {{ item.quantity }}
             </div>
-            <ol>
-            {% for item in order.items.all %}
-                <li>
-                    <div class="product-info name">
-                        <a href="{% url 'productsapp:detail' pk=item.product.id %}">{{ item }}</a>
-                        {{ item.quantity }}
-                    </div>
-                </li>
-            {% endfor %}
-            </ol>
+
         </li>
-    {% endfor %}
+        {% endfor %}
     </ul>
 </div>
 
