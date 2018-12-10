@@ -14,6 +14,7 @@ class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+
 # ?name=Api_product&short_text=short_text&long_text=long_text&now_price=1000&old_price=5000&product_marker=1&category=32&image=3
 
 def rest_product_create(request):
@@ -100,7 +101,7 @@ def rest_product_detail(request, **kwargs):
         'currency': obj.currency,
         'product_marker': obj.product_marker.corner,
         'category': obj.category.name,
-        'image': obj.image.img.url
+        'image': obj.image.img.url,
     }
 
     return JsonResponse(
@@ -140,5 +141,31 @@ def rest_product_delete(request, **kwargs):
     return JsonResponse(
         {
             'results': 'OK'
+        }
+    )
+
+
+def rest_basket_json(request, **kwargs):
+    queryset = []
+    if 'id_in' in request.GET:
+        prods = list(map(int, request.GET['id_in'].split(',')))
+        for id_ in prods:
+            try:
+                # obj = get_object_or_404(Product, id=id_)
+                obj = Product.objects.get(id=id_)
+                data = {
+                    'id': obj.id,
+                    'name': obj.name,
+                    'now_price': obj.now_price,
+                    'currency': obj.currency,
+                    'product_marker': obj.product_marker.corner,
+                    'category': obj.category.name,
+                }
+            except Exception as err:
+                data = {'error': err}
+            queryset.append(data)
+    return JsonResponse(
+        {
+            'results': queryset
         }
     )
