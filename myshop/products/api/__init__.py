@@ -9,4 +9,5 @@ from .products import (
     rest_product_create,
     rest_product_update,
     rest_product_delete,
+    rest_basket_json,
 )
