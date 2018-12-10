@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-   Detail
+Detail
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -12,6 +12,7 @@
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'products/styles/forms.css' %}">
 <link rel="stylesheet" href="{% static 'products/styles/product.css' %}">
+<script src="{% static 'myshop/js/storage.js' %}"></script>
 {% endblock %}
 
 {% block small_menu_items %}
@@ -38,30 +39,51 @@
 
 {% block right_content %}
 <div class="category_products">
-
     <div class="products_header">
         {{ product.name }} /
         <a href="{% url 'categoriesapp:category' category=product.category %}">{{ product.category }}</a>
     </div>
-
     <div class="row products_table">
-
-         <div class="col-md-6 col-sm-6 col-xs-12 product_cell">
-             {% include 'products/components/product.html' with prd=product %}
+        <div class="col-md-6 col-sm-6 col-xs-12 product_cell">
+            {% include 'products/components/product.html' with prd=product %}
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 product_cell">
-             <div class="product_describe">
-                 {{ product.long_text }}
-             </div>
-            <a class="link-add-to-basket" href="{% url 'basketapp:add_product' pk=product.id %}">Add to basket</a>
+            <div class="product_describe">
+                {{ product.long_text }}
+            </div>
+            <!--кнопка для добавления товара в корзину на сервере (в БД)-->
+            <!--<a class="link-add-to-basket" href="{% url 'basketapp:add_product' pk=product.id %}">Add to basket</a>-->
+            <!--добавляем в localStorage если нет и инкрементируем-->
+            <button id="addButton" product_id="{{ product.id }}" class="link-add-to-basket">To local storage</button>
+            <!--<button id="incButton" product_id="{{ product.id }}" class="link-add-to-basket">+ local storage</button>-->
+            <button id="decButton" product_id="{{ product.id }}" class="link-add-to-basket">- local storage</button>
             {% if user.is_staff %}
-                <a class="link-add-to-basket" href="{% url 'productsapp:update' pk=product.id %}">Update</a>
-                <a class="link-add-to-basket" href="{% url 'productsapp:delete' pk=product.id %}">Delete</a>
+            <a class="link-add-to-basket" href="{% url 'productsapp:update' pk=product.id %}">Update</a>
+            <a class="link-add-to-basket" href="{% url 'productsapp:delete' pk=product.id %}">Delete</a>
             {% endif %}
         </div>
-
     </div>
 </div>
+{% endblock %}
+
+{% block js_bottom %}
+<script>
+    const btnAdd = document.getElementById('addButton');
+    btnAdd.addEventListener("click", evt => {
+        incProduct(
+            'basket',
+            btnAdd.getAttribute('product_id'),
+        )
+    });
+
+    const btnDec = document.getElementById('decButton');
+    btnDec.addEventListener("click", evt => {
+        decProduct(
+            'basket',
+            btnDec.getAttribute('product_id'),
+        )
+    });
+</script>
 {% endblock %}
 
 {% block bootstrap_js %}
