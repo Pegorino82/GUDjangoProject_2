@@ -54,7 +54,7 @@ Detail
             <!--кнопка для добавления товара в корзину на сервере (в БД)-->
             <!--<a class="link-add-to-basket" href="{% url 'basketapp:add_product' pk=product.id %}">Add to basket</a>-->
             <!--добавляем в localStorage если нет и инкрементируем-->
-            <button id="addButton" product_id="{{ product.id }}" class="link-add-to-basket">To local storage</button>
+            <button id="addButton" product_id="{{ product.id }}" class="link-add-to-basket">Add to local storage</button>
             <!--<button id="incButton" product_id="{{ product.id }}" class="link-add-to-basket">+ local storage</button>-->
             <button id="decButton" product_id="{{ product.id }}" class="link-add-to-basket">- local storage</button>
             {% if user.is_staff %}
