@@ -64,7 +64,7 @@ function renderBasketWidget(listApiUrl) {
     basketItems.forEach(function (item) {
         let product = getJson(productApiUrl + item.product_id + '/').results;
         basket_total += item.quantity * product.now_price;
-        basket_len += 1;
+        basket_len += item.quantity;
         basket_currency = product.currency;
     });
 
