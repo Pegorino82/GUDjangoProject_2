@@ -37,7 +37,6 @@ Basket
 </div>
 
 <div id="show_order_create_button">
-
 </div>
 {% endblock %}
 
@@ -59,7 +58,6 @@ Basket
     );
     //
 </script>
-
 <script>
     // скрипт для получения объектов продуктов на основании LocalStorage
     let productItems = document.getElementById('basket_js');
@@ -115,6 +113,7 @@ Basket
                     }
                 );
 
+            // отправляем запрос на создание заказа
             let showCreateButton = document.getElementById('show_order_create_button');
             showCreateButton.innerHTML = '';
             showCreateButton.innerHTML = `<button id="order_create_button">Submit</button>`;
@@ -142,39 +141,12 @@ Basket
             )
 
         } else {
-            // console.log('корзина пуста');
             productItems.innerHTML = `<span>Корзина пуста</span>`
         }
     }
 
     renderer();
 </script>
-
-<!--<script>-->
-    <!--// отправляем запрос на создание заказа-->
-    <!--let createOrderUrl = '{% url "rest_ordersapp:rest_create_order" %}';-->
-    <!--let createOrderButton = document.getElementById('order_create_button');-->
-    <!--const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');-->
-
-    <!--createOrderButton.addEventListener(-->
-        <!--'click', evt => {-->
-            <!--console.log('pressed');-->
-            <!--fetch(createOrderUrl,-->
-                <!--{-->
-                    <!--method: 'POST',-->
-                    <!--headers: {-->
-                        <!--'X-CSRFToken': tokenInput.value,-->
-                    <!--},-->
-                    <!--body: localStorage.getItem('basket')-->
-                <!--},-->
-            <!--)-->
-                <!--.then(request => request.json())-->
-                <!--.then(data => location.replace(data.success_url))-->
-                <!--.then(storage => localStorage.clear())-->
-        <!--}-->
-    <!--)-->
-
-<!--</script>-->
 {% endblock %}
 
 {% block bootstrap_js %}
