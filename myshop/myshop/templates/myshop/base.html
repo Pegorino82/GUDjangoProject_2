@@ -18,6 +18,7 @@
     {% endblock %}
     <link rel="stylesheet" href="{% static 'myshop/styles/style.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <!--<script src="{% static 'myshop/js/storage.js' %}"></script>-->
     {% block style_css %}
     {% endblock %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
@@ -60,7 +61,8 @@
                         {% block small_menu_items %}
                         {% endblock %}
                         <li><a class="menu_item" href="{% url 'contactsapp:contacts' %}">Contacts</a></li>
-                        <li><a class="menu_item" href="{% url 'basketapp:basket' %}">Basket</a></li>
+                        <!--<li><a class="menu_item" href="{% url 'basketapp:basket' %}">Basket</a></li>-->
+                        <li><a class="menu_item" href="{% url 'ordersapp:storage' %}">Basket</a></li>
                         {% block small_menu_mainpage %}
                         {% endblock %}
 
@@ -129,7 +131,8 @@
                         {% endblock %}
                     </li>
                     <li><a class="menu_item" href="{% url 'contactsapp:contacts' %}">Contacts</a></li>
-                    <li><a class="menu_item" href="{% url 'basketapp:basket' %}">Basket</a></li>
+                    <!--<li><a class="menu_item" href="{% url 'basketapp:basket' %}">Basket</a></li>-->
+                    <li><a class="menu_item" href="{% url 'ordersapp:storage' %}">Basket</a></li>
                     {% block large_menu_mainpage %}
                     {% endblock %}
                 </ul>
@@ -195,9 +198,12 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="{% static 'basket/js/basket_scripts.js' %}"></script>
+<!--<script src="{% static 'basket/js/basket_scripts.js' %}"></script>-->
 {% block js_bottom %}
-
+<script>
+    // let productItems = document.getElementById('basket_js');
+    // let localItems = getFromStorage('basket');
+</script>
 {% endblock %}
 
 {% block bootstrap_js %}

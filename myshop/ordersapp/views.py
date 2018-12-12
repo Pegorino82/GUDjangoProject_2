@@ -152,3 +152,11 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'order'
     template_name = 'ordersapp/delete.html'
     success_url = reverse_lazy('ordersapp:list')
+
+
+# отображение корзины на базе хранилища
+def storage(request, *args, **kwargs):
+    template_name = 'ordersapp/storage.html'
+    context = {}
+
+    return render(request, template_name, context)

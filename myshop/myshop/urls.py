@@ -30,6 +30,7 @@ default_router = [
     path('categories/', include('products.endpoints.categories')),
     path('products/', include('products.endpoints.products')),
     path('basket/', include('basket.endpoints.basket')),
+    path('orders/', include('ordersapp.endpoints.orders')),
 ]
 
 urlpatterns = [

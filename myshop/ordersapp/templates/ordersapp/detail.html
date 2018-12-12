@@ -55,6 +55,14 @@ Detail Order
         </li>
         {% endfor %}
     </ul>
+    <div>
+        <span>всего товаров:  </span>
+        <span>{{order.get_total_quantity}}  </span>
+    </div>
+    <div>
+        <span>общая стоимость:  </span>
+        <span>{{order.get_order_price}}  </span>
+    </div>
 </div>
 
 

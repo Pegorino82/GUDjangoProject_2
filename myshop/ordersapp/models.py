@@ -48,6 +48,12 @@ class Order(models.Model):
         items = self.items.select_related()
         return len(items)
 
+    def get_order_price(self):
+        total = 0
+        for item in self.items.all():
+            total += item.product.now_price * item.quantity
+        return total
+
     def delete(self):
         self.is_active = False
 
