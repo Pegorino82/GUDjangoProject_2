@@ -68,7 +68,6 @@ class Product(models.Model):
         max_length=50,
         default='₽'
     )
-
     product_marker = models.ForeignKey(
         'products.ProductMarker',
         on_delete=models.PROTECT,
@@ -91,6 +90,8 @@ class Product(models.Model):
         default=True
     )
 
+    quantity = models.PositiveIntegerField()  # количество на складе
+
     def __str__(self):
         return self.name
 
@@ -101,5 +102,4 @@ class Product(models.Model):
         for cat in categories:
             for prod in cls.objects.filter(category=cat.id, is_active=True)[:limit]:
                 res.append(prod)
-
         return res
