@@ -1,15 +1,16 @@
 from django import forms
 from ordersapp.models import Order, OrderItem
 
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        exclude = ('user', )
+        exclude = ('user',)
 
-    # def __init__(self, *args, **kwargs):
-    #     super(OrderForm, self).__init__(args, kwargs)
-    #     for name, value in self.fields.items():
-    #         value.widget.attrs['class'] = 'form-control'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
 
 
 class OrderItemForm(forms.ModelForm):
@@ -17,7 +18,7 @@ class OrderItemForm(forms.ModelForm):
         model = OrderItem
         exclude = ()
 
-    # def __init__(self, *args, **kwargs):
-    #     super(OrderItemForm, self).__init__(args, kwargs)
-    #     for name, value in self.fields.items():
-    #         value.widget.attrs['class'] = 'form-control'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
