@@ -20,7 +20,6 @@ class OrderCreateView(LoginRequiredMixin, View):
 
     def post(self, request):
         data = json.loads(request.body)
-        products_ids = data.keys()
         products_list = self.product_model.objects.filter(
             reduce(
                 lambda q_obj, product_id: q_obj | Q(pk=product_id),
@@ -28,7 +27,6 @@ class OrderCreateView(LoginRequiredMixin, View):
                 Q()
             )
         )
-
 
         order = Order.objects.create(user=request.user)
         for product in products_list:
