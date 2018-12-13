@@ -41,7 +41,7 @@ class Order(models.Model):
     def get_total_quantity(self):
         # общее количество товаров
         items = self.items.select_related()
-        return sum(list(map(lambda x: x.quantity, items)))
+        return sum(list(map(lambda item: item.quantity, items)))
 
     def get_product_type_quantity(self):
         # количество уникальных товаров
@@ -49,13 +49,20 @@ class Order(models.Model):
         return len(items)
 
     def get_order_price(self):
-        total = 0
-        for item in self.items.all():
-            total += item.product.now_price * item.quantity
-        return total
+        # стоимость всего заказа
+        items = self.items.select_related()
+        return sum(list(map(lambda item: item.get_order_item_price, items)))
 
     def delete(self):
+        print('*' * 20)
+        print('delete', self)
+        print('*' * 20)
+        # удаляем заказ, при этом добавляем количество товаров из заказа на склад
+        for item in self.items.select_related():
+            item.product.quantity += item.quantity
+            item.product.save()
         self.is_active = False
+        self.save()
 
     def __str__(self):
         full_name = self.user.get_full_name()
@@ -63,7 +70,17 @@ class Order(models.Model):
         return f'{username}, order: {self.id}, created: {self.created.strftime("%Y-%m-%d %H:%M")}'
 
 
+class OrderItemQueryset(models.QuerySet):
+
+    def delete(self, *args, **kwargs):
+        for object in self:
+            object.product.quantity += object.quantity
+            object.product.save()
+        super(OrderItemQueryset, self).delete(*args, **kwargs)
+
+
 class OrderItem(models.Model):
+    objects = OrderItemQueryset.as_manager()
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
@@ -77,9 +94,16 @@ class OrderItem(models.Model):
 
     quantity = models.PositiveIntegerField()
 
+    @property
     def get_order_item_price(self):
         # стоимость позиции
         return self.product.now_price * self.quantity
+
+    def delete(self, using=None, keep_parents=False):
+        # при удалении товара его количество возвращается на склад
+        self.product.quantity += self.quantity
+        self.product.save()
+        super(self.__class__, self).delete()
 
     def __str__(self):
         return self.product.name
