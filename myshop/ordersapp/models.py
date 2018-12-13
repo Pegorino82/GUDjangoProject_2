@@ -61,6 +61,13 @@ class Order(models.Model):
         self.is_active = False
         self.save()
 
+    # def save(self, *args, **kwargs):
+    #     # проверяем, что мы редактируем уже существующий заказ
+    #     if self.pk:
+    #         self.product.quantity -= self.quantity - self.__class__.objects.get(id=self.pk)
+    #     else:
+    #         self.product.quantity -= self.quantity
+
     def __str__(self):
         full_name = self.user.get_full_name()
         username = full_name if full_name else self.user.username
@@ -101,6 +108,15 @@ class OrderItem(models.Model):
         self.product.quantity += self.quantity
         self.product.save()
         super(self.__class__, self).delete()
+
+    def save(self, *args, **kwargs):
+        # проверяем, что мы редактируем уже существующий заказ
+        if self.pk:
+            self.product.quantity -= self.quantity - self.__class__.objects.get(id=self.pk)
+        else:
+            self.product.quantity -= self.quantity
+        self.product.save()
+        super(self.__class__, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.product.name
