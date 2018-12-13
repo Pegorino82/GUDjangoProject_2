@@ -35,7 +35,7 @@ class Order(models.Model):
         default=FORMING
     )
     is_active = models.BooleanField(
-        default=False
+        default=True
     )
 
     def get_total_quantity(self):
@@ -54,9 +54,6 @@ class Order(models.Model):
         return sum(list(map(lambda item: item.get_order_item_price, items)))
 
     def delete(self):
-        print('*' * 20)
-        print('delete', self)
-        print('*' * 20)
         # удаляем заказ, при этом добавляем количество товаров из заказа на склад
         for item in self.items.select_related():
             item.product.quantity += item.quantity
