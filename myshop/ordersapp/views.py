@@ -161,7 +161,7 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'ordersapp/delete.html'
     success_url = reverse_lazy('ordersapp:list')
 
-    
+
 # отображение корзины на базе хранилища (localStorage)
 # логика отображения на js
 def storage(request, *args, **kwargs):
