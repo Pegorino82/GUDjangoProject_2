@@ -6,7 +6,6 @@ from django.forms import inlineformset_factory
 from django.db import transaction
 
 from ordersapp.models import Order, OrderItem
-from basket.models import Basket
 
 from ordersapp.forms import OrderForm, OrderItemForm
 
@@ -22,6 +21,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('ordersapp:list')
 
     def get_formset_class(self):
+        # создаем формсет класс с помощью фабрики
         formset_class = inlineformset_factory(
             parent_model=self.model,
             model=self.formset_model,
@@ -30,6 +30,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         return formset_class
 
     def get_formset_kwargs(self):
+        # передаем именованные значения в формсет, в т.ч. файлы
         kwargs = {}
         if self.request.method in ('POST', 'PUT'):
             kwargs.update({
@@ -43,12 +44,14 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def get_formset(self):
+        # создаем формсет на основе формсет класса
         formset_class = self.get_formset_class()
         formset_kwargs = self.get_formset_kwargs()
         formset = formset_class(**formset_kwargs)
         return formset
 
     def get_context_data(self, **kwargs):
+        # передаем в контекс форму и формсет
         context = super(OrderCreateView, self).get_context_data(**kwargs)
         context.update(
             {
@@ -59,6 +62,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def get_form(self, form_class=None):
+        # первоначально инициализируем форму пользователем
         """Return an instance of the form to be used in this view."""
         if form_class is None:
             form_class = self.get_form_class()
@@ -82,6 +86,7 @@ class OrderListView(LoginRequiredMixin, ListView):
     template_name = 'ordersapp/list.html'
 
     def get_queryset(self):
+        # показываем поьзователю только его заказы
         return Order.objects.filter(user=self.request.user)
 
 
@@ -103,6 +108,7 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('ordersapp:list')
 
     def get_formset_class(self):
+        # создаем формсет класс с помощью фабрики
         formset_class = inlineformset_factory(
             parent_model=self.model,
             model=self.formset_model,
@@ -112,6 +118,7 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
         return formset_class
 
     def get_formset(self):
+        # создаем формсет с иницализацией текущей моделью
         formset_class = self.get_formset_class()
         if self.request.method == 'POST':
             formset = formset_class(
@@ -124,6 +131,7 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
         return formset
 
     def get_context_data(self, **kwargs):
+        # передаем в контекс форму и формсет
         context = super().get_context_data(**kwargs)
         form = self.get_form()
         formset = self.get_formset()
@@ -153,10 +161,10 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'ordersapp/delete.html'
     success_url = reverse_lazy('ordersapp:list')
 
-
-# отображение корзины на базе хранилища
+    
+# отображение корзины на базе хранилища (localStorage)
+# логика отображения на js
 def storage(request, *args, **kwargs):
     template_name = 'ordersapp/storage.html'
     context = {}
-
     return render(request, template_name, context)
