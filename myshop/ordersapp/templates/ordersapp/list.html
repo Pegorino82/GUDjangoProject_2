@@ -38,6 +38,7 @@ List Order
 <div class="row products_table">
     <ul>
     {% for order in object_list %}
+        {% if order.is_active %}
         <li>
             <div class="product-line">
                 <div class="product-info name">
@@ -58,6 +59,7 @@ List Order
             {% endfor %}
             </ol>
         </li>
+        {% endif %}
     {% endfor %}
     </ul>
 </div>
