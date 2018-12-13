@@ -64,7 +64,7 @@ class Order(models.Model):
     # def save(self, *args, **kwargs):
     #     # проверяем, что мы редактируем уже существующий заказ
     #     if self.pk:
-    #         self.product.quantity -= self.quantity - self.__class__.objects.get(id=self.pk)
+    #         self.product.quantity -= self.quantity - self.__class__.objects.get(id=self.pk).quantity
     #     else:
     #         self.product.quantity -= self.quantity
 
@@ -112,7 +112,7 @@ class OrderItem(models.Model):
     def save(self, *args, **kwargs):
         # проверяем, что мы редактируем уже существующий заказ
         if self.pk:
-            self.product.quantity -= self.quantity - self.__class__.objects.get(id=self.pk)
+            self.product.quantity -= self.quantity - self.__class__.objects.get(id=self.pk).quantity
         else:
             self.product.quantity -= self.quantity
         self.product.save()
