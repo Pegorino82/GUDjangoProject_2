@@ -13,12 +13,13 @@
     </title>
 
     <!-- Bootstrap -->
-    <link href="{% static 'myshop/packages/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'myshop/packages/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">irements.txt
     {% block bootstrap_css %}
     {% endblock %}
     <link rel="stylesheet" href="{% static 'myshop/styles/style.css' %}">
+    <link rel="stylesheet" href="{% static 'myshop/styles/localstorage_basket_widget.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-    <!--<script src="{% static 'myshop/js/storage.js' %}"></script>-->
+    <script src="{% static 'myshop/js/storage.js' %}"></script>
     {% block style_css %}
     {% endblock %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
@@ -105,6 +106,8 @@
         {% if user.is_staff %}
         <a class="adminbutton" href="{% url 'myshopadminapp:index' %}">AdminSite</a>
         {% endif %}
+        <!--ссылка на корзину на сервере. в настоящий момент в формировании заказа не участвует.-->
+        <!--не заполняется-->
         <a class="basket" href="{% url 'basketapp:basket' %}">
             <div class="basket__control">
 
@@ -112,6 +115,23 @@
         </a>
     </div>
 </div>
+
+<script>
+    let basket = localStorage.getItem('basket');
+    let basketIdsList = Object.keys(basket);
+    const urls = `{% url 'rest_products:rest_basket' %}?id_in=${basketIdsList.join(',')}`;
+    $.ajax({url:urls})
+        .done(
+            response => {
+                response.results.map(
+                    itm => $('.basket__control').append(
+                        itm
+                    )
+                )
+            }
+        )
+
+</script>
 
 <div class="container content">
     <div class="row">

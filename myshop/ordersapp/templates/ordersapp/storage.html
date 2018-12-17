@@ -12,7 +12,7 @@ Basket
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'basket/styles/basket.css' %}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-<script src="{% static 'myshop/js/storage.js' %}"></script>
+<!--<script src="{% static 'myshop/js/storage.js' %}"></script>-->
 {% endblock %}
 
 {% block small_menu_items %}
@@ -56,7 +56,7 @@ Basket
         <button class="decButton" product_id="${id}" class="link-add-to-basket">- local storage</button>
         `
     );
-    //
+
 </script>
 <script>
     // скрипт для получения объектов продуктов на основании LocalStorage
@@ -136,7 +136,8 @@ Basket
                     )
                         .then(request => request.json())
                         .then(data => location.replace(data.success_url))
-                        .then(storage => localStorage.clear())
+                    // .then(storage => localStorage.clear()) // TODO определиться, когда удалять корзину - при создании заказа или при присвоении ему опеделенного статуса
+
                 }
             )
 
