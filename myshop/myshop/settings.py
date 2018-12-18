@@ -25,7 +25,7 @@ SECRET_KEY = 'db+wxw4oi9c3vn78!__!qfxijw6&e$1_2g8!lj9h2usidfl-4$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 # Application definition
 
@@ -108,7 +108,8 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 # Email settings
 
 DOMAIN_NAME = '127.0.0.1:8000'
-EMAIL_HOST = 'localhost'
+# EMAIL_HOST = 'localhost'
+EMAIL_HOST = 'smtp'  # Для docker контейнера
 EMAIL_PORT = '25'
 EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
@@ -118,9 +119,18 @@ EMAIL_USE_SSL = False
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+
+    # docker:
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'database',  # для связи с контейнером docker
+        'PORT': 5432  # для связи с контейнером docker
     }
 }
 
@@ -149,7 +159,7 @@ AUTH_USER_MODEL = 'customers.Customer'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
