@@ -1,9 +1,14 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
-
 from django.urls import reverse_lazy
+from django.views.generic import ListView
 
 from main.models import MainPageContent
 from main.forms import MainArticleModelForm
+
+
+class ArticleView(ListView):
+    model = MainPageContent
+    template_name = 'main/index.html'
 
 
 def list_article(request):

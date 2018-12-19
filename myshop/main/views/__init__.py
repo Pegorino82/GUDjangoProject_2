@@ -11,5 +11,6 @@ from .articles import (
     create_article,
     update_article,
     detail_article,
-    delete_article
+    delete_article,
+    ArticleView,
 )

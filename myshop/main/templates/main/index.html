@@ -25,7 +25,9 @@
 {% endblock %}
 
 {% block right_content %}
-    {% for content in results %}
+    <!--commented is for fbv-->
+    <!--{% for content in results %}-->
+    {% for content in object_list %}
         {% include 'main/components/article.html' with content=content object=content.author %}
     {% endfor %}
 {% endblock %}

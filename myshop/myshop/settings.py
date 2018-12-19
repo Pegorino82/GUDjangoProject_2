@@ -25,7 +25,7 @@ SECRET_KEY = 'db+wxw4oi9c3vn78!__!qfxijw6&e$1_2g8!lj9h2usidfl-4$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -119,19 +119,19 @@ EMAIL_USE_SSL = False
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 
     # docker:
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'database',  # для связи с контейнером docker
-        'PORT': 5432  # для связи с контейнером docker
-    }
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'HOST': 'database',  # для связи с контейнером docker
+#         'PORT': 5432  # для связи с контейнером docker
+#     }
 }
 
 # Password validation
