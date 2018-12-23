@@ -5,8 +5,12 @@ from .authors import (
     delete_author,
     list_author,
 
+    # generic views:
     CreateAuthorView,
     ListAuthorView,
+    DetailAuthorView,
+    UpdateAuthorView,
+    DeleteAuthorView,
 )
 
 from .articles import (
@@ -15,5 +19,7 @@ from .articles import (
     update_article,
     detail_article,
     delete_article,
+
+    # generic views:
     ArticleView,
 )

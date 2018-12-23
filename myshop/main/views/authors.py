@@ -14,6 +14,7 @@ class CreateAuthorView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     login_url = reverse_lazy('authapp:login_view')
 
+    # @TODO определиться, кто может создавать автора
     def test_func(self):
         return self.request.user.is_staff or self.request.user.is_superuser
 
@@ -33,8 +34,51 @@ class ListAuthorView(ListView):
         return context
 
 
+# в шаблоне можно обращаться как по имени модели (author), так и по object
 class DetailAuthorView(DetailView):
-    pass
+    model = Author
+    template_name = 'main/detail_author.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Detail Author'})
+        return context
+
+
+# в шаблоне можно обращаться как по имени модели (author), так и по object
+class UpdateAuthorView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Author
+    template_name = 'main/update_author.html'
+    success_url = reverse_lazy('authorsapp:list')
+    form_class = MainAuthorModelForm
+
+    login_url = reverse_lazy('authapp:login_view')
+
+    # @TODO определиться, кто может редактировать автора
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Update Author'})
+        return context
+
+
+# в шаблоне можно обращаться по object
+class DeleteAuthorView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Author
+    template_name = 'main/delete_author.html'
+    success_url = reverse_lazy('authorsapp:list')
+
+    # @TODO определиться, кто может удалить автора
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Delete Author'})
+        return context
+
 
 def create_author(request):
     template_name = 'main/create_author.html'
