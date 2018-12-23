@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'basket',
     'authapp',
     'ordersapp',
+
     'social_django',
     'rest_framework',
 ]
@@ -88,16 +89,16 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'myshop', 'templates'),
+            os.path.join(BASE_DIR, 'myshop', 'templates'),  # здесь шаблоны
         ],
-        'APP_DIRS': True,
+        'APP_DIRS': True,  # позволяет искать шаблоны внутри установленных приложений
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'basket.context_processors.basket',
+                'basket.context_processors.basket',  # свой контекстный процессор
             ],
         },
     },
@@ -107,9 +108,9 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 
 # Email settings
 
-DOMAIN_NAME = '127.0.0.1:8000'
-# EMAIL_HOST = 'localhost'
-EMAIL_HOST = 'smtp'  # Для docker контейнера
+DOMAIN_NAME = 'http://localhost:8000'
+EMAIL_HOST = 'localhost'
+# EMAIL_HOST = 'smtp'  # Для docker контейнера
 EMAIL_PORT = '25'
 EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
@@ -125,13 +126,13 @@ DATABASES = {
     }
 
     # docker:
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'HOST': 'database',  # для связи с контейнером docker
-#         'PORT': 5432  # для связи с контейнером docker
-#     }
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': 'postgres',
+    #         'USER': 'postgres',
+    #         'HOST': 'database',  # для связи с контейнером docker
+    #         'PORT': 5432  # для связи с контейнером docker
+    #     }
 }
 
 # Password validation

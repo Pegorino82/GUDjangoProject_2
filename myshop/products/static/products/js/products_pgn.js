@@ -23,7 +23,7 @@ const showProducts = ({id, product_marker, image, name, currency, now_price, old
     `
 );
 
-const iniApiUrl = 'http://127.0.0.1:8000/api/products/list';
+const iniApiUrl = '/api/products/list';
 
 // const iniApiUrl = 'http://127.0.0.1:8000/framework_api/products/';  //for rest_framework
 
@@ -31,7 +31,7 @@ function getJson(apiUrl) {
     let HttpReq = new XMLHttpRequest(); // a new request
     HttpReq.open("GET", apiUrl, false);
     HttpReq.send(null);
-    console.log(JSON.parse(HttpReq.responseText));
+    // console.log(JSON.parse(HttpReq.responseText));
     return JSON.parse(HttpReq.responseText);
 }
 
@@ -43,7 +43,7 @@ function tableProducts(apiUrl) {
     // console.log(document.location.href);
 // рендерим категории на странице (по три)
     let productItems = gotJson.results.map(showProducts).join('');
-    console.log(productItems);
+    // console.log(productItems);
 
     let getProduct = document.getElementById('cat_js');
     getProduct.innerHTML = '';
@@ -52,7 +52,7 @@ function tableProducts(apiUrl) {
     let page = gotJson.page;
     let pages = gotJson.pages_all;
     // let pages = Math.floor(gotJson.count / 3);  //for rest_framework
-    console.log('текущая страница:', page);
+    // console.log('текущая страница:', page);
     let pageHtml = document.getElementById('current_page');
     pageHtml.innerHTML = page + '/' + pages;
 
@@ -64,7 +64,7 @@ tableProducts(iniApiUrl);
 function prevNextLinks(gotJson, page) {
     let prevUrl = gotJson.previous_url;
     let nextUrl = gotJson.next_url;
-    console.log('>>>>>>>', prevUrl, nextUrl);
+    // console.log('>>>>>>>', prevUrl, nextUrl);
     let prevPage = document.getElementById('previous_page');
     // let prevPage = document.getElementById('previous'); //for rest_framework
     let nextPage = document.getElementById('next_page');
@@ -73,7 +73,7 @@ function prevNextLinks(gotJson, page) {
     nextPage.href = '';
     if (prevUrl) {
         let neededApiUrl = `${iniApiUrl}/?page=${page - 1}`;
-        console.log('предыдущий api', prevUrl);
+        // console.log('предыдущий api', prevUrl);
         prevPage.setAttribute('onclick', `tableProducts('${neededApiUrl}')`);
     }
     else {
@@ -82,7 +82,7 @@ function prevNextLinks(gotJson, page) {
 
     if (nextUrl) {
         let neededApiUrl = `${iniApiUrl}/?page=${page + 1}`;
-        console.log('следующий api', nextUrl);
+        // console.log('следующий api', nextUrl);
         nextPage.setAttribute('onclick', `tableProducts('${neededApiUrl}')`);
     }
     else {

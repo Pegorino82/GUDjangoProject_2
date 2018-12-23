@@ -100,6 +100,7 @@ def verify(request):
     email = request.GET.get('email')
     activation_key = request.GET.get('activation_key')
 
+    # залогиненного пользователя выводим из системы
     if request.user.is_authenticated:
         log_auth_action(request.user, action='logout')
         logout(request)

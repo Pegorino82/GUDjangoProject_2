@@ -3,7 +3,10 @@ from .authors import (
     update_author_model_form,
     detail_author,
     delete_author,
-    list_author
+    list_author,
+
+    CreateAuthorView,
+    ListAuthorView,
 )
 
 from .articles import (

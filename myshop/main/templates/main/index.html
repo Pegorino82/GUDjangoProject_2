@@ -1,5 +1,6 @@
 {% extends 'myshop/base.html' %}
 
+
 {% load staticfiles %}
 
 {% block page_title %}
@@ -25,13 +26,10 @@
 {% endblock %}
 
 {% block right_content %}
-    <!--commented is for fbv-->
-    <!--{% for content in results %}-->
-    {% for content in object_list %}
-        {% include 'main/components/article.html' with content=content object=content.author %}
+    {% for article in object_list %}
+        {% include 'main/components/article.html' with article=article author=article.author %}
     {% endfor %}
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

@@ -1,10 +1,40 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
-
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from main.models import Author
 from main.forms import MainAuthorForm, MainAuthorModelForm
 
+
+class CreateAuthorView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    template_name = 'main/create_author.html'
+    success_url = reverse_lazy('authorsapp:list')
+    form_class = MainAuthorModelForm
+
+    login_url = reverse_lazy('authapp:login_view')
+
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Create Author'})
+        return context
+
+
+class ListAuthorView(ListView):
+    model = Author
+    template_name = 'main/list_author.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'List Author'})
+        return context
+
+
+class DetailAuthorView(DetailView):
+    pass
 
 def create_author(request):
     template_name = 'main/create_author.html'
@@ -46,6 +76,7 @@ def update_author(request, **kwargs):
             form.save()
             return redirect(success_url)
     return render(request, template_name, {'form': form, 'obj': obj})
+
 
 def create_author_model_form(request):
     template_name = 'main/create_author.html'

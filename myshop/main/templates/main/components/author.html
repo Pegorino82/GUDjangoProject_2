@@ -1,24 +1,23 @@
 {% load static %}
 
-{% if object.photo %}
-<img class="author-photo" src="{{ object.photo.url }} " alt="{{ object }}">
-{% else %}
 <div class="author-photo" style="
-    height: 250px;
-    border: 1px solid black;
-    text-align: center">
-    No photo
+    {% if object.photo %}
+        background-image: url('{{ object.photo.url }}');
+    {% endif %}
+    ">
+    {% if not object.photo %}
+    <h2 >No</h2>
+    <h2>Photo</h2>
+    {% endif %}
 </div>
-{% endif %}
+
 <div class="author-info">
     <div>
-        <label class="hidden-sm" for="name"> Name: </label>
         <span class="name">
             {{ object.name }}
         </span>
     </div>
     <div>
-        <label class="hidden-sm" for="lastname"> Lastname: </label>
         <span class="lastname">
             {{ object.lastname }}
         </span>

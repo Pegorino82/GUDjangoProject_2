@@ -3,13 +3,13 @@
 {% load staticfiles %}
 
 {% block page_title %}
-    List Author
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
 {% endblock %}
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'main/styles/forms.css' %}">
+<link rel="stylesheet" href="{% static 'main/styles/style.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
@@ -26,16 +26,15 @@
 
 {% block right_content %}
 
-    {% for author in results %}
-        <div class="main_section">
-            <div class="main_section_header">
-                {{ author }}
-            </div>
-             {% include 'main/components/author.html' with object=author %}
-        </div>
-    {% endfor %}
+{% for author in object_list %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ author }}
+    </div>
+    {% include 'main/components/author.html' with object=author %}
+</div>
+{% endfor %}
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}
