@@ -32,16 +32,24 @@ class ProductMarker(models.Model):
 
 
 def default_image():
-    return Image.objects.get(name='default')
+    try:
+        return Image.objects.get(name='default')
+    except:
+        pass
 
 
 def default_product_marker():
-    return ProductMarker.objects.get(corner='None')
+    try:
+        return ProductMarker.objects.get(corner='None')
+    except:
+        pass
 
 
 def default_category():
-    return Category.objects.get(name='New category')
-
+    try:
+        return Category.objects.get(name='New category')
+    except:
+        pass
 
 class Product(models.Model):
     name = models.CharField(
@@ -71,17 +79,23 @@ class Product(models.Model):
     product_marker = models.ForeignKey(
         'products.ProductMarker',
         on_delete=models.PROTECT,
-        default=default_product_marker
+        default=default_product_marker,
+        null=True,
+        blank=True
     )
     category = models.ForeignKey(
         'products.Category',
         on_delete=models.CASCADE,
-        default=default_category
+        default=default_category,
+        null=True,
+        blank=True
     )
     image = models.ForeignKey(
         'images.Image',
         on_delete=models.PROTECT,
-        default=default_image
+        default=default_image,
+        null=True,
+        blank=True
     )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

@@ -1,5 +1,6 @@
 {% extends 'myshop/base.html' %}
 
+
 {% load staticfiles %}
 
 {% block page_title %}
@@ -25,8 +26,8 @@
 {% endblock %}
 
 {% block right_content %}
-    <!--commented is for fbv-->
-    <!--{% for content in results %}-->
+
+
     {% for content in object_list %}
         {% include 'main/components/article.html' with content=content object=content.author %}
     {% endfor %}

@@ -40,7 +40,7 @@ List
 
 {% block js_bottom %}
 <script>
-    axios.get('http://127.0.0.1:8000/api/categories/list/')
+    axios.get('/api/categories/list/')
         .then(renderCategories);
 </script>
 <script src="{% static 'products/js/categories_pgn.js' %}"></script>

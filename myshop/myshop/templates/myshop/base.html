@@ -116,22 +116,22 @@
     </div>
 </div>
 
-<script>
-    let basket = localStorage.getItem('basket');
-    let basketIdsList = Object.keys(basket);
-    const urls = `{% url 'rest_products:rest_basket' %}?id_in=${basketIdsList.join(',')}`;
-    $.ajax({url:urls})
-        .done(
-            response => {
-                response.results.map(
-                    itm => $('.basket__control').append(
-                        itm
-                    )
-                )
-            }
-        )
+<!--<script>-->
+    <!--let basket = localStorage.getItem('basket');-->
+    <!--let basketIdsList = Object.keys(basket);-->
+    <!--const urls = `{% url 'rest_products:rest_basket' %}?id_in=${basketIdsList.join(',')}`;-->
+    <!--$.ajax({url:urls})-->
+        <!--.done(-->
+            <!--response => {-->
+                <!--response.results.map(-->
+                    <!--itm => $('.basket__control').append(-->
+                        <!--itm-->
+                    <!--)-->
+                <!--)-->
+            <!--}-->
+        <!--)-->
 
-</script>
+<!--</script>-->
 
 <div class="container content">
     <div class="row">

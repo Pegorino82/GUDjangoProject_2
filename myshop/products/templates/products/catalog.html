@@ -57,7 +57,7 @@
 {% include 'products/components/pagination.html' with results=categories %}
 
 <script>
-    axios.get('http://127.0.0.1:8000/api/categories/list/')
+    axios.get('/api/categories/list/')
         .then(renderCategories);
 </script>
 

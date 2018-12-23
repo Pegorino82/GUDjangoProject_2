@@ -107,9 +107,9 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 
 # Email settings
 
-DOMAIN_NAME = '127.0.0.1:8000'
-# EMAIL_HOST = 'localhost'
-EMAIL_HOST = 'smtp'  # Для docker контейнера
+DOMAIN_NAME = 'http://localhost:8000'
+EMAIL_HOST = 'localhost'
+# EMAIL_HOST = 'smtp'  # Для docker контейнера
 EMAIL_PORT = '25'
 EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
