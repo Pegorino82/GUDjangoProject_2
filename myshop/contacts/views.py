@@ -1,12 +1,8 @@
 from django.shortcuts import render
-from django.core.mail import send_mail
-from django.conf import settings
-
 from contacts.models import Feedback
 
 
-# Create your views here.
-
+# сохраняет в бд имя отправителя, почту и текст сообщения
 def contacts(request):
     context = {}
     if request.method == "POST":
