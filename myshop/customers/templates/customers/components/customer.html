@@ -1,23 +1,34 @@
 {% load static %}
 
-{% if object.avatar %}
-    <img class="author-photo" src="{{ object.avatar.url }} " alt="{{ object }}">
-{% else %}
-    <div class="author-photo" style="
-        height: 250px;
-        border: 1px solid black;
-        text-align: center">
-        No photo
-    </div>
-{% endif %}
-    <div class="author-info">
+<div class="author-photo" style="
+    {% if object.avatar %}
+        background-image: url('{{ object.avatar.url }}');
+    {% endif %}
+    ">
+    {% if not object.avatar %}
+    <h2>No</h2>
+    <h2>Photo</h2>
+    {% endif %}
+</div>
+<div class="author-info">
+    <div>
         <span class="name">
-            {{ object.username }}
-        </span>
-        <span class="lastname">
-            {{ object.first_name }}
-        </span>
-        <span class="lastname">
-            {{ object.last_name }}
+            username: {{ object.username }}
         </span>
     </div>
+    <div>
+        <span class="name">
+            first name: {{ object.first_name|default_if_none:"not set" }}
+        </span>
+    </div>
+    <div>
+        <span class="lastname">
+            last name: {{ object.last_name|default_if_none:"not set" }}
+        </span>
+    </div>
+    <div>
+        <span class="lastname">
+            age: {{ object.age|default_if_none:"not set" }}
+        </span>
+    </div>
+</div>

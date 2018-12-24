@@ -29,7 +29,11 @@
 {% block right_content %}
 <div class="main_section">
     <div class="main_section_header">
-        Wellcome, {{ user }}!
+        {% if user.is_authenticated %}
+            Wellcome, {{ user }}!
+        {% else %}
+            Log in or Sign in
+        {% endif %}
     </div>
     {% if not user.is_authenticated %}
     <div class="input-group">

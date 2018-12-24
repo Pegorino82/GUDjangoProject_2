@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-    List Customer
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -11,6 +11,7 @@
 
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'customers/styles/forms.css' %}">
+<link rel="stylesheet" href="{% static 'customers/styles/style.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
@@ -20,7 +21,7 @@
 {% endblock %}
 
 {% block right_content %}
-{% for object in results %}
+{% for object in object_list %}
 <div class="main_section">
     <div class="main_section_header">
         {{ object }}
@@ -28,8 +29,18 @@
     {% include 'customers/components/customer.html' with object=object %}
 </div>
 {% endfor %}
+{% if is_paginated %}
+
+{% if page_obj.has_previous %}
+<a href="{% url  'customersapp:list' %}?page={{page_obj.previous_page_number}}"> <<< </a>
+{% endif %}
+
+{% if page_obj.has_next %}
+<a href="{% url  'customersapp:list' %}?page={{page_obj.next_page_number}}"> >>> </a>
+{% endif %}
+
+{% endif %}
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'customers/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

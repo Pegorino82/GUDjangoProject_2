@@ -1,8 +1,30 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from customers.models import Customer, CustomerProfile
 
 
+class CustomerCreateForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+
+    class Meta:
+        model = Customer
+        fields = ['username', 'first_name', 'last_name', 'password1', 'password2', 'email', 'birth_date', '_avatar']
+
+
+
+
 class CustomerModelForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+
     class Meta:
         model = Customer
         fields = ['username', 'password', 'birth_date', 'email', '_avatar']
@@ -29,7 +51,8 @@ class CustomerModelForm(forms.ModelForm):
             'birth_date': forms.widgets.DateInput(
                 attrs={
                     'class': 'form-control',
-                    'style': 'width: 200px;'
+                    'style': 'width: 200px;',
+                    'placeholder': '1999-12-31'
                 }
             ),
         }

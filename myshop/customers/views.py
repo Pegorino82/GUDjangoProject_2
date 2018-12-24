@@ -2,13 +2,51 @@ from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import CreateView, ListView
 from django.contrib.auth import authenticate, login, logout, get_user
+from django.contrib.auth.views import LoginView
 from django.db.utils import IntegrityError
 from django.db import transaction
-
+from django.utils.http import is_safe_url
 from customers.models import Customer, CustomerProfile
-from customers.forms import CustomerModelForm, CustomerProfileModelForm
+from customers.forms import CustomerCreateForm, CustomerModelForm, CustomerProfileModelForm
+
+
+class CustomerCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    '''Создание пользователя - не регистрация самим пользователем
+    реализовано для закрепления CRUD, для использования админом'''
+    form_class = CustomerCreateForm
+    template_name = 'customers/create.html'
+    success_url = reverse_lazy('customersapp:list')
+
+    login_url = reverse_lazy('authapp:login_view')
+
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.is_staff
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Create Customer'})
+        return context
+
+
+class CustomerListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    '''Просмотр списка пользователей реализован
+    для закрепления CRUD, для использования админом'''
+    model = Customer
+    template_name = 'customers/list.html'
+    paginate_by = 3
+
+    login_url = reverse_lazy('authapp:login_view')
+
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.is_staff
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'List Customer'})
+        return context
 
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff, login_url='authapp:login_view')
@@ -16,7 +54,8 @@ from customers.forms import CustomerModelForm, CustomerProfileModelForm
 def create_customer(request):
     template_name = 'customers/create_customer.html'
     success_url = reverse_lazy('customersapp:list_customer')
-    form = CustomerModelForm(request.POST, request.FILES)
+    # form = CustomerModelForm(request.POST, request.FILES)
+    form = CustomerLoginForm(request.POST, request.FILES)
     if request.method == 'POST':
         if form.is_valid:
             form.save()

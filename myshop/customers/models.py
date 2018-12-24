@@ -54,6 +54,18 @@ class Customer(AbstractUser):
             self._avatar = 'avatars/default.jpg'
         return self._avatar
 
+    @property
+    def age(self):
+        t2 = datetime.now()
+        t1 = self.birth_date
+        if isinstance(t1, date):
+            t_year = (t2.year - t1.year)
+            t_month = (t2.month - t1.month)
+            t_day = (t2.day - t1.day)
+            if t_month < 0 or t_day < 0:
+                return t_year - 1
+            return t_year
+
     def __str__(self):
         return self.username
 
