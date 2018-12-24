@@ -67,6 +67,8 @@ class DeleteArticleView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'main/delete_article.html'
     success_url = reverse_lazy('artivlesapp:list')
 
+    login_url = reverse_lazy('authapp:login_view')
+
     # @TODO определиться, кто может удалить статью
     def test_func(self):
         return self.request.user.is_staff or self.request.user.is_superuser
