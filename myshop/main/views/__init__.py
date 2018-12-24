@@ -21,5 +21,9 @@ from .articles import (
     delete_article,
 
     # generic views:
-    ArticleView,
+    CreateArticleView,
+    ListArticleView,
+    DetailArticleView,
+    UpdateArticleView,
+    DeleteArticleView,
 )

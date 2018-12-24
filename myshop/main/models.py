@@ -22,7 +22,6 @@ class Author(models.Model):
 class MainPageContent(models.Model):
     chapter = models.CharField(max_length=150)
     content = models.TextField()
-    date = models.DateTimeField()  # лишнее поле
     author = models.ForeignKey(
         'main.Author',
         on_delete=models.CASCADE

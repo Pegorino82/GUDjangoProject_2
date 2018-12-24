@@ -22,10 +22,10 @@ const showBasket = ({image, name, now_price, quantity, id, totalPrice}) => (
 );
 
 
-const listApiUrl = 'http://127.0.0.1:8000/api/basket/list/';
-const detailApiUrl = 'http://127.0.0.1:8000/api/basket/detail/?id=';
-const updateApiUrl = 'http://127.0.0.1:8000/api/basket/update/';
-const productApiUrl = 'http://127.0.0.1:8000/api/products/detail/';
+const listApiUrl = '/api/basket/list/';
+const detailApiUrl = '/api/basket/detail/?id=';
+const updateApiUrl = '/api/basket/update/';
+const productApiUrl = '/api/products/detail/';
 
 function getJson(apiUrl) {
     let HttpReq = new XMLHttpRequest(); // a new request

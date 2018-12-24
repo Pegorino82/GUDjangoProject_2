@@ -1,16 +1,84 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from main.models import MainPageContent
 from main.forms import MainArticleModelForm
 
 
-class ArticleView(ListView):
+class CreateArticleView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    template_name = 'main/create_article.html'
+    success_url = reverse_lazy('articlesapp:list')
+    form_class = MainArticleModelForm
+
+    login_url = reverse_lazy('authapp:login_view')
+
+    # @TODO определиться, кто может создавать статью
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Create Article'})
+        return context
+
+
+class ListArticleView(ListView):
     model = MainPageContent
     template_name = 'main/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'List Articles'})
+        return context
 
+
+class DetailArticleView(DetailView):
+    model = MainPageContent
+    template_name = 'main/detail_article.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Detail Article'})
+        return context
+
+
+class UpdateArticleView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = MainPageContent
+    template_name = 'main/update_article.html'
+    form_class = MainArticleModelForm
+    success_url = reverse_lazy('articlesapp:list')
+
+    login_url = reverse_lazy('authapp:login_view')
+
+    # @TODO определиться, кто может создавать статью
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Update Article'})
+        return context
+
+
+class DeleteArticleView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = MainPageContent
+    template_name = 'main/delete_article.html'
+    success_url = reverse_lazy('artivlesapp:list')
+
+    # @TODO определиться, кто может удалить статью
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Delete Article'})
+        return context
+
+
+################################################################
+#######function base views######################################
 def list_article(request):
     template_name = 'main/index.html'
     context = {

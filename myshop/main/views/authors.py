@@ -80,6 +80,8 @@ class DeleteAuthorView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return context
 
 
+################################################################
+#######function base views######################################
 def create_author(request):
     template_name = 'main/create_author.html'
     success_url = reverse_lazy('authorsapp:list')
