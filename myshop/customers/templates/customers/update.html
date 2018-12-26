@@ -10,28 +10,32 @@
 {% endblock %}
 
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'customers/styles/style.css' %}">
-<link rel="stylesheet" href="{% static 'customers/styles/paginator.css' %}">
+<link rel="stylesheet" href="{% static 'customers/styles/forms.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
 {% endblock %}
 
+{% block small_menu_mainpage %}
+{% endblock %}
+
 {% block large_menu_items %}
 {% endblock %}
 
+{% block large_menu_mainpage %}
+{% endblock %}
+
 {% block right_content %}
-{% for object in object_list %}
 <div class="main_section">
     <div class="main_section_header">
-        {{ object }}
+        {{user}}
     </div>
-    {% include 'customers/components/customer.html' with object=object %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
 </div>
-{% endfor %}
-{% if is_paginated %}
-{% include 'customers/components/pagination.html' %}
-{% endif %}
 {% endblock %}
 
 {% block bootstrap_js %}

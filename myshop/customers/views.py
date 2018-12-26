@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.contrib.auth import authenticate, login, logout, get_user
 from django.contrib.auth.views import LoginView
 from django.db.utils import IntegrityError
@@ -46,6 +46,41 @@ class CustomerListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({'title': 'List Customer'})
+        return context
+
+
+class CustomerDetailView(DetailView):
+    model = Customer
+    template_name = 'customers/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': self.request.user})
+        return context
+
+
+class CustomerUpdateView(LoginRequiredMixin, UpdateView):
+    model = Customer
+    template_name = 'customers/update.html'
+    form_class = CustomerCreateForm
+    success_url = reverse_lazy('customersapp:detail')
+
+    login_url = reverse_lazy('authapp:login_view')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Update Customer'})
+        return context
+
+
+class CustomerDeleteView(LoginRequiredMixin, DeleteView):
+    model = Customer
+    template_name = 'customers/delete.html'
+    success_url = reverse_lazy('customersapp:list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'title': 'Delete Customer'})
         return context
 
 

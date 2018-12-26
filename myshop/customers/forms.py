@@ -15,8 +15,6 @@ class CustomerCreateForm(UserCreationForm):
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2', 'email', 'birth_date', '_avatar']
 
 
-
-
 class CustomerModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):

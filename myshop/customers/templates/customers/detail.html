@@ -3,14 +3,14 @@
 {% load staticfiles %}
 
 {% block page_title %}
-Detail Customer
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
 {% endblock %}
 
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'customers/styles/forms.css' %}">
+<link rel="stylesheet" href="{% static 'customers/styles/style.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
@@ -20,10 +20,13 @@ Detail Customer
 {% endblock %}
 
 {% block right_content %}
-{% include 'customers/components/customer.html' with object=object %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ object }}
+    </div>
+    {% include 'customers/components/customer.html' with object=object %}
+</div>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'customers/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
-
 {% endblock %}

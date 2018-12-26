@@ -1,0 +1,31 @@
+.django-pagination {
+    list-style: none;
+    padding-left: 0;
+    justify-content: center;
+    display: flex;
+}
+
+.django-pagination__control {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.link_button {
+    display: block;
+    height: 50px;
+    background-color: #fff51f;
+    font-family: "Raleway Black", sans-serif;
+    font-size: 14px;
+    color: #000000;
+    text-decoration: none;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 5%;
+    min-width: 120px;
+    padding: 0 10px;
+    line-height: 50px;
+}
+
+.link_button:hover {
+    text-decoration: none;
+}
