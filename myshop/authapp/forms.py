@@ -1,30 +1,41 @@
 import hashlib
 import random
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
 from customers.models import Customer
 
 
-class CustomerAuthModelForm(forms.ModelForm):
+class CustomerLoginForm(AuthenticationForm):
+    class Meta:
+        model = Customer
+        fields = ['username', 'password']
 
-    email = forms.EmailField(
-        max_length=258,
-        required=True
-    )
+    def __init__(self, *args, **kwargs):
+        super(CustomerLoginForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
 
-    confirm_password = forms.CharField(
-        max_length=250,
-        widget=forms.PasswordInput
-    )
 
-    def clean_confirm_password(self):
-        password = self.cleaned_data.get('password')
-        confirm_password = self.cleaned_data.get('confirm_password')
+class CustomerAuthModelForm(UserCreationForm):
+    # email = forms.EmailField(
+    #     max_length=258,
+    #     required=True
+    # )
+    #
+    # confirm_password = forms.CharField(
+    #     max_length=250,
+    #     widget=forms.PasswordInput
+    # )
 
-        if password and confirm_password and password != confirm_password:
-            raise forms.ValidationError('Password is not confirmed!')
-
-        return self.cleaned_data
+    # def clean_confirm_password(self):
+    #     password = self.cleaned_data.get('password')
+    #     confirm_password = self.cleaned_data.get('confirm_password')
+    #
+    #     if password and confirm_password and password != confirm_password:
+    #         raise forms.ValidationError('Password is not confirmed!')
+    #
+    #     return self.cleaned_data
 
     def save(self):
         new_user = super().save(commit=False)
@@ -41,27 +52,13 @@ class CustomerAuthModelForm(forms.ModelForm):
 
     class Meta:
         model = Customer
-        fields = ['username', 'password', 'confirm_password', 'email', 'birth_date', '_avatar']
-        widgets = {
-            'username': forms.widgets.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'value': ''
-                }
-            ),
-            'password': forms.widgets.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'type': 'password',
-                    'value': ''
-                }
-            ),
+        fields = ['username', 'password1', 'password2', 'email', 'birth_date', '_avatar']
 
-            'birth_date': forms.widgets.DateInput(
-                attrs={
-                    'class': 'form-control',
-                    'style': 'width: 200px;',
-                    'placeholder': 'YYYY-MM-DD'
-                }
-            ),
-        }
+    def __init__(self, *args, **kwargs):
+        super(CustomerAuthModelForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['value'] = ''
+            field.help_text = ''
+            if field_name == 'birth_date':
+                field.widget.attrs['placeholder'] = 'YYYY-MM-DD'
