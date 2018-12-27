@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-   Update Customer
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -32,69 +32,13 @@
     </div>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% for err in edit_form.not_field_errors %}
-            <span>
-                {{ err }}
-            </span>
-        {% endfor %}
-        {% for err in profile_form.not_field_errors %}
-            <span>
-                {{ err }}
-            </span>
-        {% endfor %}
-
-        <div class="main-page-auth">
-            {% for field in edit_form %}
-            <div class="input-group">
-                <div class="input-group main-page">
-                    <label class="input-group-addon form-model-label" for="{{ field.name }}">
-                        {{ field.label }}
-                    </label>
-                        {{ field }}
-                </div>
-                {% for err in field.errors %}
-                <span>
-                    {{ err }}
-                </span>
-            {% endfor %}
-            </div>
-            {% endfor %}
-
-            <br>
-            <div class="input-group">
-                <div class="input-group main-page">
-                    <label class="input-group-addon form-model-label">
-                        Age
-                    </label>
-                        {{ age|default_if_none:'Not set' }}
-                </div>
-            </div>
-            <br>
-
-            {% for field in profile_form %}
-            <div class="input-group">
-                <div class="input-group main-page">
-                    <label class="input-group-addon form-model-label" for="{{ field.name }}">
-                        {{ field.label }}
-                    </label>
-                        {{ field }}
-                </div>
-                {% for err in field.errors %}
-                <span>
-                    {{ err }}
-                </span>
-            {% endfor %}
-            </div>
-            {% endfor %}
-
-             <div class="input-group">
-                    <input name="logup" type="submit" value="Обновить">
-                </div>
-        </div>
+        {{form.as_p}}
+        {{ profile_form }}
+        <button class="btn btn-primary" type="submit">Update</button>
     </form>
 </div>
-    {{ user_name }}
-    {{ warn }}
+{{ user_name }}
+{{ warn }}
 {% endblock %}
 
 {% block bootstrap_js %}

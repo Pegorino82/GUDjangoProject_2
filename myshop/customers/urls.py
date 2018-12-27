@@ -8,7 +8,6 @@ urlpatterns = [
     # path('', views.login_view, name='customer'),
     # path('create/', views.create_customer, name='create_customer'),  # надо переделать адрес и шаблон на login
     # path('update/<int:pk>/', views.update_customer, name='update_customer'),
-    # path('edit_profile/<int:pk>/', views.edit_profile, name='edit_profile'),
     # path('detail/<int:pk>/', views.detail_customer, name='detail_customer'),
     # path('delete/<int:pk>/', views.delete_customer, name='delete_customer'),
     # path('list/', views.list_customer, name='list_customer'),
@@ -18,4 +17,5 @@ urlpatterns = [
     path('detail/<int:pk>/', views.CustomerDetailView.as_view(), name='detail'),
     path('update/<int:pk>/', views.CustomerUpdateView.as_view(), name='update'),
     path('delete/<int:pk>/', views.CustomerDeleteView.as_view(), name='delete'),
+    path('edit_profile/<int:pk>/', views.edit_profile, name='edit_profile'),
 ]

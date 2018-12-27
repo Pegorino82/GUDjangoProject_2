@@ -182,3 +182,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'myshop', 'static'),
 )
+
+# LOGIN_REDIRECT_URL = 'articlesapp:list'  # переделать на перенаправление в контроллере
