@@ -26,6 +26,8 @@
     </div>
     {% include 'customers/components/customer.html' with object=object %}
 </div>
+<a class="btn btn-primary" href="{% url 'customersapp:edit_profile' user.pk %}">Edit Profile</a>
+<a class="btn btn-primary" href="{% url 'customersapp:delete' user.pk %}">Delete</a>
 {% endblock %}
 
 {% block bootstrap_js %}
