@@ -11,7 +11,7 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from django.db import transaction
 
 from customers.models import Customer
-from customers.forms import CustomerCreateForm, CustomerModelForm, CustomerProfileModelForm
+from customers.forms import CustomerCreateForm, CustomerUpdateForm, CustomerModelForm, CustomerProfileModelForm
 
 
 # class CustomerCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -63,7 +63,7 @@ class CustomerDetailView(DetailView):
 class CustomerUpdateView(LoginRequiredMixin, UpdateView):
     model = Customer
     template_name = 'customers/update.html'
-    form_class = CustomerCreateForm
+    form_class = CustomerUpdateForm
     success_url = reverse_lazy('customersapp:detail')
 
     login_url = reverse_lazy('authapp:login_view')
@@ -110,14 +110,14 @@ def edit_profile(request, **kwargs):
     success_url = reverse_lazy('customersapp:detail', kwargs={'pk': pk})
 
     if request.method == 'POST':
-        edit_form = CustomerModelForm(request.POST, request.FILES, instance=request.user)
+        edit_form = CustomerUpdateForm(request.POST, request.FILES, instance=request.user)
         profile_form = CustomerProfileModelForm(request.POST, instance=request.user.customerprofile)
         if edit_form.is_valid and profile_form.is_valid:
             edit_form.save()
             profile_form.save()
             return redirect(success_url)
     else:
-        edit_form = CustomerModelForm(instance=request.user)
+        edit_form = CustomerUpdateForm(instance=request.user)
         profile_form = CustomerProfileModelForm(instance=request.user.customerprofile)
     return render(request, template_name, {
         'form': edit_form,
