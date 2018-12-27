@@ -52,7 +52,7 @@
                         <ul class="nav navbar-nav">
 
                             <li><a class="menu_item" href="{% url 'articlesapp:list' %}">Main</a></li>
-                            <li><a class="menu_item" href="{% url 'customersapp:customer' %}">Customer</a></li>
+                            <li><a class="menu_item" href="{% url 'customersapp:detail' pk=user.pk %}">Account</a></li>
                             <li><a class="menu_item" href="{% url 'productsapp:catalog' %}">Catalog</a></li>
                             {% block small_menu_items %}
 

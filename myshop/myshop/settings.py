@@ -25,7 +25,7 @@ SECRET_KEY = 'db+wxw4oi9c3vn78!__!qfxijw6&e$1_2g8!lj9h2usidfl-4$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -184,3 +184,6 @@ STATICFILES_DIRS = (
 )
 
 # LOGIN_REDIRECT_URL = 'articlesapp:list'  # переделать на перенаправление в контроллере
+# done
+# def get_success_url(self):
+#     return reverse_lazy('articlesapp:list')

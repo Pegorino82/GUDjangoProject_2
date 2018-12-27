@@ -33,81 +33,75 @@
 <body>
 <div class="header">
     <div class="container">
-        <nav class="navbar navbar-default navbar_xs visible-xs">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand logo_xs" href="{% url 'articlesapp:list' %}">My<span>Shop</span></a>
+        <div class="row">
+            <nav class="navbar navbar-default navbar_xs visible-xs">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand logo_xs" href="{% url 'articlesapp:list' %}">My<span>Shop</span></a>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a class="menu_item" href="{% url 'articlesapp:list' %}">Main</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a class="menu_item" href="{% url 'customersapp:detail' pk=user.pk %}">Account</a></li>
+                            {% endif %}
+                            <li><a class="menu_item" href="{% url 'productsapp:list' %}">Products</a></li>
+                            <li><a class="menu_item" href="{% url 'categoriesapp:list' %}">Categories</a></li>
+                            <li><a class="menu_item" href="{% url 'productsapp:catalog' %}">Catalog</a></li>
+                            {% block small_menu_items %}
+                            {% endblock %}
+                            <li><a class="menu_item" href="{% url 'contactsapp:contacts' %}">Contacts</a></li>
+                            <!--<li><a class="menu_item" href="{% url 'basketapp:basket' %}">Basket</a></li>-->
+                            <li><a class="menu_item" href="{% url 'ordersapp:storage' %}">Basket</a></li>
+                            {% block small_menu_mainpage %}
+                            {% endblock %}
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </div><!--# выпадающее меню-->
+        <div class="row" style="margin-top: 10px;"><!--# лого и социальные сети-->
+            <div class="col-md-4 col-sm-3" style="text-align: -webkit-center;">
+                <a href="{% url 'articlesapp:list' %}" class="logo hidden-xs"></a>
+            </div>
+            <div class="col-md-8 col-sm-9 social_icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <!--ссылка на корзину на сервере. в настоящий момент в формировании заказа не участвует.-->
+            <!--не заполняется-->
+            <a class="basket" href="{% url 'basketapp:basket' %}">
+                <div class="basket__control">
                 </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a class="menu_item" href="{% url 'articlesapp:list' %}">Main</a></li>
-                        {% if user.is_authenticated %}
-                        <li><a class="menu_item" href="{% url 'customersapp:detail' pk=user.pk %}">Account</a></li>
-                        {% endif %}
-                        <li><a class="menu_item" href="{% url 'productsapp:list' %}">Products</a></li>
-                        <li><a class="menu_item" href="{% url 'categoriesapp:list' %}">Categories</a></li>
-                        <li><a class="menu_item" href="{% url 'productsapp:catalog' %}">Catalog</a></li>
-                        {% block small_menu_items %}
-                        {% endblock %}
-                        <li><a class="menu_item" href="{% url 'contactsapp:contacts' %}">Contacts</a></li>
-                        <!--<li><a class="menu_item" href="{% url 'basketapp:basket' %}">Basket</a></li>-->
-                        <li><a class="menu_item" href="{% url 'ordersapp:storage' %}">Basket</a></li>
-                        {% block small_menu_mainpage %}
-                        {% endblock %}
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
-        <a href="{% url 'articlesapp:list' %}" class="logo hidden-xs"></a>
-        <div class="social_icons">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-            <a href="#"><i class="fab fa-pinterest-p"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
+            </a>
         </div>
-        <div class="welcomebanner">
-            <div class="welcomeheader">
-                welcome to MyShop
+        <div class="row" style="margin-top: 25px;margin-bottom: 50px;text-align: right;"><!--# пользователь-->
+            <div class="name-avatar">
+                <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
+                <span>{{ user.username }}</span>
             </div>
-            <div class="welcometext">
-                Lorem ipsum dolor sit amet,
-                consectetur adipisicing elit.
-                Dolorum eaque illum libero minus
-                repudiandae sapiente?
-            </div>
+            {% if user.is_authenticated %}
+            <a class="btn btn-primary" href="{% url 'authapp:logout_view' %}">Logout</a>
+            {% else %}
+            <a class="btn btn-primary" href="{% url 'authapp:login_view' %}">Login</a>
+            <a class="btn btn-primary" href="{% url 'authapp:logup_view' %}">SignIn</a>
+            {% endif %}
+            {% if user.is_staff %}
+            <a class="btn btn-primary" href="{% url 'myshopadminapp:index' %}">AdminSite</a>
+            {% endif %}
         </div>
-        <span class="catalogbanner">
-            <span class="catalogbanner_header">Catalog 2018</span>
-            <span class="catalogbanner_text">Lorem ipsum dolor sit amet,
-                consectetur adipisicing elit. A amet et nam nisi saepe!
-                Atque facere fugiat laudantium praesentium saepe.
-            </span>
-        </span>
-        <a class="gonowbutton" href="{% url 'productsapp:catalog' %}">GO NOW</a>
-        <div class="name-avatar">
-            <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
-            <span>{{ user.username }}</span>
-        </div>
-        {% if user.is_staff %}
-        <a class="adminbutton" href="{% url 'myshopadminapp:index' %}">AdminSite</a>
-        {% endif %}
-        <!--ссылка на корзину на сервере. в настоящий момент в формировании заказа не участвует.-->
-        <!--не заполняется-->
-        <a class="basket" href="{% url 'basketapp:basket' %}">
-            <div class="basket__control">
-
-            </div>
-        </a>
     </div>
 </div>
 
