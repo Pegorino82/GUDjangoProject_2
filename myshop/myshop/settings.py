@@ -53,16 +53,27 @@ INSTALLED_APPS = [
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.vk.VKOAuth2',
 )
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
-# загружаем секреты из файла
+# Google+ загружаем секреты из файла
 with open('./googleAuthSecret.json', 'r') as f:
     GOOGLE_PLUS = json.load(f)
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_PLUS['client_id']
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_PLUS['client_secret']
+
+# VK загружаем секреты из файла
+with open('./vkAuthSecret.json', 'r') as f:
+    VK = json.load(f)
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = VK['client_id']
+SOCIAL_AUTH_VK_OAUTH2_SECRET = VK['client_secret']
+
+# SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['friends']
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

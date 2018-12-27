@@ -90,7 +90,7 @@
         <div class="row" style="margin-top: 25px;margin-bottom: 50px;text-align: right;"><!--# пользователь-->
             <div class="name-avatar">
                 <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
-                <span>{{ user.username }}</span>
+                <span>{{ user.first_name|default:user.username }}</span>
             </div>
             {% if user.is_authenticated %}
             <a class="btn btn-primary" href="{% url 'authapp:logout_view' %}">Logout</a>

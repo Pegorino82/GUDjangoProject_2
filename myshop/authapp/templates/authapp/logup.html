@@ -36,6 +36,9 @@
         <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'articlesapp:list' %}">
             Google+ sign in
         </a>
+        <a class="btn btn-primary" href="{% url 'social:begin' 'vk-oauth2' %}?next={% url 'articlesapp:list' %}">
+            VK
+        </a>
     </form>
 </div>
 {% endblock %}
