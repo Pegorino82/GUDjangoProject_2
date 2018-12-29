@@ -10,6 +10,17 @@ from products.models import Category, Product
 from products.forms import CategoryModelForm
 
 
+class CategoryCreateView(LoginRequiredMixin, AdminGroupRequired, CreateView):
+    model = Category
+    template_name = 'products/create_category.html'
+    form_class = CategoryModelForm
+    success_url = reverse_lazy('categoriesapp:list')
+    login_url = reverse_lazy('authapp:login_view')
+    redirect_url = reverse_lazy('categoriesapp:list')
+    extra_context = {'title': 'Category Create'}
+
+
+# показывает товары конкретной категории
 class CategoryListOfView(DetailView):
     model = Category
     template_name = 'products/category.html'
@@ -26,35 +37,17 @@ class CategoryListOfView(DetailView):
         return context
 
 
-class CategoryCreateView(LoginRequiredMixin, AdminGroupRequired, CreateView):
-    model = Category
-    template_name = 'products/create_category.html'
-    form_class = CategoryModelForm
-    success_url = reverse_lazy('categoriesapp:list')
-    login_url = reverse_lazy('authapp:login_view')
-    redirect_url = reverse_lazy('categoriesapp:list')
-    extra_context = {'title': 'Category Create'}
-
-
+# пагинация реализована на js
 class CategoryListView(ListView):
     model = Category
     template_name = 'products/list_category.html'
-    context_object_name = 'results'
 
-    # paginate_by = 3 # в этом случае в шаблоне обращаемся к контекстной переменной page_object
+    # paginate_by = 3
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Category List'
-        context['results'] = self.items
         return context
-
-    def get(self, request, *args, **kwargs):
-        query = self.model.objects.all()
-        paginator = Paginator(query, 3)
-        page = request.GET.get('page')
-        self.items = paginator.get_page(page)
-        return super().get(request, *args, **kwargs)
 
 
 class CategoryDetailView(DetailView):

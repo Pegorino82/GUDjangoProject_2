@@ -13,7 +13,6 @@
 
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'products/styles/paginator.css' %}">
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>-->
 {% endblock %}
 
 {% block small_menu_items %}
@@ -25,7 +24,7 @@
 {% block right_content %}
 <div class="main_section">
     <div class="main_section_header">
-        {% get_model_name results.0 %}
+        {% get_model_name object_list.0 %}
     </div>
 </div>
 <div class="row products_table" id="cat_js">

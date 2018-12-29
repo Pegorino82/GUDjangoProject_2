@@ -12,6 +12,16 @@ from products.forms import ProductModelForm
 from django.core.exceptions import ObjectDoesNotExist
 
 
+class ProductCreateView(LoginRequiredMixin, AdminGroupRequired, CreateView):
+    model = Product
+    template_name = 'products/create_product.html'
+    form_class = ProductModelForm
+    success_url = reverse_lazy('productsapp:list')
+    login_url = reverse_lazy('authapp:login_view')
+    redirect_url = reverse_lazy('productsapp:list')  # AdminGroupRequired
+    extra_context = {'title': 'Product Create'}
+
+
 class Catalog(ListView):
     model = Category
     template_name = 'products/catalog.html'
@@ -25,16 +35,6 @@ class Catalog(ListView):
         return context
 
 
-class ProductCreateView(LoginRequiredMixin, AdminGroupRequired, CreateView):
-    model = Product
-    template_name = 'products/create_product.html'
-    form_class = ProductModelForm
-    success_url = reverse_lazy('productsapp:list')
-    login_url = reverse_lazy('authapp:login_view')
-    redirect_url = reverse_lazy('productsapp:list')  # AdminGroupRequired
-    extra_context = {'title': 'Product Create'}
-
-
 # В настоящий момент отображение товаров и пагинация
 # осуществляется js (products/api/products/rest_product_list/)
 class ProductListView(ListView):
@@ -42,17 +42,12 @@ class ProductListView(ListView):
     queryset = Product.objects.filter(is_active=True)
     template_name = 'products/list_product.html'
 
+    # paginate_by = 3
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['results'] = self.items
         context['title'] = 'Product List'
         return context
-
-    def get(self, request, *args, **kwargs):
-        paginator = Paginator(self.queryset, 3)
-        page = request.GET.get('page')
-        self.items = paginator.get_page(page)
-        return super().get(request, *args, **kwargs)
 
 
 class ProductDetailView(DetailView):
