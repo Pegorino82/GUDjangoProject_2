@@ -28,6 +28,7 @@
 </div>
 <a class="btn btn-primary" href="{% url 'customersapp:edit_profile' user.pk %}">Edit Profile</a>
 <a class="btn btn-primary" href="{% url 'customersapp:delete' user.pk %}">Delete</a>
+<a class="btn btn-primary" href="{% url 'ordersapp:list' %}">Orders</a>
 {% endblock %}
 
 {% block bootstrap_js %}
