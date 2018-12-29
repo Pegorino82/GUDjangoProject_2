@@ -109,6 +109,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    # TODO надо оптимизировать!
     @classmethod
     def get_limit(cls, limit):
         categories = Category.objects.all()

@@ -1,18 +1,20 @@
 from .products import (
     catalog,
     product,
-    ModelCreateProduct,
-    ModelListProduct,
-    ModelDetailProduct,
-    ModelUpdateProduct,
-    ModelDeleteProduct
+    ProductCreateView,
+    ProductListView,
+    ProductDetailView,
+    ProductUpdateView,
+    ProductDeleteView,
+    Catalog,
 )
 
 from .categories import (
     category,
-    ModelCreateCategory,
-    ModelListCategoriy,
-    ModelDetailCategory,
-    ModelUpdateCategory,
-    # ModelDeleteCategory
+    CategoryCreateView,
+    CategoryListOfView,
+    CategoryListView,
+    CategoryDetailView,
+    CategoryUpdateView,
+    # CategoryDeleteView
 )

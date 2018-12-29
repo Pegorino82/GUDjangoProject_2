@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{% static 'myshop/styles/localstorage_basket_widget.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script src="{% static 'myshop/js/storage.js' %}"></script>
+    <script src="{% static 'myshop/js/categories.js' %}"></script>
     {% block style_css %}
     {% endblock %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
@@ -123,12 +124,15 @@
                     <li><a class="menu_item" href="{% url 'productsapp:catalog' %}">Catalog</a>
                         {% block large_menu_items %}
                         {% endblock %}
+                        <ul class="submenu" id="js">
+                        </ul>
                     </li>
                     <li><a class="menu_item" href="{% url 'contactsapp:contacts' %}">Contacts</a></li>
                     <!--<li><a class="menu_item" href="{% url 'basketapp:basket' %}">Basket</a></li>-->
                     <li><a class="menu_item" href="{% url 'ordersapp:storage' %}">Basket</a></li>
                     {% block large_menu_mainpage %}
                     {% endblock %}
+
                 </ul>
 
             </div>
@@ -201,8 +205,11 @@
 {% endblock %}
 
 {% block bootstrap_js %}
-
 {% endblock %}
+<script>
+    axios.get('/api/categories/list/')
+        .then(renderCategories);
+</script>
 <script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 </body>
 </html>

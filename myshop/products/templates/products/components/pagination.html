@@ -1,21 +1,20 @@
 {% load staticfiles %}
 
 <ul class="django-pagination">
-    {% if results.has_previous %}
+    {% if page_obj.has_previous %}
     <li class="django-pagination__control">
-        <a class="link_button" href="?page={{results.previous_page_number}}"><< Prev</a>
+        <!--<a class="btn btn-primary" href="{% url  'productsapp:catalog' %}?page={{page_obj.previous_page_number}}">-->
+        <a class="btn btn-primary" href="{{pagination_url}}?page={{page_obj.previous_page_number}}">
+            <<< </a>
     </li>
     {% endif %}
-
     <li class="django-pagination__control">
-        <div class="link_button" style="font-size: 18px">
-            {{ results.number }} / {{ results.paginator.num_pages }}
-        </div>
+        <span class="btn btn-primary">{{ page_obj.number }}/{{page_obj.paginator.num_pages}}</span>
     </li>
-
-    {% if results.has_next %}
+    {% if page_obj.has_next %}
     <li class="django-pagination__control">
-        <a class="link_button" href="?page={{results.next_page_number}}">Next >></a>
+        <!--<a class="btn btn-primary" href="{% url  'productsapp:catalog' %}?page={{page_obj.next_page_number}}"> >>> </a>-->
+        <a class="btn btn-primary" href="{{pagination_url}}?page={{page_obj.next_page_number}}"> >>> </a>
     </li>
     {% endif %}
 </ul>

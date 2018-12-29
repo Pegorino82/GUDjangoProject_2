@@ -1,0 +1,17 @@
+{% load static %}
+
+<div class="col-md-4 col-sm-6 col-xs-12 product_cell">
+    <a href="{% url 'categoriesapp:detail' pk=object.id %}">
+        <div class="product_card">
+            <div class="name_price">
+                <div class="product_name">
+                    {{ object.name|title }}
+                </div>
+                <div class="product_name">
+                    {{ object.short_text|default:'Description of category' }}
+                </div>
+
+            </div>
+        </div>
+    </a>
+</div>

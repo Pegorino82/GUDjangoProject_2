@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-    Catalog
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -11,21 +11,20 @@
 
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'products/styles/paginator.css' %}">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-<script src="{% static 'products/js/categories.js' %}"></script>
+<!--<script src="{% static 'products/js/categories.js' %}"></script>-->
 {% endblock %}
 
 {% block small_menu_items %}
-<ul class="submenu">
-</ul>
+<!--<ul class="submenu">-->
+<!--</ul>-->
 {% endblock %}
 
 {% block small_menu_mainpage %}
 {% endblock %}
 
 {% block large_menu_items %}
-<ul class="submenu" id="js">
-</ul>
+<!--<ul class="submenu" id="js">-->
+<!--</ul>-->
 {% endblock %}
 
 {% block large_menu_mainpage %}
@@ -33,36 +32,28 @@
 
 {% block right_content %}
 {% include 'products/components/pagination.html' with results=categories %}
-{% for category in categories %}
-    <div class="category_products">
-        <a href="{% url 'categoriesapp:category' category=category.name %}">
-            <div class="products_header">
+{% for category in object_list %}
+<div class="category_products">
+    <a href="{% url 'categoriesapp:category' pk=category.pk %}">
+        <div class="products_header">
             {{ category.name }}
-            </div>
-        </a>
-        <div class="row products_table">
-            {% for product in limit_products %}
-                {% if product.category == category %}
-                 <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
-                    <a href="{% url 'productsapp:detail' pk=product.id %}">
-                        {% include 'products/components/product.html' with prd=product %}
-                    </a>
-                 </div>
-                {% endif %}
-            {% endfor %}
         </div>
+    </a>
+    <div class="row products_table">
+        {% for product in limit_products %}
+            {% if product.category == category %}
+                {% include 'products/components/product.html' with product=product %}
+            {% endif %}
+        {% endfor %}
     </div>
+</div>
 {% endfor %}
-
-{% include 'products/components/pagination.html' with results=categories %}
-
-<script>
-    axios.get('/api/categories/list/')
-        .then(renderCategories);
-</script>
+{% include 'products/components/pagination.html' with page_obj=page_obj %}
 
 {% endblock %}
-
+<!--<script>-->
+    <!--axios.get('/api/categories/list/')-->
+        <!--.then(renderCategories);-->
+<!--</script>-->
 {% block bootstrap_js %}
-<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

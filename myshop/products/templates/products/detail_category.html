@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'products/styles/paginator.css' %}">
+<link rel="stylesheet" href="{% static 'products/styles/product.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
@@ -35,14 +35,15 @@
         {{ object.name }}
     </div>
     <div class="row products_table">
-        {% for product in products %}
-        {% include 'products/components/product.html' with product=product %}
-        {% endfor %}
+        {% include 'products/components/category.html' with object=object %}
     </div>
+    <a class="btn btn-primary" href="/categories/category/{{object.pk}}/">
+        Show category's products
+    </a>
 </div>
+{% endblock %}
 
-{% include 'products/components/pagination.html' with page_obj=products %}
-
+{% block js_bottom %}
 {% endblock %}
 
 {% block bootstrap_js %}

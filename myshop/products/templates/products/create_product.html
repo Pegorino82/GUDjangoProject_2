@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-   Create
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -15,9 +15,6 @@
 
 {% block small_menu_items %}
 <ul class="submenu">
-    {% for category in categories %}
-    <li><a href="{% url 'categoriesapp:category' category=category.name %}">{{category.name}}</a></li>
-    {% endfor %}
 </ul>
 {% endblock %}
 
@@ -26,9 +23,6 @@
 
 {% block large_menu_items %}
 <ul class="submenu">
-    {% for category in categories %}
-    <li><a href="{% url 'categoriesapp:category' category=category.name %}">{{category.name}}</a></li>
-    {% endfor %}
 </ul>
 {% endblock %}
 

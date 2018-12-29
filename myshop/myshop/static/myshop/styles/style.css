@@ -509,7 +509,7 @@
     box-sizing: border-box;
     position: relative;
     margin-bottom: 15px;
-    max-height: 436px;
+    /*max-height: 436px;*/
 }
 
 .product_img {

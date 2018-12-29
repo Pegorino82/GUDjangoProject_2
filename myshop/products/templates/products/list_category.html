@@ -5,7 +5,7 @@
 {% load utility %}
 
 {% block page_title %}
-List
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -13,18 +13,13 @@ List
 
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'products/styles/paginator.css' %}">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-<script src="{% static 'products/js/categories.js' %}"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>-->
 {% endblock %}
 
 {% block small_menu_items %}
-<ul class="submenu">
-</ul>
 {% endblock %}
 
 {% block large_menu_items %}
-<ul class="submenu" id="js">
-</ul>
 {% endblock %}
 
 {% block right_content %}
@@ -37,16 +32,11 @@ List
 </div>
 
 {% include 'products/components/js_pagination.html' %}
+{% endblock %}
 
 {% block js_bottom %}
-<script>
-    axios.get('/api/categories/list/')
-        .then(renderCategories);
-</script>
 <script src="{% static 'products/js/categories_pgn.js' %}"></script>
-{% endblock %}
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

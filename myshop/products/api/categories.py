@@ -15,6 +15,7 @@ def rest_category_list(request):
     data = list(
         map(
             lambda itm: {
+                'pk': itm.pk,
                 'name': itm.name,
                 'short_text': itm.short_text[:50] + '...' if (
                         itm.short_text and len(itm.short_text) > 50) else itm.short_text,

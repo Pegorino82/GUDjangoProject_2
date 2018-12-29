@@ -10,12 +10,10 @@
 {% endblock %}
 
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'products/styles/paginator.css' %}">
+<link rel="stylesheet" href="{% static 'products/styles/forms.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
-<ul class="submenu">
-</ul>
 {% endblock %}
 
 {% block small_menu_mainpage %}
@@ -30,19 +28,16 @@
 {% endblock %}
 
 {% block right_content %}
-<div class="category_products">
-    <div class="products_header">
-        {{ object.name }}
+<div class="main_section">
+    <div class="main_section_header">
+        create category
     </div>
-    <div class="row products_table">
-        {% for product in products %}
-        {% include 'products/components/product.html' with product=product %}
-        {% endfor %}
-    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary" type="submit">Create</button>
+    </form>
 </div>
-
-{% include 'products/components/pagination.html' with page_obj=products %}
-
 {% endblock %}
 
 {% block bootstrap_js %}
