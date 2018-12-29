@@ -1,3 +1,15 @@
+.django-pagination {
+    list-style: none;
+    padding-left: 0;
+    justify-content: center;
+    display: flex;
+}
+
+.django-pagination__control {
+    display: inline-block;
+    margin: 0 5px;
+}
+
 .link_button {
     display: block;
     height: 50px;
@@ -15,6 +27,5 @@
 }
 
 .link_button:hover {
-    background-color: #15d30e;
     text-decoration: none;
 }

@@ -1,8 +1,8 @@
-const showCategories = ({name}) =>
+const showCategories = ({pk, name}) =>
     (
         `    
         <div class="col-md-4 col-sm-6 col-xs-12 product_cell">
-            <a href="/categories/category/${name}/">
+            <a href="/categories/detail/${pk}/">
                 <div class="product_card">
                     <div class="product_name">
                         ${name}
