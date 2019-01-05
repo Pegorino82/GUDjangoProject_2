@@ -45,16 +45,42 @@ Basket
     // скрипт для формирования html для отображения позиции в корзине
     // TODO вынести в отдельный файл, задать стили...
     const productRow = ({name, now_price, id}, quantity) => (
+
         `
-        <div>
-            <span>product:  ${name},  </span>
-            <span>price:  ${now_price},  </span>
-            <span>quantity:  ${quantity}  ,</span>
-            <span>total:  ${quantity * now_price}</span>
-        </div>
-        <button class="incButton" product_id="${id}" class="link-add-to-basket">+ local storage</button>
-        <button class="decButton" product_id="${id}" class="link-add-to-basket">- local storage</button>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Add</th>
+                <th>Dec</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>${name}</td>
+                <td>${now_price}</td>
+                <td><button class="incButton" product_id="${id}" class="link-add-to-basket">+</button></td>
+                <td><button class="decButton" product_id="${id}" class="link-add-to-basket">-</button></td>
+                <td>${quantity}</td>
+                <td>${quantity * now_price}</td>
+            </tr>
+            </tbody>
+        </table>
         `
+
+        // `
+        // <div>
+        //     <span>product:  ${name},  </span>
+        //     <span>price:  ${now_price},  </span>
+        //     <span>quantity:  ${quantity}  ,</span>
+        //     <span>total:  ${quantity * now_price}</span>
+        // </div>
+        // <button class="incButton" product_id="${id}" class="link-add-to-basket">+ local storage</button>
+        // <button class="decButton" product_id="${id}" class="link-add-to-basket">- local storage</button>
+        // `
     );
 
 </script>
@@ -136,7 +162,7 @@ Basket
                     )
                         .then(request => request.json())
                         .then(data => location.replace(data.success_url))
-                    // .then(storage => localStorage.clear()) // TODO определиться, когда удалять корзину - при создании заказа или при присвоении ему опеделенного статуса
+                        .then(storage => localStorage.clear()) // TODO определиться, когда удалять корзину - при создании заказа или при присвоении ему опеделенного статуса
 
                 }
             )
@@ -151,5 +177,4 @@ Basket
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'basket/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

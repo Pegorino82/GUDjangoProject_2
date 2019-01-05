@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-Update Order
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -14,16 +14,12 @@ Update Order
 {% endblock %}
 
 {% block small_menu_items %}
-<ul class="submenu">
-</ul>
 {% endblock %}
 
 {% block small_menu_mainpage %}
 {% endblock %}
 
 {% block large_menu_items %}
-<ul class="submenu">
-</ul>
 {% endblock %}
 
 {% block large_menu_mainpage %}
@@ -36,51 +32,42 @@ Update Order
     </div>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ formset.management_form }}
-        {% for err in form.not_field_errors %}
-            <span>
-                {{ err }}
-            </span>
-        {% endfor %}
-        <div class="main-page-auth">
-            {% for field in form %}
-            <div class="input-group">
-                <div class="input-group main-page">
-                    <label class="input-group-addon form-model-label" for="{{ field.name }}">
-                        {{ field.label }}
-                    </label>
+        {{form.as_p}}
+        <table class="table">
+            {{ formset.management_form }}
+            {% for form in formset.forms %}
+            {% if forloop.first %}
+            <thead>
+            <tr>
+                {% for field in form.visible_fields %}
+                <th>
+                    {{ field.label|capfirst }}
+                </th>
+                {% endfor %}
+            </tr>
+            </thead>
+            {% endif %}
+            <tr>
+                {% for field in form.visible_fields %}
+                <td>
+                    {% if forloop.first %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                    {% endif %}
+                    {{ field.errors.as_ul }}
                     {{ field }}
-                </div>
-                {% for err in field.errors %}
-                <span>
-                    {{ err }}
-                </span>
+                </td>
                 {% endfor %}
-            </div>
+            </tr>
             {% endfor %}
-        </div>
-            {% for child_form in formset %}
-            <div class="input-group">
-                <div class="input-group main-page">
-                    {{ child_form }}
-                </div>
-                {% for err in child_form.errors %}
-                <span>
-                    {{ err }}
-                </span>
-                {% endfor %}
-            </div>
-            {% endfor %}
-
-
-        <div class="input-group">
-            <input type="submit" value="SUBMIT">
-        </div>
+        </table>
+        <button class="btn btn-primary" type="submit">Update</button>
+        <a class="btn btn-primary" href="{% url 'ordersapp:detail' order.pk %}">Cancel</a>
+        <a class="btn btn-primary" href="{% url 'ordersapp:list' %}">To orders</a>
     </form>
-
 </div>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

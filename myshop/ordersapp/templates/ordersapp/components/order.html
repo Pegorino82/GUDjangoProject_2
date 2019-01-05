@@ -1,0 +1,41 @@
+{% load staticfiles %}
+
+<div class="row products_table">
+    <div class="product-line">
+        <div class="product-info name">
+            {{ order }}
+        </div>
+        <div class="product-info name">
+            {{ order.get_status_display }}
+        </div>
+    </div>
+    <ul>
+        {% for item in order.items.all %}
+        <li>
+            <div class="product-info name">
+                <a href="{% url 'productsapp:detail' pk=item.product.id %}">{{ item }}</a>
+                {{ item.quantity }}
+            </div>
+
+        </li>
+        {% endfor %}
+    </ul>
+    <div>
+        <span>всего товаров:  </span>
+        <span>{{order.get_total_quantity}}  </span>
+    </div>
+    <div>
+        <span>общая стоимость:  </span>
+        <span>{{order.get_order_price}}  </span>
+    </div>
+    <a class="btn btn-primary" href="{% url 'ordersapp:update' order.pk %}">Edit</a>
+    <a class="btn btn-primary" href="{% url 'ordersapp:delete' order.pk %}">Delete</a>
+</div>
+
+{% endblock %}
+
+{% block js_bottom %}
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

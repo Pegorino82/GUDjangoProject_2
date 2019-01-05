@@ -5,7 +5,7 @@
 {% load utility %}
 
 {% block page_title %}
-Detail Order
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -13,63 +13,87 @@ Detail Order
 
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'ordersapp/styles/order.css' %}">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-<script src="{% static 'products/js/categories.js' %}"></script>
 {% endblock %}
 
 {% block small_menu_items %}
-<!--<ul class="submenu">-->
-<!--</ul>-->
 {% endblock %}
 
 {% block large_menu_items %}
-<!--<ul class="submenu" id="js">-->
-<!--</ul>-->
 {% endblock %}
 
 {% block right_content %}
 <div class="main_section">
     <div class="main_section_header">
-        {{ user }} / detail order: {{ order.id }}
+        order: {{ order.id }}
     </div>
 </div>
-
 
 <div class="row products_table">
     <div class="product-line">
         <div class="product-info name">
-            {{ order }}
+            Created:
         </div>
         <div class="product-info name">
-            {{ order.get_status_display }}
+            {{ order.modified }}
         </div>
     </div>
-    <ul>
+    <div class="product-line">
+        <div class="product-info name">
+            Status:
+        </div>
+        <div class="product-info name">
+            {{ order.get_status_display|capfirst }}
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total cost</th>
+            <!--<th scope="col"></th>-->
+            <!--<th scope="col"></th>-->
+            <!--<th scope="col"></th>-->
+        </tr>
+        </thead>
+        <tbody>
         {% for item in order.items.all %}
-        <li>
-            <div class="product-info name">
-                <a href="{% url 'productsapp:detail' pk=item.product.id %}">{{ item }}</a>
-            {{ item.quantity }}
-            </div>
-
-        </li>
+        {% if item %} <!-- задать условие??-->
+        <tr>
+            <th scope="row"><img class="product-small-photo" src="{{item.product.image.img.url}}"></th>
+            <td>{{item.product.name}}</td>
+            <td>{{item.product.now_price}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.get_order_item_price}}</td>
+            <!--<td><a class="btn btn-primary" href="{% url 'ordersapp:detail' order.pk %}">+</a></td>-->
+            <!--<td><a class="btn btn-primary" href="{% url 'ordersapp:update' order.pk %}">-</a></td>-->
+            <!--<td><a class="btn btn-primary" href="{% url 'ordersapp:update' order.pk %}">Delete</a></td>-->
+        </tr>
+        {% endif %}
         {% endfor %}
-    </ul>
-    <div>
-        <span>всего товаров:  </span>
-        <span>{{order.get_total_quantity}}  </span>
-    </div>
-    <div>
-        <span>общая стоимость:  </span>
-        <span>{{order.get_order_price}}  </span>
-    </div>
+        <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td>Total</td>
+            <td>{{order.get_total_quantity}}</td>
+            <td>{{order.get_order_price}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" href="{% url 'ordersapp:update' order.pk %}">Edit</a>
+    <a class="btn btn-primary" href="{% url 'ordersapp:delete' order.pk %}">Delete</a>
+    <a class="btn btn-primary" href="{% url 'ordersapp:list' %}">To orders</a>
 </div>
 
+{% endblock %}
 
 {% block js_bottom %}
 {% endblock %}
-{% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

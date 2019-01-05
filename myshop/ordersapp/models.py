@@ -59,6 +59,7 @@ class Order(models.Model):
             item.product.quantity += item.quantity
             item.product.save()
         self.is_active = False
+        self.status = 'CNC'
         self.save()
 
     # def save(self, *args, **kwargs):

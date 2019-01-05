@@ -1,31 +1,42 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.forms import inlineformset_factory
 from django.db import transaction
 
 from ordersapp.models import Order, OrderItem
-
 from ordersapp.forms import OrderForm, OrderItemForm
+
+from basket.models import Basket
 
 
 class OrderCreateView(LoginRequiredMixin, CreateView):
     model = Order
     fields = ['user']
+    # fields = []
+    template_name = 'ordersapp/create.html'
+    success_url = reverse_lazy('ordersapp:list')
+    login_url = reverse_lazy('authapp:login_view')
 
     formset_model = OrderItem
     formset_form = OrderItemForm
 
-    template_name = 'ordersapp/create.html'
-    success_url = reverse_lazy('ordersapp:list')
+    # basket = []
+
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
 
     def get_formset_class(self):
+
+        self.basket = Basket.objects.filter(user=self.request.user.id)
+
         # создаем формсет класс с помощью фабрики
         formset_class = inlineformset_factory(
             parent_model=self.model,
             model=self.formset_model,
             form=self.formset_form,
+            extra=len(self.basket) if len(self.basket) else 1
         )
         return formset_class
 
@@ -53,10 +64,18 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         # передаем в контекс форму и формсет
         context = super(OrderCreateView, self).get_context_data(**kwargs)
+        formset = self.get_formset()
+
+        # создаем заказ на основании корзины (которая на сервере)
+        if len(self.basket):
+            for count, item in enumerate(self.basket):
+                formset.forms[count].initial['product'] = item.product
+                formset.forms[count].initial['quantity'] = item.quantity
+
         context.update(
             {
                 'form': self.get_form(),
-                'formset': self.get_formset()
+                'formset': formset
             }
         )
         return context
@@ -77,6 +96,8 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
             formset = self.get_formset()
             if formset.is_valid():
                 formset.save()
+                for item in self.basket:
+                    item.delete()
                 return redirect(self.success_url)
             return render(self.request, self.template_name)
 
@@ -87,7 +108,7 @@ class OrderListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         # показываем поьзователю только его заказы
-        return Order.objects.filter(user=self.request.user)
+        return Order.objects.filter(user=self.request.user, is_active=True)
 
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
@@ -98,14 +119,15 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 
 class OrderUpdateView(LoginRequiredMixin, UpdateView):
     model = Order
-    fields = ['user']
+    # fields = ['user']
+    fields = []
 
     formset_model = OrderItem
     formset_form = OrderItemForm
 
     template_name = 'ordersapp/update.html'
+
     # success_url = reverse_lazy('ordersapp:detail')
-    success_url = reverse_lazy('ordersapp:list')
 
     def get_formset_class(self):
         # создаем формсет класс с помощью фабрики
@@ -150,7 +172,12 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
             if formset.is_valid():
                 formset.instance = self.object
                 formset.save()
-                return redirect(self.success_url)
+                # return redirect(self.success_url)
+                return redirect('ordersapp:detail', self.object.pk)
+            else:
+                print('*' * 20)
+                print('formset is not valid')
+                print('*' * 20)
             return render(self.request, self.template_name)
 
 

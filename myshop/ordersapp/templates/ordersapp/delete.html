@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-Delete Order
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -34,25 +34,16 @@ Delete Order
     <div class="main_section_header">
         {{ user }} / delete order: {{ order.id }}
     </div>
-
-    {{ order }}
-
+    <div class="main_section_content">
+        {{ order }}
+    </div>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ formset.management_form }}
-        {% for err in form.not_field_errors %}
-        <span>
-            {{ err }}
-        </span>
-        {% endfor %}
-        <div class="input-group">
-            <input type="submit" value="SUBMIT">
-        </div>
+        <button class="btn btn-primary" type="submit">Delete</button>
     </form>
-
 </div>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

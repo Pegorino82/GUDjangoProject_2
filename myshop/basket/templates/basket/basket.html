@@ -11,7 +11,6 @@ Basket
 
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'basket/styles/basket.css' %}">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 {% endblock %}
 
 {% block small_menu_items %}
@@ -34,13 +33,12 @@ Basket
 <div id="basket_js">
 </div>
 
-<a class="gonowbutton" href="{% url 'ordersapp:create' %}">Create order</a>
+<a class="btn btn-primary" href="{% url 'ordersapp:create' %}">Create order</a>
 {% endblock %}
 
 {% block js_bottom %}
-<!--<script src="{% static 'basket/js/basket_scripts.js' %}"></script>-->
+<script src="{% static 'basket/js/basket_scripts.js' %}"></script>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'basket/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

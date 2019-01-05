@@ -43,7 +43,7 @@
             </div>
         </div>
         <!--кнопка для добавления товара в корзину на сервере (в БД)-->
-        <!--<a class="btn btn-primary" href="{% url 'basketapp:add_product' pk=object.id %}">Add to basket</a>-->
+        <a class="btn btn-primary" href="{% url 'basketapp:add_product' pk=object.id %}">Add to basket</a>
         <!--добавляем в localStorage если нет и инкрементируем-->
         <button id="addButton" product_id="{{ object.id }}" class="btn btn-primary">Add to local storage
         </button>

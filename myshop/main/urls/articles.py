@@ -26,7 +26,7 @@ urlpatterns = [
 
     # generic views:
     path('create/', CreateArticleView.as_view(), name='create'),
-    path('list/', ListArticleView.as_view(), name='list'),
+    path('', ListArticleView.as_view(), name='list'),
     path('detail/<int:pk>/', DetailArticleView.as_view(), name='detail'),
     path('update/<int:pk>/', UpdateArticleView.as_view(), name='update'),
     path('delete/<int:pk>/', DeleteArticleView.as_view(), name='delete'),

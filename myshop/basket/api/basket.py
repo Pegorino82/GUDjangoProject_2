@@ -54,3 +54,16 @@ def rest_basket_update(request):
             'results': data
         }
     )
+
+def rest_basket_delete(request):
+    pk = request.GET.get('id')
+    obj = get_object_or_404(Basket, id=pk)
+    obj.delete()
+
+    data = {'OK'}
+
+    return JsonResponse(
+        {
+            'results': data
+        }
+    )
