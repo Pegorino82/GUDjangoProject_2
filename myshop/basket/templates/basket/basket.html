@@ -10,6 +10,7 @@ Basket
 {% endblock %}
 
 {% block style_css %}
+<script src="{% static 'basket/js/basket_script.js' %}"></script>
 <link rel="stylesheet" href="{% static 'basket/styles/basket.css' %}">
 {% endblock %}
 
@@ -27,17 +28,71 @@ Basket
 
 {% block right_content %}
 <div class="main_section_header">
-    {{ basket }}
+    {{ basket.0.user }}
 </div>
 
-<div id="basket_js">
+<!--<div id="basket_js">-->
+<!--</div>-->
+
+<div class="basket_list">
+    {% include 'basket/components/basket_table.html' %}
+    <!--<table class="table">-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<th scope="col">Product</th>-->
+            <!--<th scope="col">Price</th>-->
+            <!--<th scope="col">Quantity</th>-->
+            <!--<th scope="col">Total cost</th>-->
+            <!--<th scope="col">+</th>-->
+            <!--<th scope="col">-</th>-->
+            <!--<th scope="col">x</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--{% for basket_item in basket %}-->
+        <!--<tr>-->
+            <!--<th scope="row">-->
+                <!--<img class="product-small-photo" src="{{basket_item.product.image.img.url}}"-->
+                     <!--alt="{{basket_item.product}}">-->
+            <!--</th>-->
+            <!--&lt;!&ndash;<td>{{basket_item.product}}</td>&ndash;&gt;-->
+            <!--<td>{{basket_item.product.now_price}}</td>-->
+            <!--<td>{{basket_item.quantity}}</td>-->
+            <!--<td>{{basket_item.get_product_cost}}</td>-->
+            <!--<td>-->
+                <!--<form method="post" action="{% url 'basketapp:add_product' pk=basket_item.product.id %}">-->
+                    <!--{% csrf_token %}-->
+                    <!--<button id="add_product" name="{{ basket_item.id }}" class="btn btn-primary" type="submit">+</button>-->
+                <!--</form>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<form method="post" action="{% url 'basketapp:remove_product' pk=basket_item.product.id %}">-->
+                    <!--{% csrf_token %}-->
+                    <!--<button class="btn btn-primary" type="submit">-</button>-->
+                <!--</form>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<form method="post" action="{% url 'basketapp:delete_product' pk=basket_item.id %}">-->
+                    <!--{% csrf_token %}-->
+                    <!--<button class="btn btn-primary" type="submit">x</button>-->
+                <!--</form>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--{% endfor %}-->
+        <!--</tbody>-->
+    <!--</table>-->
 </div>
 
+<!--{% for basket_item in basket %}-->
+    <!--<div class="product-line" id="{{ basket_item.id }}">-->
+    <!--{% include 'basket/components/product.html' with product=basket_item.product %}-->
+    <!--</div>-->
+<!--{% endfor %}-->
 <a class="btn btn-primary" href="{% url 'ordersapp:create' %}">Create order</a>
 {% endblock %}
 
 {% block js_bottom %}
-<script src="{% static 'basket/js/basket_scripts.js' %}"></script>
+<!--<script src="{% static 'basket/js/basket_scripts.js' %}"></script>-->
 {% endblock %}
 
 {% block bootstrap_js %}

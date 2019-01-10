@@ -3,6 +3,8 @@ from django.db import models
 # from django.db.models.signals import post_save
 from django.conf import settings
 from products.models import Product
+
+
 # from ordersapp.models import OrderItem
 
 
@@ -42,3 +44,19 @@ class Basket(models.Model):
         # print(self.product.quantity)
         # print('*' * 20)
         super().save(*args, **kwargs)
+
+    @property
+    def get_product_cost(self):
+        return self.product.now_price * self.quantity
+
+    @property
+    def get_total_quantity(self):
+        _items = Basket.objects.filter(user=self.user)
+        _total_quantity = sum(map(lambda x: x.quantity, _items))
+        return _total_quantity
+
+    @property
+    def get_total_cost(self):
+        _items = Basket.objects.filter(user=self.user)
+        _total_cost = sum(map(lambda x: x.now_price, _items))
+        return _total_cost

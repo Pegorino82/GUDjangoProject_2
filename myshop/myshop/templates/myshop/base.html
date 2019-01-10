@@ -16,9 +16,8 @@
     {% block bootstrap_css %}
     {% endblock %}
     <link rel="stylesheet" href="{% static 'myshop/styles/style.css' %}">
-    <link rel="stylesheet" href="{% static 'myshop/styles/localstorage_basket_widget.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-    <script src="{% static 'myshop/js/storage.js' %}"></script>
+    <!--<script src="{% static 'myshop/js/storage.js' %}"></script>-->
     <script src="{% static 'myshop/js/categories.js' %}"></script>
     <script src="{% static 'myshop/packages/jquery-3.2.1.min.js' %}"></script>
     {% block style_css %}
@@ -83,19 +82,19 @@
                 <a href="#"><i class="fab fa-pinterest-p"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
-            <!--ссылка на корзину на сервере. в настоящий момент в формировании заказа не участвует.-->
-            <!--не заполняется-->
-            <a class="basket" href="{% url 'basketapp:basket' %}">
-                <div class="basket__control">
-                </div>
-            </a>
+
+
         </div>
         <div class="row" style="margin-top: 25px;margin-bottom: 50px;text-align: right;"><!--# пользователь-->
-
-            <div class="name-avatar" id="storage_widget">
-
-            </div>
-
+            <!--ссылка на корзину на сервере. в настоящий момент в формировании заказа не участвует.-->
+            <a class="name-avatar" href="{% url 'basketapp:basket' %}">
+                <div class="basket__control">
+                    {% if basket %}
+                    <div>корзине продуктов: {{ basket_total_products }}</div>
+                    <div>на сумму {{ basket_total }} {{ basket_currency }}</div>
+                    {% endif %}
+                </div>
+            </a>
             <div class="name-avatar">
                 <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
                 <span>{{ user.first_name|default:user.username }}</span>
@@ -208,11 +207,8 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<!--<script src="{% static 'basket/js/basket_scripts.js' %}"></script>-->
 {% block js_bottom %}
 <script>
-    // let productItems = document.getElementById('basket_js');
-    // let localItems = getFromStorage('basket');
 </script>
 {% endblock %}
 

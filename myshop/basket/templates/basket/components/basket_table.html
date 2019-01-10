@@ -1,0 +1,38 @@
+{% load static %}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Total cost</th>
+        <th scope="col">+</th>
+        <th scope="col">-</th>
+        <th scope="col">x</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for basket_item in result %}
+    <tr>
+        <th scope="row">
+            <img class="product-small-photo" src="{{basket_item.product.image.img.url}}"
+                 alt="{{basket_item.product}}">
+        </th>
+        <!--<td>{{basket_item.product}}</td>-->
+        <td>{{basket_item.product.now_price}}</td>
+        <td>{{basket_item.quantity}}</td>
+        <td>{{basket_item.get_product_cost}}</td>
+        <td>
+            <button id="add_product" name="{{ basket_item.product.id }}" class="btn btn-primary" type="submit">+</button>
+        </td>
+        <td>
+            <button id="rem_product" name="{{ basket_item.product.id }}" class="btn btn-primary" type="submit">-</button>
+        </td>
+        <td>
+            <button id="del_product" name="{{ basket_item.id }}" class="btn btn-primary" type="submit">x</button>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.template.loader import render_to_string
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -21,41 +21,52 @@ class ModelBasketList(LoginRequiredMixin, ListView):
 @login_required(login_url='/auth/login/')
 def basket(request):
     template_name = 'basket/basket.html'
-    return render(request, template_name, {'basket': basket})
+    q = Basket.objects.filter(user=request.user)
+    context = {'result': q}
+    return render(request, template_name, context)
 
 
 @login_required(login_url='/auth/login/')
 def add_product(request, **kwargs):
-    pk = kwargs.get('pk')
-    prod = Product.objects.get(pk=pk)
-    old_basket = Basket.objects.filter(product=prod, user=request.user)
-    if old_basket:
-        old_basket[0].quantity += 1
-        old_basket[0].save()
-    else:
-        new_basket = Basket(product=prod, user=request.user)
-        new_basket.quantity += 1
-        new_basket.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # if request.method == 'POST':
+        pk = kwargs.get('pk')
+        prod = Product.objects.get(pk=pk)
+        old_basket = Basket.objects.filter(product=prod, user=request.user)
+        if old_basket:
+            old_basket[0].quantity += 1
+            old_basket[0].save()
+        else:
+            new_basket = Basket(product=prod, user=request.user)
+            new_basket.quantity += 1
+            new_basket.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # else:
+    #     raise Http404
 
 
 @login_required(login_url='/auth/login/')
 def remove_product(request, **kwargs):
-    pk = kwargs.get('pk')
-    prod = Product.objects.get(pk=pk)
-    old_basket = Basket.objects.filter(product=prod, user=request.user)
-    if old_basket and old_basket[0].quantity > 0:
-        old_basket[0].quantity -= 1
-        old_basket[0].save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if request.method == 'POST':
+        pk = kwargs.get('pk')
+        prod = Product.objects.get(pk=pk)
+        old_basket = Basket.objects.filter(product=prod, user=request.user)
+        if old_basket and old_basket[0].quantity > 0:
+            old_basket[0].quantity -= 1
+            old_basket[0].save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        raise Http404
 
 
 @login_required(login_url='/auth/login/')
 def delete_product(request, **kwargs):
-    pk = kwargs.get('pk')
-    prod = Basket.objects.get(pk=pk)
-    prod.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if request.method == 'POST':
+        pk = kwargs.get('pk')
+        prod = get_object_or_404(Basket, pk=pk)
+        prod.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        raise Http404
 
 
 @login_required(login_url='/auth/login/')
@@ -76,3 +87,55 @@ def edit_basket(request, pk, quantity, **kwargs):
 
         return JsonResponse({'result': result})
         # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required(login_url='/auth/login/')
+def add_product_ajax(request, **kwargs):
+    if request.is_ajax():
+        pk = kwargs.get('pk')
+        prod = Product.objects.get(pk=pk)
+        old_basket = Basket.objects.filter(product=prod, user=request.user)
+        if old_basket:
+            old_basket[0].quantity += 1
+            old_basket[0].save()
+        else:
+            new_basket = Basket(product=prod, user=request.user)
+            new_basket.quantity += 1
+            new_basket.save()
+        basket_items = Basket.objects.filter(user=request.user)
+        content = {'result': basket_items}
+        result = render_to_string('basket/components/basket_table.html', content)
+        return JsonResponse({'result': result})
+    else:
+        raise Http404
+
+
+@login_required(login_url='/auth/login/')
+def remove_product_ajax(request, **kwargs):
+    if request.is_ajax():
+        pk = kwargs.get('pk')
+        prod = Product.objects.get(pk=pk)
+        old_basket = Basket.objects.filter(product=prod, user=request.user)
+        if old_basket and old_basket[0].quantity > 0:
+            old_basket[0].quantity -= 1
+            old_basket[0].save()
+        basket_items = Basket.objects.filter(user=request.user)
+        content = {'result': basket_items}
+        result = render_to_string('basket/components/basket_table.html', content)
+        return JsonResponse({'result': result})
+    else:
+        raise Http404
+
+
+@login_required(login_url='/auth/login/')
+def delete_product_ajax(request, **kwargs):
+    if request.is_ajax():
+        pk = kwargs.get('pk')
+        prod = get_object_or_404(Basket, pk=pk)
+        prod.delete()
+        basket_items = Basket.objects.filter(user=request.user)
+        content = {'result': basket_items}
+        result = render_to_string('basket/components/basket_table.html', content)
+        return JsonResponse({'result': result})
+    else:
+        raise Http404

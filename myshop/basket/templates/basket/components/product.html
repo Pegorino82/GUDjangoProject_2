@@ -19,10 +19,22 @@
     </div>
 </div>
 
+<div class="product-info">
+    <div>
+        <span class="price">
+            {{ basket_item.quantity }}
+        </span>
+    </div>
+</div>
+
 <div>
     <a class="add_one" href="{% url 'basketapp:add_product' pk=product.id %}">+</a>
 </div>
 
 <div>
     <a class="remove_one" href="{% url 'basketapp:remove_product' pk=product.id %}">-</a>
+</div>
+
+<div>
+    <a class="remove_one" href="{% url 'basketapp:delete_product' pk=product.id %}">x</a>
 </div>
