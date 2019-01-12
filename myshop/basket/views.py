@@ -7,6 +7,8 @@ from django.template.loader import render_to_string
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
+from django.db import transaction
+
 from basket.models import Basket
 from products.models import Product
 
@@ -26,22 +28,22 @@ def basket(request):
     return render(request, template_name, context)
 
 
+@transaction.atomic
 @login_required(login_url='/auth/login/')
 def add_product(request, **kwargs):
-    # if request.method == 'POST':
-        pk = kwargs.get('pk')
-        prod = Product.objects.get(pk=pk)
-        old_basket = Basket.objects.filter(product=prod, user=request.user)
-        if old_basket:
-            old_basket[0].quantity += 1
-            old_basket[0].save()
-        else:
-            new_basket = Basket(product=prod, user=request.user)
-            new_basket.quantity += 1
-            new_basket.save()
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    # else:
-    #     raise Http404
+    pk = kwargs.get('pk')
+    prod = Product.objects.get(pk=pk)
+    old_basket = Basket.objects.filter(product=prod, user=request.user)
+    if old_basket:
+        old_basket[0].quantity += 1
+        old_basket[0].save()
+    else:
+        new_basket = Basket(product=prod, user=request.user)
+        new_basket.quantity += 1
+        new_basket.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 
 @login_required(login_url='/auth/login/')
@@ -69,6 +71,9 @@ def delete_product(request, **kwargs):
         raise Http404
 
 
+# изменение товара в корзине методом ajax
+# сейчас не используется
+# используются функции ниже
 @login_required(login_url='/auth/login/')
 def edit_basket(request, pk, quantity, **kwargs):
     if request.is_ajax():
@@ -89,6 +94,7 @@ def edit_basket(request, pk, quantity, **kwargs):
         # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@transaction.atomic
 @login_required(login_url='/auth/login/')
 def add_product_ajax(request, **kwargs):
     if request.is_ajax():
@@ -96,12 +102,17 @@ def add_product_ajax(request, **kwargs):
         prod = Product.objects.get(pk=pk)
         old_basket = Basket.objects.filter(product=prod, user=request.user)
         if old_basket:
+
             old_basket[0].quantity += 1
             old_basket[0].save()
         else:
             new_basket = Basket(product=prod, user=request.user)
             new_basket.quantity += 1
             new_basket.save()
+
+        prod.quantity -= 1
+        prod.save()
+
         basket_items = Basket.objects.filter(user=request.user)
         content = {'result': basket_items}
         result = render_to_string('basket/components/basket_table.html', content)
@@ -110,6 +121,7 @@ def add_product_ajax(request, **kwargs):
         raise Http404
 
 
+@transaction.atomic
 @login_required(login_url='/auth/login/')
 def remove_product_ajax(request, **kwargs):
     if request.is_ajax():
@@ -119,6 +131,10 @@ def remove_product_ajax(request, **kwargs):
         if old_basket and old_basket[0].quantity > 0:
             old_basket[0].quantity -= 1
             old_basket[0].save()
+
+        prod.quantity += 1
+        prod.save()
+
         basket_items = Basket.objects.filter(user=request.user)
         content = {'result': basket_items}
         result = render_to_string('basket/components/basket_table.html', content)
@@ -127,6 +143,7 @@ def remove_product_ajax(request, **kwargs):
         raise Http404
 
 
+@transaction.atomic
 @login_required(login_url='/auth/login/')
 def delete_product_ajax(request, **kwargs):
     if request.is_ajax():

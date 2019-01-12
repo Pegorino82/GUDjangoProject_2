@@ -92,6 +92,8 @@
                     {% if basket %}
                     <div>корзине продуктов: {{ basket_total_products }}</div>
                     <div>на сумму {{ basket_total }} {{ basket_currency }}</div>
+                    {% else %}
+                    <div>Ваша корзина пуста</div>
                     {% endif %}
                 </div>
             </a>

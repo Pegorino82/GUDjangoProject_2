@@ -181,7 +181,6 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
             return render(self.request, self.template_name)
 
 
-# TODO не удаляет заказ
 class OrderDeleteView(LoginRequiredMixin, DeleteView):
     model = Order
     context_object_name = 'order'

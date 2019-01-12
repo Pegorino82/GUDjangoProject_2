@@ -40,6 +40,7 @@
         {% for field in form %}
         <label for="{{field.name}}">{{field.label}}:</label>
         {% if not user.is_staff %}
+            <input type="hidden" readonly name="user" id="id_user" value="{{user.id}}">
             {{user}}
         {% else %}
             {{field}}

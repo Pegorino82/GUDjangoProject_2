@@ -40,6 +40,7 @@
         <thead>
         <tr>
             <th scope="col">Order id</th>
+            <th scope="col">Status</th>
             <th scope="col">Created</th>
             <th scope="col">Total quantity</th>
             <th scope="col">Total cost</th>
@@ -52,6 +53,7 @@
         {% if order.is_active %}
             <tr>
                 <th scope="row">{{order.pk}}</th>
+                <td>{{order.status}}</td>
                 <td>{{order.modified}}</td>
                 <td>{{order.get_total_quantity}}</td>
                 <td>{{order.get_order_price}}</td>

@@ -39,7 +39,11 @@
         {% for field in form %}
         <p>
             <label for="id_{{field.name}}">{{field.label}}:</label>
-            <input type="text"
+            {% if field.name == 'password' %}
+                <input type="password"
+            {% else %}
+                <input type="text"
+            {% endif %}
                    name="{{field.name}}"
                    autofocus
                    class="form-control"

@@ -29,20 +29,12 @@ class Basket(models.Model):
         # при удалении товара его количество возвращается на склад
         self.product.quantity += self.quantity
         self.product.save()
-        #     print('*'*5+'delete'+'*'*5)
-        #     print(self.quantity)
-        #     print(self.product.quantity)
-        #     print('*'*20)
         super().delete()
 
     def save(self, *args, **kwargs):
         # при добавлении в корзину убираем товар со склада
         self.product.quantity -= int(self.quantity)
         self.product.save()
-        # print('*' * 5 + 'save' + '*' * 5)
-        # print(self.quantity)
-        # print(self.product.quantity)
-        # print('*' * 20)
         super().save(*args, **kwargs)
 
     @property

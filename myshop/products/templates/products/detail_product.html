@@ -44,14 +44,9 @@
         </div>
         <!--кнопка для добавления товара в корзину на сервере (в БД)-->
         <a class="btn btn-primary" href="{% url 'basketapp:add_product' pk=object.id %}">Add to basket</a>
-        <!--добавляем в localStorage если нет и инкрементируем-->
-        <!--<button id="addButton" product_id="{{ object.id }}" class="btn btn-primary">Add to local storage-->
-        <!--</button>-->
-        <!--<button id="incButton" product_id="{{ object.id }}" class="btn btn-primary">+ local storage</button>-->
-        <!--<button id="decButton" product_id="{{ object.id }}" class="btn btn-primary">- local storage</button>-->
         {% if user.is_staff %}
-        <br><a class="btn btn-primary" href="{% url 'productsapp:update' pk=object.id %}">Update</a>
-        <a class="btn btn-primary" href="{% url 'productsapp:delete' pk=object.id %}">Delete</a>
+            <br><a class="btn btn-primary" href="{% url 'productsapp:update' pk=object.id %}">Update</a>
+            <a class="btn btn-primary" href="{% url 'productsapp:delete' pk=object.id %}">Delete</a>
         {% endif %}
 
     </div>
@@ -59,23 +54,6 @@
 {% endblock %}
 
 {% block js_bottom %}
-<!--<script>-->
-    <!--const btnAdd = document.getElementById('addButton');-->
-    <!--btnAdd.addEventListener("click", evt => {-->
-        <!--incProduct(-->
-            <!--'basket',-->
-            <!--btnAdd.getAttribute('product_id'),-->
-        <!--)-->
-    <!--});-->
-    <!--//// кнопка уменьшния товара в корзине-->
-    <!--// const btnDec = document.getElementById('decButton');-->
-    <!--// btnDec.addEventListener("click", evt => {-->
-    <!--//     decProduct(-->
-    <!--//         'basket',-->
-    <!--//         btnDec.getAttribute('product_id'),-->
-    <!--//     )-->
-    <!--// });-->
-<!--</script>-->
 {% endblock %}
 
 {% block bootstrap_js %}
