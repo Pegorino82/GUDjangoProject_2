@@ -66,16 +66,20 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         context = super(OrderCreateView, self).get_context_data(**kwargs)
         formset = self.get_formset()
 
+        total_cost = self.basket[0].get_total_cost or 0
         # создаем заказ на основании корзины (которая на сервере)
         if len(self.basket):
             for count, item in enumerate(self.basket):
                 formset.forms[count].initial['product'] = item.product
                 formset.forms[count].initial['quantity'] = item.quantity
+                formset.forms[count].initial['price'] = item.get_product_cost
+                # total_cost = item.get_total_cost
 
         context.update(
             {
                 'form': self.get_form(),
-                'formset': formset
+                'formset': formset,
+                'total_cost': total_cost
             }
         )
         return context
@@ -157,6 +161,10 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         form = self.get_form()
         formset = self.get_formset()
+        for form in formset.forms:
+            if form.instance.pk:
+                form.initial['price'] = form.instance.get_order_item_price
+
         context.update(
             {
                 'form': form,

@@ -55,6 +55,8 @@ def remove_product(request, **kwargs):
         if old_basket and old_basket[0].quantity > 0:
             old_basket[0].quantity -= 1
             old_basket[0].save()
+        else:
+            old_basket.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         raise Http404

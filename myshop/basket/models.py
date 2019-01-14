@@ -50,5 +50,5 @@ class Basket(models.Model):
     @property
     def get_total_cost(self):
         _items = Basket.objects.filter(user=self.user)
-        _total_cost = sum(map(lambda x: x.now_price, _items))
+        _total_cost = sum(map(lambda x: x.product.now_price, _items))
         return _total_cost

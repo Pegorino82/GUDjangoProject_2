@@ -10,19 +10,46 @@ from basket.models import Basket
 def rest_basket_list(request):
     user = request.user
     if not user.is_anonymous:
-        obj_list = get_list_or_404(Basket, user=user)
-        data = [obj.__dict__ for obj in obj_list]
-        for i in data:
-            i.pop('_state')
+        obj_list = Basket.objects.filter(user=user)
+        if len(obj_list) > 0:
+            # data = [obj.__dict__ for obj in obj_list]
+            data = [obj.__dict__ for obj in obj_list]
+            print('*>>'*20, data)
+            for i in data:
+                i.pop('_state')
+
+            items = sum([item['quantity'] for item in data])
+
+            total_cost = 0
+            for item in Basket.objects.filter(user=user):
+                total_cost += item.product.now_price * item.quantity
+
+        else:
+            data = []
+            items = 0
+            total_cost = 0
+
+        widget_data = {
+            'items': items,
+            'total_cost': total_cost
+        }
 
         return JsonResponse(
             {
                 'results': data,
+                'widget_data': widget_data
             }
         )
     else:
-        raise Http404('No Basket matches the given query.')
-        # return HttpResponseNotFound('<p>No Basket matches the given query.</p>')
+        # raise Http404('No Basket matches the given query.')
+        return JsonResponse(
+            {
+                'widget_data': {
+                    'items': 'нет',
+                    'total_cost': 0
+                }
+            }
+        )
 
 
 def rest_basket_detail(request):

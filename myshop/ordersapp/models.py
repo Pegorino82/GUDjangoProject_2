@@ -74,6 +74,11 @@ class Order(models.Model):
         username = full_name if full_name else self.user.username
         return f'{username}, order: {self.id}, created: {self.created.strftime("%Y-%m-%d %H:%M")}'
 
+    def __repr__(self):
+        full_name = self.user.get_full_name()
+        username = full_name if full_name else self.user.username
+        return f'{username}, order: {self.id}, created: {self.created.strftime("%Y-%m-%d %H:%M")}'
+
 
 class OrderItemQueryset(models.QuerySet):
 
@@ -120,4 +125,4 @@ class OrderItem(models.Model):
         super(self.__class__, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.product.name
+        return self.product.name + '_orderitem'

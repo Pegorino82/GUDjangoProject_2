@@ -11,6 +11,7 @@
 
 {% block style_css %}
 <link rel="stylesheet" href="{% static 'ordersapp/styles/order.css' %}">
+<script src="{% static 'ordersapp/js/order_scripts.js' %}"></script>
 {% endblock %}
 
 {% block small_menu_items %}
@@ -64,7 +65,7 @@
             {% endif %}
             <tr>
                 {% for field in form.visible_fields %}
-                <td>
+                <td style="text-align: center">
                     {% if forloop.first %}
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
@@ -76,9 +77,19 @@
                 {% endfor %}
             </tr>
             {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <div id="total_cost">
+                        {{total_cost}}
+                    </div>
+                </td>
+            </tr>
         </table>
         <button class="btn btn-primary" type="submit">Create</button>
     </form>
+
 </div>
 {% endblock %}
 

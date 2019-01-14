@@ -41,9 +41,13 @@
             <div class="product_describe">
                 {{ object.long_text }}
             </div>
+            <div class="product_describe">
+                На складе: {{ object.quantity }}
+            </div>
         </div>
         <!--кнопка для добавления товара в корзину на сервере (в БД)-->
-        <a class="btn btn-primary" href="{% url 'basketapp:add_product' pk=object.id %}">Add to basket</a>
+        <!--<a class="btn btn-primary" href="{% url 'basketapp:add_product' pk=object.id %}">Add to basket</a>-->
+        <button id="add_product" name={{ object.id }} class="btn btn-primary" type="submit">Add to basket</button>
         {% if user.is_staff %}
             <br><a class="btn btn-primary" href="{% url 'productsapp:update' pk=object.id %}">Update</a>
             <a class="btn btn-primary" href="{% url 'productsapp:delete' pk=object.id %}">Delete</a>

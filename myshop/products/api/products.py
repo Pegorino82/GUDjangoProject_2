@@ -104,6 +104,7 @@ def rest_product_detail(request, **kwargs):
         'product_marker': obj.product_marker.corner,
         'category': obj.category.name,
         'image': obj.image.img.url,
+        'quantity': obj.quantity
     }
 
     return JsonResponse(

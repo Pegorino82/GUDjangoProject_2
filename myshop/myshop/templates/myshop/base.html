@@ -20,6 +20,7 @@
     <!--<script src="{% static 'myshop/js/storage.js' %}"></script>-->
     <script src="{% static 'myshop/js/categories.js' %}"></script>
     <script src="{% static 'myshop/packages/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'basket/js/basket_script.js' %}"></script>
     {% block style_css %}
     {% endblock %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
@@ -88,13 +89,8 @@
         <div class="row" style="margin-top: 25px;margin-bottom: 50px;text-align: right;"><!--# пользователь-->
             <!--ссылка на корзину на сервере. в настоящий момент в формировании заказа не участвует.-->
             <a class="name-avatar" href="{% url 'basketapp:basket' %}">
-                <div class="basket__control">
-                    {% if basket %}
-                    <div>корзине продуктов: {{ basket_total_products }}</div>
-                    <div>на сумму {{ basket_total }} {{ basket_currency }}</div>
-                    {% else %}
-                    <div>Ваша корзина пуста</div>
-                    {% endif %}
+                <div class="basket__control" {% if not user.is_authenticated %}style="visibility: hidden"{% endif %}>
+
                 </div>
             </a>
             <div class="name-avatar">
