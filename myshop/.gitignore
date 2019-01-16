@@ -1,4 +1,6 @@
 *.sqlite3
 /vkAuthSecret.json
+/smtpSecret.json
+/postgresqlSecret.json
 
 *.xlsx
