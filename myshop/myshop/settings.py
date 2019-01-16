@@ -156,14 +156,38 @@ EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
 EMAIL_USE_SSL = False
 
+
+# with open('./smtpSecret.json', 'r') as f:
+#     smtp = json.load(f)
+#
+# DOMAIN_NAME = '192.168.1.98'
+# EMAIL_HOST = smtp['email_host']
+# EMAIL_PORT = smtp['email_port']
+# EMAIL_HOST_USER = smtp['email_host_user']
+# EMAIL_HOST_PASSWORD = smtp['email_host_password']
+# EMAIL_USE_SSL = True
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
+with open('./postgresqlSecret.json', 'r') as f:
+    postgres = json.load(f)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+
+    # VM:
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': 'myshop',
+    #         'USER': postgres['user'],
+    #         'PASSWORD': postgres['password'],
+    #         'HOST': 'localhost',
+    #         'PORT': 5432  # для связи с контейнером docker
+    #     }
 
     # docker:
     #     'default': {
