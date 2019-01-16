@@ -44,7 +44,16 @@ window.onload = function () {
             $('#total_cost').html(parseFloat(total).toFixed(2));
 
         });
-    };
+    }
 
+    // console.log($('.formset_row'));
+
+    // // todo почему не работает?
+    // $('.formset_row').formset({
+    //     addText: 'добавить продукт',
+    //     deleteText: 'удалить',
+    //     prefix: 'items',
+    //     // removed: deleteOrderItem
+    // });
 
 };

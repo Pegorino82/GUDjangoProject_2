@@ -16,10 +16,12 @@
     {% block bootstrap_css %}
     {% endblock %}
     <link rel="stylesheet" href="{% static 'myshop/styles/style.css' %}">
+    <script src="{% static 'myshop/packages/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'ordersapp/js/jquery.formset.js' %}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <!--<script src="{% static 'myshop/js/storage.js' %}"></script>-->
     <script src="{% static 'myshop/js/categories.js' %}"></script>
-    <script src="{% static 'myshop/packages/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'basket/js/basket_script.js' %}"></script>
     {% block style_css %}
     {% endblock %}
