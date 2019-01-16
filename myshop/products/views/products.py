@@ -30,11 +30,9 @@ class Catalog(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({'title': 'Catalog'})
-        context.update({'limit_products': Product.get_limit(3)})  # TODO надо оптимизировать!
+        context.update({'limit_products': Product.get_limit(3)})
         context.update({'pagination_url': reverse_lazy('productsapp:catalog')})
         return context
-
-
 
 
 # В настоящий момент отображение товаров и пагинация

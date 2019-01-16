@@ -29,7 +29,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
 
     def get_formset_class(self):
 
-        self.basket = Basket.objects.filter(user=self.request.user.id)
+        self.basket = Basket.objects.filter(user=self.request.user.id).select_related()
 
         # создаем формсет класс с помощью фабрики
         formset_class = inlineformset_factory(
@@ -112,7 +112,7 @@ class OrderListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         # показываем поьзователю только его заказы
-        return Order.objects.filter(user=self.request.user, is_active=True)
+        return Order.objects.filter(user=self.request.user, is_active=True).select_related()
 
 
 class OrderDetailView(LoginRequiredMixin, DetailView):

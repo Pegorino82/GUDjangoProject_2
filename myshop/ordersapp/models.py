@@ -35,7 +35,8 @@ class Order(models.Model):
         default=FORMING
     )
     is_active = models.BooleanField(
-        default=True
+        default=True,
+        db_index=True,
     )
 
     def get_total_quantity(self):
@@ -50,7 +51,7 @@ class Order(models.Model):
 
     def get_order_price(self):
         # стоимость всего заказа
-        items = self.items.select_related()
+        items = self.items.select_related('product')
         return sum(list(map(lambda item: item.get_order_item_price, items)))
 
     def delete(self):

@@ -51,6 +51,7 @@ def default_category():
     except:
         pass
 
+
 class Product(models.Model):
     name = models.CharField(
         max_length=150,
@@ -101,7 +102,8 @@ class Product(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     is_active = models.BooleanField(
-        default=True
+        default=True,
+        db_index=True
     )
 
     quantity = models.PositiveIntegerField()  # количество на складе
@@ -112,9 +114,10 @@ class Product(models.Model):
     # TODO надо оптимизировать!
     @classmethod
     def get_limit(cls, limit):
-        categories = Category.objects.all()
+        categories = Category.objects.all().select_related()
         res = list()
         for cat in categories:
-            for prod in cls.objects.filter(category=cat.id, is_active=True).select_related('category')[:limit]:
+            for prod in cls.objects.filter(category=cat.id, is_active=True).select_related('category', 'image',
+                                                                                           'product_marker')[:limit]:
                 res.append(prod)
         return res

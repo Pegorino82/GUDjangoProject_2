@@ -27,7 +27,8 @@ class CategoryListOfView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        products = Product.objects.filter(category=self.object.pk, is_active=True).order_by('-pk')
+        products = Product.objects.filter(category=self.object.pk, is_active=True).order_by('-pk').select_related(
+            'image', 'product_marker')
         products_paginator = Paginator(products, 4)
         products_page = self.request.GET.get('page')
         products_items = products_paginator.get_page(products_page)

@@ -43,12 +43,12 @@ class Basket(models.Model):
 
     @property
     def get_total_quantity(self):
-        _items = Basket.objects.filter(user=self.user)
+        _items = Basket.objects.filter(user=self.user).select_related()
         _total_quantity = sum(map(lambda x: x.quantity, _items))
         return _total_quantity
 
     @property
     def get_total_cost(self):
-        _items = Basket.objects.filter(user=self.user)
+        _items = Basket.objects.filter(user=self.user).select_related()
         _total_cost = sum(map(lambda x: x.product.now_price, _items))
         return _total_cost
