@@ -1,4 +1,5 @@
 const showBasket = ({image, name, now_price, quantity, id, totalPrice}) => (
+
     `
     <div class="product-line" id="${id}">
         <img class="product-small-photo" src="${image}" alt="${name}">
@@ -8,14 +9,15 @@ const showBasket = ({image, name, now_price, quantity, id, totalPrice}) => (
         <div class="product-info price">
             ${now_price}
         </div>
-        <button class="add_one" onclick="addOne(${id})">+</button>
-        <button class="remove_one" onclick="removeOne(${id})">-</button>
+        <button class="btn btn-primary" onclick="addOne(${id})">+</button>
+        <button class="btn btn-primary" onclick="removeOne(${id})">-</button>
         <span class="quantity">
             ${quantity}
         </span>
         <span class="total_price">
             ${totalPrice}
         </span>
+        <button class="btn btn-primary" onclick="deleteProduct(${id})">X</button>
     </div>
     <hr>
     `
@@ -24,6 +26,7 @@ const showBasket = ({image, name, now_price, quantity, id, totalPrice}) => (
 
 const listApiUrl = '/api/basket/list/';
 const detailApiUrl = '/api/basket/detail/?id=';
+const deleteApiUrl = '/api/basket/delete/';
 const updateApiUrl = '/api/basket/update/';
 const productApiUrl = '/api/products/detail/';
 
@@ -31,7 +34,7 @@ function getJson(apiUrl) {
     let HttpReq = new XMLHttpRequest(); // a new request
     HttpReq.open("GET", apiUrl, false);
     HttpReq.send(null);
-    console.log(JSON.parse(HttpReq.responseText));
+    // console.log(JSON.parse(HttpReq.responseText));
     return JSON.parse(HttpReq.responseText);
 }
 
@@ -39,6 +42,15 @@ function updateRequest(updateApiUrl, params) {
     let HttpReq = new XMLHttpRequest(); // a new request
     HttpReq.open("GET", updateApiUrl + '?' + params, false);
     HttpReq.send(null);
+}
+
+function deleteRequest(deleteApiUrl, params) {
+    let HttpReq = new XMLHttpRequest(); // a new request
+    let body = params;
+    HttpReq.open("POST", deleteApiUrl, true);
+    HttpReq.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    // HttpReq.onreadystatechange = ...;
+    HttpReq.send(body);
 }
 
 //**************************************
@@ -55,7 +67,7 @@ const Basket = ({basket_total, basket_len, basket_currency}) =>
 
 function renderBasketWidget(listApiUrl) {
     let basketItems = getJson(listApiUrl).results;
-    console.log(basketItems);
+    // console.log(basketItems);
 
     let basket_total = 0;
     let basket_len = 0;
@@ -68,7 +80,7 @@ function renderBasketWidget(listApiUrl) {
         basket_currency = product.currency;
     });
 
-    console.log(basket_total, basket_len, basket_currency);
+    // console.log(basket_total, basket_len, basket_currency);
 
     basketHtml = document.getElementsByClassName('basket__control')[0];
     basketLinkHtml = document.getElementsByClassName('basket')[0];
@@ -83,7 +95,8 @@ function renderBasketWidget(listApiUrl) {
     )
 };
 
-renderBasketWidget(listApiUrl)
+// renderBasketWidget(listApiUrl);
+
 //**************************************
 
 function renderBasketItem(detailApiUrl, id) {
@@ -105,7 +118,7 @@ function renderBasketItem(detailApiUrl, id) {
     );
     currentBasketItem.innerHTML = '';
     currentBasketItem.innerHTML = basketItem;
-    console.log(currentBasketItem.innerHTML);
+    // console.log(currentBasketItem.innerHTML);
 }
 
 function renderBasket(apiUrl) {
@@ -119,7 +132,7 @@ function renderBasket(apiUrl) {
         product['totalPrice'] = item.quantity * product.now_price;
         getBasket.push(product);
     });
-    console.log('basket-->', getBasket)
+    // console.log('basket-->', getBasket);
     let basketItems = getBasket.map(showBasket).join('');
     let basketHtml = document.getElementById('basket_js');
     basketHtml.innerHTML = '';
@@ -160,5 +173,15 @@ function removeOne(id) {
     // renderBasketItem(detailApiUrl, id);
     renderBasket(listApiUrl);
     renderBasketWidget(listApiUrl);
-};
+}
+
+function deleteProduct(id) {
+    // let currBasketItem = document.getElementById(id);
+    let params = JSON.stringify({
+        id: id,
+    });
+    deleteRequest(deleteApiUrl, params);
+    // renderBasket(listApiUrl);
+    // renderBasketWidget(listApiUrl);
+}
 

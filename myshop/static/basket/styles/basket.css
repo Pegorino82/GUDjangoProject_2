@@ -1,45 +1,8 @@
-@font-face {
-    font-family: "Roboto Regular";
-    src: url("../fonts/Roboto_Regular.ttf")
-}
-
-@font-face {
-    font-family: "Roboto Bold";
-    src: url("../fonts/Roboto_Bold.ttf")
-}
-
-@font-face {
-    font-family: "Roboto Black";
-    src: url("../fonts/Roboto_Black.ttf")
-}
-
-@font-face {
-    font-family: "Roboto Black Italic";
-    src: url("../fonts/Roboto_BlackItalic.ttf")
-}
-
-@font-face {
-    font-family: "Raleway Regular";
-    src: url("../fonts/Raleway_Regular.ttf")
-}
-
-@font-face {
-    font-family: "Raleway Bold";
-    src: url("../fonts/Raleway_Bold.ttf")
-}
-
-@font-face {
-    font-family: "Raleway ExtraBold";
-    src: url("../fonts/Raleway_ExtraBold.ttf")
-}
-
-@font-face {
-    font-family: "Raleway Black";
-    src: url("../fonts/Raleway_Black.ttf")
-}
-
-.form-model {
-
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > thead > tr > th{
+    vertical-align: middle;
+    text-align: center;
 }
 
 .form-model-label {

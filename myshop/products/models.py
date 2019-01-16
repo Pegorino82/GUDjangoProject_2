@@ -115,6 +115,6 @@ class Product(models.Model):
         categories = Category.objects.all()
         res = list()
         for cat in categories:
-            for prod in cls.objects.filter(category=cat.id, is_active=True)[:limit]:
+            for prod in cls.objects.filter(category=cat.id, is_active=True).select_related('category')[:limit]:
                 res.append(prod)
         return res

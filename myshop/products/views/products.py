@@ -35,6 +35,8 @@ class Catalog(ListView):
         return context
 
 
+
+
 # В настоящий момент отображение товаров и пагинация
 # осуществляется js (products/api/products/rest_product_list/)
 class ProductListView(ListView):
