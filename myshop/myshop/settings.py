@@ -170,8 +170,8 @@ EMAIL_USE_SSL = False
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-with open('./postgresqlSecret.json', 'r') as f:
-    postgres = json.load(f)
+# with open('./postgresqlSecret.json', 'r') as f:
+#     postgres = json.load(f)
 
 DATABASES = {
     'default': {
