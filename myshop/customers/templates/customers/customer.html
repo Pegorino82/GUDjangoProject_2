@@ -29,7 +29,11 @@
 {% block right_content %}
 <div class="main_section">
     <div class="main_section_header">
-        Wellcome, {{ user }}!
+        {% if user.is_authenticated %}
+            Wellcome, {{ user }}!
+        {% else %}
+            Log in or Sign in
+        {% endif %}
     </div>
     {% if not user.is_authenticated %}
     <div class="input-group">
@@ -41,6 +45,9 @@
     {% else %}
     <div class="input-group">
         <a class="link_button" href="{% url 'authapp:logout_view' %}">Выйти</a>
+    </div>
+    <div class="input-group">
+        <a class="link_button" href="{% url 'customersapp:edit_profile' pk=user.pk %}">Редактировать профиль</a>
     </div>
     {% endif %}
     {% if user.is_staff or user.is_superuser %}

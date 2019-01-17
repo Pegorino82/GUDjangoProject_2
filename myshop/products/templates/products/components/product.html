@@ -1,20 +1,24 @@
 {% load static %}
 
-<div class="product_card {{prd.product_marker|default_if_none:''}}">
-    <img class="product_img" src="{{ prd.image.img.url }}" alt="">
-    <div class="name_price">
-        <div class="product_name">
-            {{ prd.name|title }}
-        </div>
-        <div class="product_price">
-            <div class="now_price">
-                {{ prd.currency }} {{ prd.now_price }}
+<div class="col-md-4 col-sm-6 col-xs-12 product_cell">
+    <a href="{% url 'productsapp:detail' pk=product.id %}">
+        <div class="product_card {{product.product_marker|default_if_none:''}}">
+            <img class="product_img" src="{{ product.image.img.url|default_if_none:'/media/default.jpg' }}" alt="">
+            <div class="name_price">
+                <div class="product_name">
+                    {{ product.name|title }}
+                </div>
+                <div class="product_price">
+                    <div class="now_price">
+                        {{ product.currency }} {{ product.now_price }}
+                    </div>
+                    {% if product.old_price %}
+                    <div class="old_price">
+                        {{ product.currency }} {{ product.old_price }}
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            {% if prd.old_price %}
-            <div class="old_price">
-                {{ prd.currency }} {{ prd.old_price }}
-            </div>
-            {% endif %}
         </div>
-    </div>
+    </a>
 </div>

@@ -1,30 +1,46 @@
 import hashlib
 import random
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
 from customers.models import Customer
 
 
-class CustomerModelForm(forms.ModelForm):
-    birth_date = forms.DateField(
-        input_formats=['%Y-%m-%d'],
-        widget=forms.DateTimeInput(
-            attrs={
-                'type': 'date',
-                'class': 'form-model-date'
-            }
-        )
-    )
+class CustomerLoginForm(AuthenticationForm):
+    class Meta:
+        model = Customer
+        fields = ['username', 'password']
 
-    confirm_password = forms.CharField(
-        max_length=250,
-        widget=forms.PasswordInput
-    )
+    def __init__(self, *args, **kwargs):
+        super(CustomerLoginForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
+
+class CustomerAuthModelForm(UserCreationForm):
+    # email = forms.EmailField(
+    #     max_length=258,
+    #     required=True
+    # )
+    #
+    # confirm_password = forms.CharField(
+    #     max_length=250,
+    #     widget=forms.PasswordInput
+    # )
+
+    # def clean_confirm_password(self):
+    #     password = self.cleaned_data.get('password')
+    #     confirm_password = self.cleaned_data.get('confirm_password')
+    #
+    #     if password and confirm_password and password != confirm_password:
+    #         raise forms.ValidationError('Password is not confirmed!')
+    #
+    #     return self.cleaned_data
 
     def save(self):
         new_user = super().save(commit=False)
 
-        psw = new_user.password
+        psw = self.cleaned_data.get('password')
         new_user.set_password(psw)
 
         new_user.is_active = False
@@ -36,26 +52,13 @@ class CustomerModelForm(forms.ModelForm):
 
     class Meta:
         model = Customer
-        fields = ['username', 'password', 'confirm_password', 'email', 'birth_date', '_avatar']
-        widgets = {
-            'username': forms.widgets.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'value': ''
-                }
-            ),
-            'password': forms.widgets.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'type': 'password',
-                    'value': ''
-                }
-            ),
-            # TODO сделать автозаполнение данными из модели
-            'birth_date': forms.widgets.DateInput(
-                attrs={
-                    'class': 'form-control',
-                    'style': 'width: 200px;'
-                }
-            ),
-        }
+        fields = ['username', 'password1', 'password2', 'email', 'birth_date', '_avatar']
+
+    def __init__(self, *args, **kwargs):
+        super(CustomerAuthModelForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['value'] = ''
+            field.help_text = ''
+            if field_name == 'birth_date':
+                field.widget.attrs['placeholder'] = 'YYYY-MM-DD'

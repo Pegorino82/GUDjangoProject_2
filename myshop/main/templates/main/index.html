@@ -1,15 +1,18 @@
 {% extends 'myshop/base.html' %}
 
+
 {% load staticfiles %}
 
 {% block page_title %}
-    Main
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
 {% endblock %}
 
 {% block style_css %}
+<link rel="stylesheet" href="{% static 'main/styles/style.css' %}">
+
 {% endblock %}
 
 {% block small_menu_items %}
@@ -25,11 +28,15 @@
 {% endblock %}
 
 {% block right_content %}
-    {% for content in results %}
-        {% include 'main/components/article.html' with content=content object=content.author %}
-    {% endfor %}
+{% for article in object_list %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ article.chapter }}
+    </div>
+    {% include 'main/components/article.html' with article=article author=article.author %}
+</div>
+{% endfor %}
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from customers import models
 
+
 @admin.register(models.Customer)
 class CustomerAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -13,6 +14,13 @@ class CustomerAdmin(UserAdmin):
         ),
     )
 
+    list_display = [
+        'username',
+        'first_name',
+        'last_name',
+        'is_staff',
+        'is_active'
+    ]
 
 # class CustomerAdmin(admin.ModelAdmin):
 #     list_display = [

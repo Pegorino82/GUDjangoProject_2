@@ -3,14 +3,14 @@
 {% load staticfiles %}
 
 {% block page_title %}
-Delete Article
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
 {% endblock %}
 
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'main/styles/forms.css' %}">
+<link rel="stylesheet" href="{% static 'main/styles/style.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
@@ -26,24 +26,17 @@ Delete Article
 {% endblock %}
 
 {% block right_content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for err in form.not_field_errors %}
-    <span>
-        {{ err }}
-    </span>
-    {% endfor %}
-
-    <div>
-    {% include 'main/components/article.html' with content=object %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ object.chapter }}
     </div>
-
-    <div class="form-model">
-        <input type="submit" value="DELETE">
-    </div>
-</form>
+    {% include 'main/components/article.html' with article=object author=object.author %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit">Delete</button>
+    </form>
+</div>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

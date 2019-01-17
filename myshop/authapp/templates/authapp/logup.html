@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block page_title %}
-    SignIn
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
@@ -28,64 +28,20 @@
 <div class="main_section">
     <div class="main_section_header">
         Sign In
-        {% if error %}
-             / {{ error }}
-        {% endif %}
     </div>
-
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% for err in form.not_field_errors %}
-            <span>
-                {{ err }}
-            </span>
-        {% endfor %}
-
-        <div class="main-page-auth">
-            {% for field in form %}
-            <div class="input-group">
-                <div class="input-group main-page">
-                    <label class="input-group-addon form-model-label" for="{{ field.name }}">
-                        {{ field.label }}
-                    </label>
-                        {{ field }}
-                </div>
-                {% for err in field.errors %}
-                <span>
-                    {{ err }}
-                </span>
-                {% endfor %}
-            </div>
-            {% endfor %}
-            <div class="input-group">
-                <input name="logup" type="submit" value="Зарегистрироваться">
-            </div>
-        </div>
-
-
-        <!--<div class="main-page-auth">-->
-            <!--<div class="input-group">-->
-                <!--<div class="input-group main-page">-->
-                    <!--<span class="input-group-addon" id="sizing-addon1">Login</span>-->
-                    <!--<input name="username" type="text" class="form-control" placeholder="Login/email" aria-describedby="sizing-addon2">-->
-                <!--</div>-->
-                <!--<div class="input-group main-page">-->
-                    <!--<span class="input-group-addon" id="sizing-addon2">Password</span>-->
-                    <!--<input name="password" type="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">-->
-                <!--</div>-->
-                <!--<div class="input-group main-page">-->
-                    <!--<span class="input-group-addon">Avatar</span>-->
-                    <!--<input name="avatar" type="file" accept="image/*">-->
-                <!--</div>-->
-                <!--<div class="input-group">-->
-                    <!--<input name="logup" type="submit" value="Зарегистрироваться">-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+        {{form.as_p}}
+        <button class="btn btn-primary" type="submit">SignIn</button>
+        <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'articlesapp:list' %}">
+            Google+ sign in
+        </a>
+        <a class="btn btn-primary" href="{% url 'social:begin' 'vk-oauth2' %}?next={% url 'articlesapp:list' %}">
+            VK
+        </a>
     </form>
 </div>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'authapp/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

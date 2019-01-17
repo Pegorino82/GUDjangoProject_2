@@ -3,14 +3,14 @@
 {% load staticfiles %}
 
 {% block page_title %}
-    Delete Author
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
 {% endblock %}
 
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'main/styles/forms.css' %}">
+<link rel="stylesheet" href="{% static 'main/styles/style.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
@@ -26,22 +26,19 @@
 {% endblock %}
 
 {% block right_content %}
-<div class="author_small_card">
-    {% include 'main/components/author.html' with object=object %}
-</div>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for err in form.not_field_errors %}
-    <span>
-        {{ err }}
-    </span>
-    {% endfor %}
-    <div class="form-model">
-        <input type="submit" value="DELETE">
+<div class="main_section">
+    <div class="main_section_header">
+        {{ object }}
     </div>
-</form>
+    <div class="author_small_card">
+        {% include 'main/components/author.html' with object=object %}
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit">Delete</button>
+    </form>
+</div>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

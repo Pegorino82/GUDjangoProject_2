@@ -6,6 +6,7 @@ from products.api import (
     rest_product_create,
     rest_product_update,
     rest_product_delete,
+    rest_basket_json,
 )
 
 app_name = 'rest_products'
@@ -16,4 +17,6 @@ urlpatterns = [
     path('create/', rest_product_create, name='rest_create'),
     path('update/<int:pk>/', rest_product_update, name='rest_update'),
     path('delete/<int:pk>/', rest_product_delete, name='rest_delete'),
+
+    path('basket/', rest_basket_json, name='rest_basket'),
 ]

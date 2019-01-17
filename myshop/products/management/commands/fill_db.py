@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = '''fills DB'''
 
     def add_arguments(self, parser):
-        parser.add_argument('--random', action='store_const', const=101)
+        parser.add_argument('--random', action='store_const', const=51)
 
     def handle(self, *args, **options):
 
@@ -21,13 +21,16 @@ class Command(BaseCommand):
             if len(categories) == 0:
                 ctgrs = ['Category_' + str(i) for i in range(1, 11)]
                 for category in ctgrs:
-                    cat = Category(title=category)
+                    cat = Category(name=category)
                     cat.save()
 
             if len(markers) == 0:
                 for marker in ['corner_new', 'corner_hot', 'None']:
                     mark = ProductMarker(corner=marker)
                     mark.save()
+
+            categories = Category.objects.all()
+            markers = ProductMarker.objects.all()
 
             import random
             products = []
@@ -43,7 +46,8 @@ class Command(BaseCommand):
                         'old_price': random.randint(1500, 2000),
                         'product_marker': random.choice(markers),
                         'category': random.choice(categories),
-                        'image': random.choice(images)
+                        'image': random.choice(images),
+                        'quantity': random.randint(5, 15)
                     }
                 )
 

@@ -1,4 +1,5 @@
 const showBasket = ({image, name, now_price, quantity, id, totalPrice}) => (
+
     `
     <div class="product-line" id="${id}">
         <img class="product-small-photo" src="${image}" alt="${name}">
@@ -8,24 +9,26 @@ const showBasket = ({image, name, now_price, quantity, id, totalPrice}) => (
         <div class="product-info price">
             ${now_price}
         </div>
-        <button class="add_one" onclick="addOne(${id})">+</button>
-        <button class="remove_one" onclick="removeOne(${id})">-</button>
+        <button class="btn btn-primary" onclick="addOne(${id})">+</button>
+        <button class="btn btn-primary" onclick="removeOne(${id})">-</button>
         <span class="quantity">
             ${quantity}
         </span>
         <span class="total_price">
             ${totalPrice}
         </span>
+        <button class="btn btn-primary" onclick="deleteProduct(${id})">X</button>
     </div>
     <hr>
     `
 );
 
 
-const listApiUrl = 'http://127.0.0.1:8000/api/basket/list/';
-const detailApiUrl = 'http://127.0.0.1:8000/api/basket/detail/?id=';
-const updateApiUrl = 'http://127.0.0.1:8000/api/basket/update/';
-const productApiUrl = 'http://127.0.0.1:8000/api/products/detail/';
+const listApiUrl = '/api/basket/list/';
+const detailApiUrl = '/api/basket/detail/?id=';
+const deleteApiUrl = '/api/basket/delete/';
+const updateApiUrl = '/api/basket/update/';
+const productApiUrl = '/api/products/detail/';
 
 function getJson(apiUrl) {
     let HttpReq = new XMLHttpRequest(); // a new request
@@ -40,6 +43,61 @@ function updateRequest(updateApiUrl, params) {
     HttpReq.open("GET", updateApiUrl + '?' + params, false);
     HttpReq.send(null);
 }
+
+function deleteRequest(deleteApiUrl, params) {
+    let HttpReq = new XMLHttpRequest(); // a new request
+    let body = params;
+    HttpReq.open("POST", deleteApiUrl, true);
+    HttpReq.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    // HttpReq.onreadystatechange = ...;
+    HttpReq.send(body);
+}
+
+//**************************************
+
+const Basket = ({basket_total, basket_len, basket_currency}) =>
+    (
+        `
+        В корзине<br>
+        ${basket_len} товаров<br>
+        ${basket_total} ${basket_currency}
+       `
+    )
+
+
+function renderBasketWidget(listApiUrl) {
+    let basketItems = getJson(listApiUrl).results;
+    // console.log(basketItems);
+
+    let basket_total = 0;
+    let basket_len = 0;
+    let basket_currency = null;
+
+    basketItems.forEach(function (item) {
+        let product = getJson(productApiUrl + item.product_id + '/').results;
+        basket_total += item.quantity * product.now_price;
+        basket_len += item.quantity;
+        basket_currency = product.currency;
+    });
+
+    // console.log(basket_total, basket_len, basket_currency);
+
+    basketHtml = document.getElementsByClassName('basket__control')[0];
+    basketLinkHtml = document.getElementsByClassName('basket')[0];
+    basketLinkHtml.style.display = 'block';
+    basketHtml.innerHTML = '';
+    basketHtml.innerHTML = Basket(
+        {
+            basket_total: basket_total,
+            basket_len: basket_len,
+            basket_currency: basket_currency,
+        }
+    )
+};
+
+// renderBasketWidget(listApiUrl);
+
+//**************************************
 
 function renderBasketItem(detailApiUrl, id) {
     let currentBasketItem = getJson(detailApiUrl + id).results;
@@ -60,7 +118,7 @@ function renderBasketItem(detailApiUrl, id) {
     );
     currentBasketItem.innerHTML = '';
     currentBasketItem.innerHTML = basketItem;
-    console.log(currentBasketItem.innerHTML);
+    // console.log(currentBasketItem.innerHTML);
 }
 
 function renderBasket(apiUrl) {
@@ -74,10 +132,12 @@ function renderBasket(apiUrl) {
         product['totalPrice'] = item.quantity * product.now_price;
         getBasket.push(product);
     });
+    // console.log('basket-->', getBasket);
     let basketItems = getBasket.map(showBasket).join('');
     let basketHtml = document.getElementById('basket_js');
     basketHtml.innerHTML = '';
     basketHtml.innerHTML += basketItems;
+    renderBasketWidget(apiUrl)
 
 }
 
@@ -96,6 +156,7 @@ function addOne(id) {
     updateRequest(updateApiUrl, params);
     // renderBasketItem(detailApiUrl, id);
     renderBasket(listApiUrl);
+    renderBasketWidget(listApiUrl);
 }
 
 function removeOne(id) {
@@ -111,4 +172,16 @@ function removeOne(id) {
     updateRequest(updateApiUrl, params);
     // renderBasketItem(detailApiUrl, id);
     renderBasket(listApiUrl);
+    renderBasketWidget(listApiUrl);
 }
+
+function deleteProduct(id) {
+    // let currBasketItem = document.getElementById(id);
+    let params = JSON.stringify({
+        id: id,
+    });
+    deleteRequest(deleteApiUrl, params);
+    // renderBasket(listApiUrl);
+    // renderBasketWidget(listApiUrl);
+}
+

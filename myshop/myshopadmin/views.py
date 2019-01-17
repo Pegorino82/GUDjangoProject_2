@@ -122,7 +122,6 @@ class ModelList(LoginRequiredMixin, ListView):
         context['app'] = self._app
         context['model'] = self._model
         context['included_template'] = 'myshopadmin/components/{}.html'.format(self._model.lower())
-        # context['included_template'] = 'oooooooooooo'
         return context
 
 

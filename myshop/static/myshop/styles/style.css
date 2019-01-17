@@ -40,13 +40,13 @@
 
 
 .header {
-    height: 700px;
+    /*height: 700px;*/
     background-color: #abeafa;
     /*background: url("../images/background_2.png") center center;*/
 }
 
 .header .container {
-    position: relative;
+    /*position: relative;*/
 }
 
 .navbar_xs {
@@ -70,20 +70,21 @@
 }
 
 .social_icons {
-    position: absolute;
-    right: 64px;
-    top: 50px;
+    /*position: absolute;*/
+    /*right: 64px;*/
+    top: 20px;
     width: 250px;
     display: flex;
     justify-content: space-between;
     color: #f8f8f8;
     font-size: 35px;
+    float: right;
 }
 
 @media all and (max-width: 767px) {
     .social_icons {
-        width: 90%;
-        top: 67px;
+        width: 100%;
+        /*top: 67px;*/
         font-size: 45px;
         right: unset;
     }
@@ -104,7 +105,7 @@
     height: 90px;
     width: 81px;
     display: block;
-    position: absolute;
+    /*position: absolute;*/
     top: 24px;
     left: 70px;
 }
@@ -255,8 +256,11 @@
 }
 
 .name-avatar {
-    text-align: center;
-    float: right;
+    /*text-align: center;*/
+    /*float: right;*/
+    display: inline-block;
+    vertical-align: middle;
+    text-align: -webkit-center;
 }
 
 .name-avatar span {
@@ -276,8 +280,24 @@
 }
 
 .name-avatar {
+    /*position: absolute;*/
+    /*bottom: -640px;*/
+    margin-right: 20px;
+}
+
+.basket {
     position: absolute;
-    bottom: -640px;
+    top: 605px;
+    right: 50px;
+    display: none;
+    width: 90px;
+    height: 30px;
+}
+
+.basket__control {
+    font-family: "Raleway Black", sans-serif;
+    font-size: 14px;
+    color: #000000;
 }
 
 .content {
@@ -489,7 +509,7 @@
     box-sizing: border-box;
     position: relative;
     margin-bottom: 15px;
-    max-height: 436px;
+    /*max-height: 436px;*/
 }
 
 .product_img {

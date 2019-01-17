@@ -1,0 +1,38 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+{{title}}
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'customers/styles/style.css' %}">
+<link rel="stylesheet" href="{% static 'customers/styles/paginator.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block right_content %}
+{% for object in object_list %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ object }}
+    </div>
+    {% include 'customers/components/customer.html' with object=object %}
+</div>
+{% endfor %}
+{% if is_paginated %}
+{% include 'customers/components/pagination.html' %}
+{% endif %}
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

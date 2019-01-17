@@ -3,16 +3,12 @@ from main.models import MainPageContent
 
 
 class MainArticleModelForm(forms.ModelForm):
-    date = forms.DateTimeField(
-        input_formats=['%Y-%m-%dT%H:%M'],
-        widget=forms.DateTimeInput(
-            attrs={
-                'type': 'datetime-local',
-                'class': 'form-model-date'
-            }
-        )
-    )
 
     class Meta:
         model = MainPageContent
-        fields = ['chapter', 'content', 'date', 'author']
+        fields = ['chapter', 'content', 'author']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'

@@ -1,21 +1,18 @@
 {% load static %}
 
-<div class="main_section">
-    <div class="main_section_header">
-        {{ content.chapter }}
-    </div>
-     <div class="main_section_img">
-        {% if object.photo %}
-        <img class="main_section_img" src="{{ object.photo.url }} " alt="{{ content.author }}">
-        {% else %}
-        <div class="main_section_img" style=>
-            No photo
-        </div>
-        {% endif %}
-    </div>
-     <div class="row main_section_content">
-         {{ content.content }}
-     </div>
-    <span>By {{ content.author }},</span>
-    <span>{{ content.created.date }}</span>
+
+<div class="author-photo" style="
+    {% if author.photo %}
+        background-image: url('{{ author.photo.url }}');
+    {% endif %}
+    ">
+    {% if not author.photo %}
+    <h2>No</h2>
+    <h2>Photo</h2>
+    {% endif %}
 </div>
+<div class="row main_section_content">
+    {{ article.content }}
+</div>
+<span>By {{ author }},</span>
+<span>{{ article.modified.date }}</span>

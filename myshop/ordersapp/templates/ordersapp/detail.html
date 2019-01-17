@@ -1,0 +1,99 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% load utility %}
+
+{% block page_title %}
+{{title}}
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'ordersapp/styles/order.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        order: {{ order.id }}
+    </div>
+</div>
+
+<div class="row products_table">
+    <div class="product-line">
+        <div class="product-info name">
+            Created:
+        </div>
+        <div class="product-info name">
+            {{ order.modified }}
+        </div>
+    </div>
+    <div class="product-line">
+        <div class="product-info name">
+            Status:
+        </div>
+        <div class="product-info name">
+            {{ order.get_status_display|capfirst }}
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total cost</th>
+            <!--<th scope="col"></th>-->
+            <!--<th scope="col"></th>-->
+            <!--<th scope="col"></th>-->
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in order.items.all.select_related %}
+        {% if item %} <!-- задать условие??-->
+        <tr>
+            <th scope="row"><img class="product-small-photo" src="{{item.product.image.img.url}}"></th>
+            <td>{{item.product.name}}</td>
+            <td>{{item.product.now_price}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.get_order_item_price}}</td>
+            <!--<td><a class="btn btn-primary" href="{% url 'ordersapp:detail' order.pk %}">+</a></td>-->
+            <!--<td><a class="btn btn-primary" href="{% url 'ordersapp:update' order.pk %}">-</a></td>-->
+            <!--<td><a class="btn btn-primary" href="{% url 'ordersapp:update' order.pk %}">Delete</a></td>-->
+        </tr>
+        {% endif %}
+        {% endfor %}
+        <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td>Total</td>
+            <td>{{order.get_total_quantity}}</td>
+            <td>{{order.get_order_price}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" href="{% url 'ordersapp:update' order.pk %}">Edit</a>
+    <a class="btn btn-primary" href="{% url 'ordersapp:delete' order.pk %}">Delete</a>
+    <a class="btn btn-primary" href="{% url 'ordersapp:list' %}">To orders</a>
+</div>
+
+{% endblock %}
+
+{% block js_bottom %}
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

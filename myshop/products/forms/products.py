@@ -16,3 +16,9 @@ class ProductModelForm(forms.ModelForm):
             'product_marker',
             'image',
             ]
+
+    def __init__(self, *args, **kwargs):
+        super(ProductModelForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''

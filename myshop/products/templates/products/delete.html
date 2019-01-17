@@ -3,22 +3,19 @@
 {% load staticfiles %}
 
 {% block page_title %}
-   Delete
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
 {% endblock %}
 
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'products/styles/forms.css' %}">
 <link rel="stylesheet" href="{% static 'products/styles/product.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
 <ul class="submenu">
-    {% for category in categories %}
-    <li><a href="{% url 'categoriesapp:category' category=category.name %}">{{category.name}}</a></li>
-    {% endfor %}
+
 </ul>
 {% endblock %}
 
@@ -27,9 +24,6 @@
 
 {% block large_menu_items %}
 <ul class="submenu">
-    {% for category in categories %}
-    <li><a href="{% url 'categoriesapp:category' category=category.name %}">{{category.name}}</a></li>
-    {% endfor %}
 </ul>
 {% endblock %}
 
@@ -37,57 +31,18 @@
 {% endblock %}
 
 {% block right_content %}
-<div class="category_products">
-
-    <div class="products_header">
-        {{ product.name }} /
-        <a href="{% url 'categoriesapp:category' category=product.category %}">{{ product.category }}</a>
+<div class="main_section">
+    <div class="main_section_header">
+        delete
+        {{ object.name }}
     </div>
-
-    <div class="row products_table">
-
-         <div class="col-md-6 col-sm-6 col-xs-12 product_cell">
-             <div class="product_card {{product.product_marker|default_if_none:''}}">
-        <img class="product_img" src="{{ product.image.img.url }}" alt="">
-        <div class="name_price">
-            <div class="product_name">
-                {{ product.name|title }}
-            </div>
-            <div class="product_price">
-                <div class="now_price">
-                    {{ product.currency }} {{ product.now_price }}
-                </div>
-                {% if product.old_price %}
-                <div class="old_price">
-                    {{ product.currency }} {{ product.old_price }}
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-12 product_cell">
-             <div class="product_describe">
-                 {{ product.long_text }}
-             </div>
-        </div>
-
-        <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% for err in form.not_field_errors %}
-            <span>
-                {{ err }}
-            </span>
-        {% endfor %}
-            <div class="input-group">
-                <input name="delete" type="submit" value="DELETE">
-            </div>
-        </form>
-
-    </div>
+        {% include 'products/components/product.html' with product=object %}
+        <button class="btn btn-primary" type="submit">Delete</button>
+    </form>
 </div>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'products/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

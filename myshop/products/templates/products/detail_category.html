@@ -1,0 +1,50 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+{{title}}
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'products/styles/product.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+<ul class="submenu">
+</ul>
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+<ul class="submenu">
+</ul>
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="category_products">
+    <div class="products_header">
+        {{ object.name }}
+    </div>
+    <div class="row products_table">
+        {% include 'products/components/category.html' with object=object %}
+    </div>
+    <a class="btn btn-primary" href="/categories/category/{{object.pk}}/">
+        Show category's products
+    </a>
+</div>
+{% endblock %}
+
+{% block js_bottom %}
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

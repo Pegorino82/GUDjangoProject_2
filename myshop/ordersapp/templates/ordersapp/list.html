@@ -1,0 +1,76 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% load utility %}
+
+{% block page_title %}
+{{title}}
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'ordersapp/styles/order.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ user }} / orders list<!-- получить заказ для заголовка -->
+    </div>
+</div>
+
+<div class="row products_table">
+    {% if not object_list %}
+    <div class="product-line">
+        <div class="product-info name">
+            You have no orders yet!
+        </div>
+    </div>
+    {% else %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Order id</th>
+            <th scope="col">Status</th>
+            <th scope="col">Created</th>
+            <th scope="col">Total quantity</th>
+            <th scope="col">Total cost</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in object_list %}
+        {% if order.is_active %}
+            <tr>
+                <th scope="row">{{order.pk}}</th>
+                <td>{{order.status}}</td>
+                <td>{{order.modified}}</td>
+                <td>{{order.get_total_quantity}}</td>
+                <td>{{order.get_order_price}}</td>
+                <td><a class="btn btn-primary" href="{% url 'ordersapp:detail' order.pk %}">Detail</a></td>
+                <td><a class="btn btn-primary" href="{% url 'ordersapp:update' order.pk %}">Edit</a></td>
+            </tr>
+        {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    {% if user.is_staff %}
+        <a class="btn btn-primary" href="{% url 'ordersapp:create' %}">Create new order</a>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block js_bottom %}
+{% endblock %}

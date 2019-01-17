@@ -1,0 +1,180 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+Basket
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'basket/styles/basket.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+<!--<script src="{% static 'myshop/js/storage.js' %}"></script>-->
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+{% csrf_token %}
+<div class="main_section_header">
+    {{ user.username }}
+</div>
+
+<div id="basket_js">
+</div>
+
+<div id="show_order_create_button">
+</div>
+{% endblock %}
+
+{% block js_bottom %}
+<script>
+    // скрипт для формирования html для отображения позиции в корзине
+    // TODO вынести в отдельный файл, задать стили...
+    const productRow = ({name, now_price, id}, quantity) => (
+
+        `
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Add</th>
+                <th>Dec</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>${name}</td>
+                <td>${now_price}</td>
+                <td><button class="incButton" product_id="${id}" class="link-add-to-basket">+</button></td>
+                <td><button class="decButton" product_id="${id}" class="link-add-to-basket">-</button></td>
+                <td>${quantity}</td>
+                <td>${quantity * now_price}</td>
+            </tr>
+            </tbody>
+        </table>
+        `
+
+        // `
+        // <div>
+        //     <span>product:  ${name},  </span>
+        //     <span>price:  ${now_price},  </span>
+        //     <span>quantity:  ${quantity}  ,</span>
+        //     <span>total:  ${quantity * now_price}</span>
+        // </div>
+        // <button class="incButton" product_id="${id}" class="link-add-to-basket">+ local storage</button>
+        // <button class="decButton" product_id="${id}" class="link-add-to-basket">- local storage</button>
+        // `
+    );
+
+</script>
+<script>
+    // скрипт для получения объектов продуктов на основании LocalStorage
+    let productItems = document.getElementById('basket_js');
+
+    // получаем объекты товаров по productsUrl
+    function renderer() {
+        productItems.innerHTML = '';
+        let localItems = getFromStorage('basket');
+        let productsIds = Object.keys(localItems).join(',');// получаем список ключей localItems (преобразовывае в строку)
+
+        if (productsIds.length > 0) {
+
+            let productsUrl = `{% url 'rest_products:rest_basket' %}?id_in=${productsIds}`;
+            fetch(productsUrl)
+                .then(response => response.json())
+                .then(data => data.results)
+                // отображаем их в HTML
+                .then(results => {
+                    results.map(product => productItems.innerHTML += productRow(product, localItems[product.id]));
+                })
+                // // добавляем события кнопкам увеличения/уменьшения товара (в localStorage)
+                // // TODO сделать отображение изменения количества товаров на странице!!!
+                .then(
+                    buttons => {
+                        const btnsInc = document.getElementsByClassName('incButton');
+                        let incArr = Array.from(btnsInc);
+                        incArr.forEach(
+                            function (item) {
+                                item.addEventListener("click", evt => {
+                                        incProduct(
+                                            'basket',
+                                            item.getAttribute('product_id'),
+                                        );
+                                        renderer(productsUrl)
+                                    }
+                                );
+                            }
+                        );
+                        const btnsDec = document.getElementsByClassName('decButton');
+                        let decArr = Array.from(btnsDec);
+                        decArr.forEach(
+                            function (item) {
+                                item.addEventListener("click", evt => {
+                                        decProduct(
+                                            'basket',
+                                            item.getAttribute('product_id'),
+                                        );
+                                        renderer(productsUrl)
+                                    }
+                                );
+                            }
+                        );
+                    }
+                );
+
+            // отправляем запрос на создание заказа
+            let showCreateButton = document.getElementById('show_order_create_button');
+            showCreateButton.innerHTML = '';
+            showCreateButton.innerHTML = `<button id="order_create_button">Submit</button>`;
+
+            let createOrderUrl = '{% url "rest_ordersapp:rest_create_order" %}';
+            let createOrderButton = document.getElementById('order_create_button');
+            const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+
+            createOrderButton.addEventListener(
+                'click', evt => {
+                    console.log('pressed');
+                    fetch(createOrderUrl,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': tokenInput.value,
+                            },
+                            body: localStorage.getItem('basket')
+                        },
+                    )
+                        .then(request => request.json())
+                        .then(data => location.replace(data.success_url))
+                        .then(storage => localStorage.clear()) // TODO определиться, когда удалять корзину - при создании заказа или при присвоении ему опеделенного статуса
+
+                }
+            )
+
+        } else {
+            productItems.innerHTML = `<span>Корзина пуста</span>`
+        }
+    }
+
+    renderer();
+</script>
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

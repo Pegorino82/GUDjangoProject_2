@@ -1,0 +1,84 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+{{title}}
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'ordersapp/styles/order.css' %}">
+<script src="{% static 'ordersapp/js/jquery.formset.js' %}"></script>
+<script src="{% static 'ordersapp/js/order_scripts.js' %}"></script>
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ user }} / update order: {{ order.id }}
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!--{{form.as_p}}-->
+        <table class="table">
+            {{ formset.management_form }}
+            {% for form in formset.forms %}
+            {% if forloop.first %}
+            <thead>
+            <tr>
+                {% for field in form.visible_fields %}
+                <th>
+                    {{ field.label|capfirst }}
+                </th>
+                {% endfor %}
+            </tr>
+            </thead>
+            {% endif %}
+            <tr>
+                {% for field in form.visible_fields %}
+                <td>
+                    {% if forloop.first %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                    {% endif %}
+                    {{ field.errors.as_ul }}
+                    {{ field }}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+             <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <div id="total_cost">
+                        {{total_cost}}
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <button class="btn btn-primary" type="submit">Update</button>
+        <a class="btn btn-primary" href="{% url 'ordersapp:detail' order.pk %}">Cancel</a>
+        <a class="btn btn-primary" href="{% url 'ordersapp:list' %}">To orders</a>
+    </form>
+</div>
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

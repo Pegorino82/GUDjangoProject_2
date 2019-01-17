@@ -1,0 +1,40 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% load utility %}
+
+{% block page_title %}
+{{title}}
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'products/styles/paginator.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        {% get_model_name results.0 %}
+    </div>
+</div>
+<div class="row products_table" id="cat_js">
+</div>
+{% include 'products/components/js_pagination.html' %}
+{% endblock %}
+
+{% block js_bottom %}
+<script src="{% static 'products/js/products_pgn.js' %}"></script>
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

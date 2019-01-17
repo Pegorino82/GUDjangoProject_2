@@ -1,0 +1,2 @@
+basket_script.js - ajax
+basket_scripts.js - api

@@ -32,15 +32,24 @@ class ProductMarker(models.Model):
 
 
 def default_image():
-    return Image.objects.get(name='default')
+    try:
+        return Image.objects.get(name='default')
+    except:
+        pass
 
 
 def default_product_marker():
-    return ProductMarker.objects.get(corner='None')
+    try:
+        return ProductMarker.objects.get(corner='None')
+    except:
+        pass
 
 
 def default_category():
-    return Category.objects.get(name='New category')
+    try:
+        return Category.objects.get(name='New category')
+    except:
+        pass
 
 
 class Product(models.Model):
@@ -68,38 +77,47 @@ class Product(models.Model):
         max_length=50,
         default='₽'
     )
-
     product_marker = models.ForeignKey(
         'products.ProductMarker',
         on_delete=models.PROTECT,
-        default=default_product_marker
+        default=default_product_marker,
+        null=True,
+        blank=True
     )
     category = models.ForeignKey(
         'products.Category',
         on_delete=models.CASCADE,
-        default=default_category
+        default=default_category,
+        null=True,
+        blank=True
     )
     image = models.ForeignKey(
         'images.Image',
         on_delete=models.PROTECT,
-        default=default_image
+        default=default_image,
+        null=True,
+        blank=True
     )
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     is_active = models.BooleanField(
-        default=True
+        default=True,
+        db_index=True
     )
+
+    quantity = models.PositiveIntegerField()  # количество на складе
 
     def __str__(self):
         return self.name
 
+    # TODO надо оптимизировать!
     @classmethod
     def get_limit(cls, limit):
-        categories = Category.objects.all()
+        categories = Category.objects.all().select_related()
         res = list()
         for cat in categories:
-            for prod in cls.objects.filter(category=cat.id, is_active=True)[:limit]:
+            for prod in cls.objects.filter(category=cat.id, is_active=True).select_related('category', 'image',
+                                                                                           'product_marker')[:limit]:
                 res.append(prod)
-
         return res

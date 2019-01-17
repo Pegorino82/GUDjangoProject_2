@@ -3,14 +3,14 @@
 {% load staticfiles %}
 
 {% block page_title %}
-Detail Author
+{{title}}
 {% endblock %}
 
 {% block bootstrap_css %}
 {% endblock %}
 
 {% block style_css %}
-<link rel="stylesheet" href="{% static 'main/styles/forms.css' %}">
+<link rel="stylesheet" href="{% static 'main/styles/style.css' %}">
 {% endblock %}
 
 {% block small_menu_items %}
@@ -26,11 +26,13 @@ Detail Author
 {% endblock %}
 
 {% block right_content %}
-
-{% include 'main/components/author.html' with object=object %}
-
+<div class="main_section">
+    <div class="main_section_header">
+        {{ author }}
+    </div>
+    {% include 'main/components/author.html' with object=author %}
+</div>
 {% endblock %}
 
 {% block bootstrap_js %}
-<script src="{% static 'main/packages/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 {% endblock %}

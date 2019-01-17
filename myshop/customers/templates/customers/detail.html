@@ -1,0 +1,35 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+{{title}}
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<link rel="stylesheet" href="{% static 'customers/styles/style.css' %}">
+{% endblock %}
+
+{% block small_menu_items %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block right_content %}
+<div class="main_section">
+    <div class="main_section_header">
+        {{ object }}
+    </div>
+    {% include 'customers/components/customer.html' with object=object %}
+</div>
+<a class="btn btn-primary" href="{% url 'customersapp:edit_profile' user.pk %}">Edit Profile</a>
+<a class="btn btn-primary" href="{% url 'customersapp:delete' user.pk %}">Delete</a>
+<a class="btn btn-primary" href="{% url 'ordersapp:list' %}">Orders</a>
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

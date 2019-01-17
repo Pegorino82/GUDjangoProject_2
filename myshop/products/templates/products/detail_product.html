@@ -1,0 +1,64 @@
+{% extends 'myshop/base.html' %}
+
+{% load staticfiles %}
+
+{% block page_title %}
+{{title}}
+{% endblock %}
+
+{% block bootstrap_css %}
+{% endblock %}
+
+{% block style_css %}
+<!--<link rel="stylesheet" href="{% static 'products/styles/forms.css' %}">-->
+<link rel="stylesheet" href="{% static 'products/styles/product.css' %}">
+<script src="{% static 'myshop/js/storage.js' %}"></script>
+{% endblock %}
+
+{% block small_menu_items %}
+<ul class="submenu">
+</ul>
+{% endblock %}
+
+{% block small_menu_mainpage %}
+{% endblock %}
+
+{% block large_menu_items %}
+{% endblock %}
+
+{% block large_menu_mainpage %}
+{% endblock %}
+
+{% block right_content %}
+<div class="category_products">
+    <div class="products_header">
+        {{ object.name }} /
+        <a href="{% url 'categoriesapp:category' pk=object.pk %}">{{ object.category }}</a>
+    </div>
+    <div class="row products_table">
+        {% include 'products/components/product.html' with product=object %}
+        <div class="col-md-6 col-sm-6 col-xs-12 product_cell">
+            <div class="product_describe">
+                {{ object.long_text }}
+            </div>
+            <div class="product_describe">
+                На складе: {{ object.quantity }}
+            </div>
+        </div>
+        <!--кнопка для добавления товара в корзину на сервере (в БД)-->
+        <!--<a class="btn btn-primary" href="{% url 'basketapp:add_product' pk=object.id %}">Add to basket</a>-->
+        <button id="add_product" name={{ object.id }} class="btn btn-primary" type="submit">Add to basket</button>
+        {% if user.is_staff %}
+            <br><a class="btn btn-primary" href="{% url 'productsapp:update' pk=object.id %}">Update</a>
+            <a class="btn btn-primary" href="{% url 'productsapp:delete' pk=object.id %}">Delete</a>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js_bottom %}
+{% endblock %}
+
+{% block bootstrap_js %}
+{% endblock %}

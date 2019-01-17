@@ -1,26 +1,26 @@
 from django.shortcuts import render
-from django.core.mail import send_mail
+from contacts.models import Feedback
 
 
-# Create your views here.
-
+# сохраняет в бд имя отправителя, почту и текст сообщения
 def contacts(request):
     context = {}
-    # print(request.POST)
     if request.method == "POST":
-        usr_name = request.POST.get('username')
+        user = request.user
         email = request.POST.get('email')
         text = request.POST.get('text')
-        send_mail(
-            'Django',
-            text,
-            from_email='info@myshop.ru',
-            recipient_list=[email],
-        )
-        # context.update({
-        #     'usr_name': usr_name,
-        #     'email': email,
-        #     'text': text
-        # })
+        if user.is_authenticated:
+            feedback = Feedback.objects.create(
+                user=user,
+                email=email,
+                text=text
+            )
+            feedback.save()
+        else:
+            feedback = Feedback.objects.create(
+                email=email,
+                text=text
+            )
+            feedback.save()
 
     return render(request, 'contacts/contacts.html', context)

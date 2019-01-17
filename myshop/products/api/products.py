@@ -3,8 +3,16 @@ from django.shortcuts import reverse, render, redirect, get_object_or_404, get_l
 from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator
 
+from rest_framework.viewsets import ModelViewSet
+
+from products.serializers import ProductSerializer
 from products.models import Product, ProductMarker, Category
 from images.models import Image
+
+
+class ProductViewSet(ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
 # ?name=Api_product&short_text=short_text&long_text=long_text&now_price=1000&old_price=5000&product_marker=1&category=32&image=3
@@ -55,6 +63,7 @@ def rest_product_list(request):
     data = list(
         map(
             lambda itm: {
+                'id': itm.id,
                 'name': itm.name,
                 'short_text': itm.short_text[:50] + '...' if (
                         itm.short_text and len(itm.short_text) > 50) else itm.short_text,
@@ -85,6 +94,7 @@ def rest_product_detail(request, **kwargs):
     pk = kwargs.get('pk')
     obj = get_object_or_404(Product, id=pk)
     data = {
+        'id': pk,
         'name': obj.name,
         'short_text': obj.short_text[:50] + '...' if len(obj.short_text) > 50 else obj.short_text,
         'long_text': obj.short_text[:50] + '...' if len(obj.long_text) > 50 else obj.long_text,
@@ -93,7 +103,8 @@ def rest_product_detail(request, **kwargs):
         'currency': obj.currency,
         'product_marker': obj.product_marker.corner,
         'category': obj.category.name,
-        'image': obj.image.img.url
+        'image': obj.image.img.url,
+        'quantity': obj.quantity
     }
 
     return JsonResponse(
@@ -126,10 +137,38 @@ def rest_product_update(request, **kwargs):
 def rest_product_delete(request, **kwargs):
     pk = kwargs.get('pk')
     obj = get_object_or_404(Product, id=pk)
-    obj.delete()
+    # obj.delete()
+    obj.is_active = False
+    obj.save()
 
     return JsonResponse(
         {
             'results': 'OK'
+        }
+    )
+
+# забираем из БД товары, находящися в localStorage
+def rest_basket_json(request, **kwargs):
+    queryset = []
+    if 'id_in' in request.GET:
+        prods = list(map(int, request.GET['id_in'].split(',')))
+        for id_ in prods:
+            try:
+                # obj = get_object_or_404(Product, id=id_)
+                obj = Product.objects.get(id=id_)
+                data = {
+                    'id': obj.id,
+                    'name': obj.name,
+                    'now_price': obj.now_price,
+                    'currency': obj.currency,
+                    'product_marker': obj.product_marker.corner,
+                    'category': obj.category.name,
+                }
+            except Exception as err:
+                data = {'error': err}
+            queryset.append(data)
+    return JsonResponse(
+        {
+            'results': queryset
         }
     )
