@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 from products.models import Product, Category, ProductMarker
 from images.models import Image
 
+import random
 
 class Command(BaseCommand):
     help = '''fills DB'''
@@ -14,7 +15,7 @@ class Command(BaseCommand):
 
         if options['random']:
 
-            images = Image.objects.all()
+            images = Image.objects.filter(name__startswith='products_')
             categories = Category.objects.all()
             markers = ProductMarker.objects.all()
 
@@ -32,7 +33,7 @@ class Command(BaseCommand):
             categories = Category.objects.all()
             markers = ProductMarker.objects.all()
 
-            import random
+
             products = []
             ammount = options['random']
 
