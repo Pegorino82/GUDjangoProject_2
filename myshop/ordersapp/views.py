@@ -30,13 +30,14 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     def get_formset_class(self):
 
         self.basket = Basket.objects.filter(user=self.request.user.id).select_related()
+        self.basket_ = Basket(user=self.request.user)
 
         # создаем формсет класс с помощью фабрики
         formset_class = inlineformset_factory(
             parent_model=self.model,
             model=self.formset_model,
             form=self.formset_form,
-            extra=len(self.basket) if len(self.basket) else 1
+            extra=len(self.basket) or 1
         )
         return formset_class
 
@@ -66,7 +67,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         context = super(OrderCreateView, self).get_context_data(**kwargs)
         formset = self.get_formset()
 
-        total_cost = self.basket[0].get_total_cost or 0
+        total_cost = self.basket_.get_total_cost or 0
         # создаем заказ на основании корзины (которая на сервере)
         if len(self.basket):
             for count, item in enumerate(self.basket):
